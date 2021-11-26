@@ -1,0 +1,483 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<head lang="en">
+	<link rel="icon" href="assets/images/favicon.png" />
+	<meta http-equiv="content-type" content="text/html;charset=utf-8">
+	<title>Radmin - Laravel Starter with REST API, User Roles and Permission</title>
+	<!-- Framework CSS -->
+	<link rel="stylesheet" href="assets/blueprint-css/screen.css" type="text/css" media="screen, projection">
+	<link rel="stylesheet" href="assets/blueprint-css/print.css" type="text/css" media="print">
+	<!--[if lt IE 8]><link rel="stylesheet" href="assets/blueprint-css/ie.css" type="text/css" media="screen, projection"><![endif]-->
+	<link rel="stylesheet" href="assets/blueprint-css/plugins/fancy-type/screen.css" type="text/css" media="screen, projection">
+	<style type="text/css" media="screen">
+		p, table, hr, .box { margin-bottom:25px; }
+		.box p { margin-bottom:10px; }
+	</style>
+</head>
+
+
+<body>
+	<div class="container">
+	
+		<h3 class="center alt">&ldquo;Radmin - Laravel Starter with REST API, User Roles and Permission&rdquo; Documentation by &ldquo;Md. Rakibul Islam&rdquo; v2.6.0</h3>
+		
+		<hr>
+		
+		<h1 class="center">&ldquo;Radmin - Laravel Starter with REST API, User Roles and Permission&rdquo;</h1>
+		
+		<div class="borderTop">
+			<div class="span-6 colborder info prepend-1">
+				<p class="prepend-top">
+					<strong>
+					Created: 13/03/2020 <br>  Updated: 13/04/2021<br>
+					By: Md. Rakibul Islam<br>
+					Email: <a href="mailto:rakib1708@gmail.com">rakib1708@gmail.com</a>
+					</strong>
+				</p>
+			</div><!-- end div .span-6 -->		
+	
+			<div class="span-12 last">
+				<p class="prepend-top append-0">Thank you for purchasing my template. If you have any questions that are beyond the scope of this help file, please feel free to email via my user page contact form <a href="http://themeforest.net/user/rakibhstu">here</a>. Thanks so much!</p>
+			</div>
+		</div><!-- end div .borderTop -->
+		
+		<hr>
+		
+		<h2 id="toc" class="alt">Table of Contents</h2>
+		<ol class="alpha">
+			<li><a href="#pageStructure">Installation</a></li>
+			<li><a href="#pageStructure">Page Structure</a></li>
+			<li><a href="#newPage">Create New Page </a></li>
+			<li><a href="#sidebar">Sidebar</a></li>
+			<li><a href="#rest">REST API</a></li>
+			<li><a href="#roles">Roles & Permissions</a></li>
+			<li><a href="#serverside">Serverside Datatable</a></li>
+			<li><a href="#editable-datatable">Editable Datatable</a></li>
+			<li><a href="#credits">Sources and Credits</a></li>
+			
+		</ol>
+		<hr>
+		
+		<h3 id="pageStructure"><strong>A) Installation</strong> - <a href="#toc">top</a></h3>
+		<p>Create a database in phpmyadmin. Open <i style="color:red;">.env</i> file and change following credentials </p>
+		<pre>
+			DB_DATABASE=your_database_name
+			DB_USERNAME=your_database_user
+			DB_PASSWORD=your_database_password
+
+		</pre>
+
+		<p>Don't forget to import <i style="color:red;">database.sql</i> file which is located in projects database folder or manually create a user in phpmyadmin and assign <i style="color:red;">Super Admin</i> role. Because <i style="color:red;">Super Admin</i> role can access all the premissions.</p>
+
+		<br>
+		For Laravel Mix <br>
+		<pre>npm install</pre>
+		<pre>npm run dev</pre>
+		<br>
+		<h4> Credentials </h4>
+		Super Admin: admin@test.com <br>
+		HR: hr@test.com <br>
+		Project Manager: pm@test.com <br>
+		Sales Manager: sm@test.com <br>
+		<br>
+		Password: <span style="color:#ff0000;">1234</span>
+		
+		<hr>
+		
+		<h3 id="pageStructure"><strong>B) Page Structure</strong> - <a href="#toc">top</a></h3>
+		<p>This template is a fixed layout with header, left sidebar, right sidebar (chat List) and main content area. All of the information within the main content area is yeilded within a div with an class of "main-content". Left sidebar's (menu) content is within a div with an class of "app-sidebar". Here is the general folder structure of blade files.</p>
+		
+		<img src="assets/images/folder-structure.JPG" alt="HTML Structure" />
+
+		<p> The general template structure is the same throughout the template. Here is the main layout structure located in <i style="color:red;">resources/views/layouts/main.blade.php</i></p>
+
+<!-- html code preview start -->
+		<!-- HTML generated using hilite.me -->
+		<div style="background: #ffffff; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%"><span style="color: #4c8317">&lt;!doctype html&gt;</span>
+<span style="color: #1e90ff; font-weight: bold">&lt;html</span> <span style="color: #1e90ff">lang=</span><span style="color: #aa5500">&quot;{{ str_replace(&#39;_&#39;, &#39;-&#39;, app()-&gt;getLocale()) }}&quot;</span> <span style="color: #1e90ff; font-weight: bold">&gt;</span>
+<span style="color: #1e90ff; font-weight: bold">&lt;head&gt;</span>
+	<span style="color: #aaaaaa; font-style: italic">&lt;!-- initiate head with meta tags, css and script --&gt;</span>
+	@include(&#39;include.head&#39;)
+<span style="color: #1e90ff; font-weight: bold">&lt;/head&gt;</span>
+<span style="color: #1e90ff; font-weight: bold">&lt;body</span> <span style="color: #1e90ff">id=</span><span style="color: #aa5500">&quot;app&quot;</span><span style="color: #1e90ff; font-weight: bold">&gt;</span>
+    <span style="color: #1e90ff; font-weight: bold">&lt;div</span> <span style="color: #1e90ff">class=</span><span style="color: #aa5500">&quot;wrapper&quot;</span><span style="color: #1e90ff; font-weight: bold">&gt;</span>
+    	<span style="color: #aaaaaa; font-style: italic">&lt;!-- initiate header--&gt;</span>
+    	@include(&#39;include.header&#39;)
+    	<span style="color: #1e90ff; font-weight: bold">&lt;div</span> <span style="color: #1e90ff">class=</span><span style="color: #aa5500">&quot;page-wrap&quot;</span><span style="color: #1e90ff; font-weight: bold">&gt;</span>
+	    	<span style="color: #aaaaaa; font-style: italic">&lt;!-- initiate sidebar--&gt;</span>
+	    	@include(&#39;include.sidebar&#39;)
+	    	<span style="color: #1e90ff; font-weight: bold">&lt;div</span> <span style="color: #1e90ff">class=</span><span style="color: #aa5500">&quot;main-content&quot;</span><span style="color: #1e90ff; font-weight: bold">&gt;</span>
+	    		<span style="color: #aaaaaa; font-style: italic">&lt;!-- yeild contents here --&gt;</span>
+	    		@yield(&#39;content&#39;)
+	    	<span style="color: #1e90ff; font-weight: bold">&lt;/div&gt;</span>
+	    	<span style="color: #aaaaaa; font-style: italic">&lt;!-- initiate chat section--&gt;</span>
+	    	@include(&#39;include.chat&#39;)
+	    	<span style="color: #aaaaaa; font-style: italic">&lt;!-- initiate footer section--&gt;</span>
+	    	@include(&#39;include.footer&#39;)
+    	<span style="color: #1e90ff; font-weight: bold">&lt;/div&gt;</span>
+    <span style="color: #1e90ff; font-weight: bold">&lt;/div&gt;</span>    
+	<span style="color: #aaaaaa; font-style: italic">&lt;!-- initiate modal menu section--&gt;</span>
+	@include(&#39;include.modalmenu&#39;)
+	<span style="color: #aaaaaa; font-style: italic">&lt;!-- initiate scripts--&gt;</span>
+	@include(&#39;include.script&#39;)	
+<span style="color: #1e90ff; font-weight: bold">&lt;/body&gt;</span>
+<span style="color: #1e90ff; font-weight: bold">&lt;/html&gt;</span>
+</pre></div>
+<!-- html code preview end -->
+
+
+
+<hr>
+	<h3 id="newPage"><strong>C) Create New Page</strong> - <a href="#toc">top</a></h3>	
+		<p>If you would like to create a new page the basic structure of the page is</p>
+
+<!-- html code preview start -->
+<!-- HTML generated using hilite.me -->
+<div style="background: #ffffff; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><table><tr><td><pre style="margin: 0; line-height: 125%"> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20</pre></td><td><pre style="margin: 0; line-height: 125%">@extends(&#39;layouts.main&#39;) 
+
+@section(&#39;content&#39;)
+    <span style="color: #aaaaaa; font-style: italic">&lt;!-- push external head elements to head --&gt;</span>
+    @push(&#39;head&#39;)
+        <span style="color: #1e90ff; font-weight: bold">&lt;title&gt;</span>Page title | Site title<span style="color: #1e90ff; font-weight: bold">&lt;/title&gt;</span>
+        <span style="color: #aaaaaa; font-style: italic">&lt;!-- add some inline style or css file if any --&gt;</span>
+        <span style="color: #1e90ff; font-weight: bold">&lt;link</span> <span style="color: #1e90ff">rel=</span><span style="color: #aa5500">&quot;stylesheet&quot;</span> <span style="color: #1e90ff">href=</span><span style="color: #aa5500">&quot;{{ asset(&#39;file-path&#39;)}}&quot;</span><span style="color: #1e90ff; font-weight: bold">&gt;</span>
+        <span style="color: #1e90ff; font-weight: bold">&lt;style </span><span style="color: #1e90ff">type=</span><span style="color: #aa5500">&quot;text/css&quot;</span><span style="color: #1e90ff; font-weight: bold">&gt;</span>
+        	/* <span style="color: #1e90ff; font-weight: bold">inline</span> <span style="color: #1e90ff; font-weight: bold">css</span>
+        <span style="color: #1e90ff; font-weight: bold">&lt;/style&gt;</span>
+    @endpush
+    <span style="color: #1e90ff; font-weight: bold">&lt;div</span> <span style="color: #1e90ff">class=</span><span style="color: #aa5500">&quot;container-fluid&quot;</span><span style="color: #1e90ff; font-weight: bold">&gt;</span>
+    	<span style="color: #aaaaaa; font-style: italic">&lt;!-- page contents here --&gt;</span>
+    <span style="color: #1e90ff; font-weight: bold">&lt;/div&gt;</span>
+    <span style="color: #aaaaaa; font-style: italic">&lt;!-- push external js if any --&gt;</span>
+    @push(&#39;script&#39;) 
+        <span style="color: #1e90ff; font-weight: bold">&lt;script </span><span style="color: #1e90ff">src=</span><span style="color: #aa5500">&quot;{{ asset(&#39;script-path&#39;) }}&quot;</span><span style="color: #1e90ff; font-weight: bold">&gt;&lt;/script&gt;</span>
+    @endpush
+@endsection&#39;
+</pre></td></tr></table></div>
+<!-- html code preview end -->
+
+
+		
+<hr>
+		
+		<h3 id="sidebar"><strong>D) Sidebar</strong> - <a href="#toc">top</a></h3>
+		
+		<p>Basically this template has two sidebar. First one is left sidebar which is used as menu and second one is used for chatlist</p>
+
+		<p>If you want to add a new menu items in the sidebar open <i style="color:red;">resources/views/include/sidebar.blade.php</i> and add menu</p>
+
+<!-- html code preview start -->
+<!-- HTML generated using hilite.me --><div style="background: #ffffff; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><table><tr><td><pre style="margin: 0; line-height: 125%">1
+2
+3
+4
+5
+6</pre></td><td><pre style="margin: 0; line-height: 125%"><span style="color: #1e90ff; font-weight: bold">&lt;div</span> <span style="color: #1e90ff">class=</span><span style="color: #aa5500">&quot;nav-item {{ ($segment1 == &#39;menu-route&#39;) ? &#39;active&#39; : &#39;&#39; }}&quot;</span><span style="color: #1e90ff; font-weight: bold">&gt;</span>
+     <span style="color: #1e90ff; font-weight: bold">&lt;a</span> <span style="color: #1e90ff">href=</span><span style="color: #aa5500">&quot;{{url(&#39;menu-route&#39;)}}&quot;</span><span style="color: #1e90ff; font-weight: bold">&gt;</span>
+         <span style="color: #1e90ff; font-weight: bold">&lt;i</span> <span style="color: #1e90ff">class=</span><span style="color: #aa5500">&quot;ik ik-bar-chart-2&quot;</span><span style="color: #1e90ff; font-weight: bold">&gt;&lt;/i&gt;</span>
+         <span style="color: #1e90ff; font-weight: bold">&lt;span&gt;</span>Menu Name<span style="color: #1e90ff; font-weight: bold">&lt;/span&gt;</span>
+     <span style="color: #1e90ff; font-weight: bold">&lt;/a&gt;</span>
+<span style="color: #1e90ff; font-weight: bold">&lt;/div&gt;</span>
+</pre></td></tr></table></div>
+
+<!-- html code preview end -->
+
+			<p> Note <span style="color:red;">$segment1</span> is use to determine active url</p>
+			<pre>
+				$segment1 = request()->segment(1);
+			</pre> 
+			<p>Suppose https://rakibhstu.com/portfolio-cat/core-php/ is the basic url. here <span style="color:red;">portfolio-cat</span> is segment(1) and <span style="color:red;">core-php</span> is segment(2) </p>
+		<hr>
+
+
+		<h3 id="rest"><strong>E) REST API</strong> - <a href="#toc">top</a></h3>	
+		<p>The Radmin API is a low-level HTTP-based API for a Laravel admin starter kit that you can use to   create/edit/update <br><br> Radmin API uses  <a class="text-red" href="https://laravel.com/docs/7.x/passport">Laravel Passport</a></p>
+		Documentation: https://documenter.getpostman.com/view/11223504/Szmh1vqc?version=latest
+		<br>
+		<p>After successful login, an <b>access_token</b> will be provided to user. This token will be used for further requests</p> <b>access_token</b> will be like, <pre style="width: 100%;overflow: scroll; color:#ff0000;"><code>eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvd29ya3N1aXRlLmRldlwvYXBpXC92MVwvYXV0aFwvbG9naW4iLCJpYXQiOjE1ODAyODA3MjksImV4cCI6MTYxMTkwMzEyOCwibmJmIjoxNTgwMjgwNzI5LCJqdGkiOiJBYXE1QkdnT0p1dG1ycUdIIiwic3ViIjoxLCJwcnYiOiI4MThmNWM5OGFjZTIzNzUzMmQ5ZDQ5NDNmZDhlZmI1NDBiODU1YjQyIiwicmVtZW1iZXIiOjEsInR5cGUiOjF9.wK4OhcwUWa9uwFboqkZCOznjnRnjU19yzoCGCKIZUY0</code></pre>
+
+        <br>
+        User must set request header with this data
+<!-- HTML generated using hilite.me --><div style="background: #ffffff; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%"><span style="color: #0000FF">&#39;headers&#39;</span> =&gt; [
+    <span style="color: #0000FF">&#39;Accept&#39;</span> =&gt; <span style="color: #0000FF">&#39;application/json&#39;</span>,
+    <span style="color: #0000FF">&#39;Authorization&#39;</span> =&gt; <span style="color: #0000FF">&#39;Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvd29ya3N1aXRlLmRldlwvYXBpXC92MVwvYXV0aFwvbG9naW4iLCJpYXQiOjE1ODAyODA3MjksImV4cCI6MTYxMTkwMzEyOCwibmJmIjoxNTgwMjgwNzI5LCJqdGkiOiJBYXE1QkdnT0p1dG1ycUdIIiwic3ViIjoxLCJwcnYiOiI4MThmNWM5OGFjZTIzNzUzMmQ5ZDQ5NDNmZDhlZmI1NDBiODU1YjQyIiwicmVtZW1iZXIiOjEsInR5cGUiOjF9.wK4OhcwUWa9uwFboqkZCOznjnRnjU19yzoCGCKIZUY0&#39;</span>,
+],
+</pre></div>
+		<br>
+		<strong>Available Endpoints</strong>
+		<br>
+		<br>
+		<table  class="table" border="1">
+            <thead>
+                <tr>
+                    <th>Method</th>
+                    <th>URl</th>
+                    <th>Parameters</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong class="text-warning">POST</strong></td>
+                    <td>/api/v1/login</td>
+                    <td><code>{email, password}</code></td>
+                </tr>
+                <tr>
+                    <td><strong class="text-green">GET</strong></td>
+                    <td>/api/v1/profile</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><strong class="text-warning">POST</strong></td>
+                    <td>/api/v1/change-password</td>
+                    <td><code>{old_password, password, password_confirmation}</code></td>
+                </tr>
+                <tr>
+                    <td><strong class="text-warning">POST</strong></td>
+                    <td>/api/v1/update-profile</td>
+                    <td><code>{name, email}</code></td>
+                </tr>
+                <tr>
+                    <td><strong class="text-green">GET</strong></td>
+                    <td>/api/v1/logout</td>
+                    <td></td>
+                </tr>
+                <tr><td colspan="3"></tr>
+                <tr>
+                    <td><strong class="text-green">GET</strong></td>
+                    <td>/api/v1/users</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><strong class="text-warning">POST</strong></td>
+                    <td>/api/v1/create_user</td>
+                    <td><code>{name, email, password, password_confirmation, role[]}</code></td>
+                </tr>
+                <tr>
+                    <td><strong class="text-green">GET</strong></td>
+                    <td>/api/v1/user/<span class="text-red">1</span></td>
+                    <td><span class="text-muted">Note:1 is id, you can replace it with any id</td>
+                </tr>
+                <tr>
+                    <td><strong class="text-green">GET</strong></td>
+                    <td>/api/v1/user/delete/<span class="text-red">1</span></td>
+                    <td><span class="text-muted">Note:1 is id, you can replace it with any id</td>
+                </tr>
+                <tr>
+                    <td><strong class="text-warning">POST</strong></td>
+                    <td>/api/v1/user/change-role/<span class="text-red">1</span></td>
+                    <td><code>{role[]}</code><span class="text-muted">Note:1 is id, you can replace it with any id</td>
+                </tr>
+                <tr><td colspan="3"></tr>
+                <tr>
+                    <td><strong class="text-green">GET</strong></td>
+                    <td>/api/v1/roles</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><strong class="text-warning">POST</strong></td>
+                    <td>/api/v1/role/create</td>
+                    <td><code>{name, permissions[]}</code></td>
+                </tr>
+                <tr>
+                    <td><strong class="text-green">GET</strong></td>
+                    <td>/api/v1/</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><strong class="text-green">GET</strong></td>
+                    <td>/api/v1/role/<span class="text-red">1</span></td>
+                    <td><span class="text-muted">Note:1 is id, you can replace it with any id</td>
+                </tr>
+                <tr>
+                    <td><strong class="text-green">GET</strong></td>
+                    <td>/api/v1/role/delete/<span class="text-red">1</span></td>
+                    <td><span class="text-muted">Note:1 is id, you can replace it with any id</td>
+                </tr>
+                <tr>
+                    <td><strong class="text-warning">POST</strong></td>
+                    <td>/api/v1/role/change-permission/<span class="text-red">1</span></td>
+                    <td><code>{permissions[]}</code><span class="text-muted">Note:1 is id, you can replace it with any id</td>
+                </tr>
+                <tr><td colspan="3"></tr>
+                <tr>
+                    <td><strong class="text-green">GET</strong></td>
+                    <td>/api/v1/permissions</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><strong class="text-warning">POST</strong></td>
+                    <td>/api/v1/permission/create</td>
+                    <td><code>{name}</code></td>
+                </tr>
+                <tr>
+                    <td><strong class="text-green">GET</strong></td>
+                    <td>/api/v1/</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><strong class="text-green">GET</strong></td>
+                    <td>/api/v1/permission/<span class="text-red">1</span></td>
+                    <td><span class="text-muted">Note:1 is id, you can replace it with any id</td>
+                </tr>
+                <tr>
+                    <td><strong class="text-green">GET</strong></td>
+                    <td>/api/v1/permission/delete/<span class="text-red">1</span></td>
+                    <td><span class="text-muted">Note:1 is id, you can replace it with any id</td>
+                </tr>
+            </tbody>
+        </table>
+
+		<hr>
+		
+		<h3 id="roles"><strong>F) Roles and Permission</strong> - <a href="#toc">top</a></h3>
+		
+		<p>In this template, I create some users with different roles and permission. Lets see, how to apply this permissions in any where  </p>
+		
+		<p>If you'd like to open a group of routes for some sprcific permission in the route file follow this example</p>
+
+		<pre>
+		//only those have permission_name permission will get access
+
+	        Route::group(['middleware' => 'can:permission_name1|permission_name2'], function(){
+	        	//route here
+	    	})
+		</pre>
+
+		<p>For single route,</p>
+		<pre>
+		Route::get('route-elements')->middleware('can:permission_name1|permission_name2');
+
+		Route::get('route-elements')->middleware('can:permission_name');
+		</pre>
+		
+		<p>Now in blade area for specific content, you can define as-</p> 
+		<pre>
+		@can('permission_name')
+			content here
+		@endcan
+		</pre>
+
+
+		<p>Note: as <i style="color:red;">Super Admin</i> role has all the permissions. If you want to change <i style="color:red;">Super Admin</i> role name then you have to configure AuthServiceProvider.php .</p> File location <i style="color:red;">app/Providers/AuthServiceProvider.php</i>
+
+		<pre>
+			Gate::before(function ($user, $ability) {
+            			return $user->hasRole('Super Admin') ? true : null; //if change name
+        		});
+		</pre>
+		
+		<p>For more tutorials about roles and permissions you can visit <a href="https://docs.spatie.be/laravel-permission/v3/introduction/">here</a></p>
+		
+		<hr>
+		
+		<h3 id="serverside"><strong>E) Serverside Datatable (yajra)</strong> - <a href="#toc">top</a></h3>
+		
+		<p>Basic usage of server side datatable to reduce the loading time of data. Laravel DataTables is a package that handles the <a href="https://www.datatables.net/manual/server-side">server-side</a> works of <a href="http://datatables.net">DataTables</a> using <a href="http://laravel.com">Laravel</a>.</p>
+
+		<p>Official serverside datatable documentation is <a href="https://yajrabox.com/docs/laravel-datatables/master/introduction">here</a>s </p>
+
+
+
+
+		<h3 id="editable-datatable"><strong>G) Editable Datatable (ejbeaty)</strong> - <a href="#toc">top</a></h3>
+		
+		<p>Cell edit plugin allows cells within a DataTable to be editable. When a cell is click on, an input field will appear. When focus is lost on the input and the underlying DataTable object will be updated and the table will be redrawn. The new value is passed to a callback function, along with it's row, allowing for easy server-side data updates.</p>
+		<img src="assets/images/editable-datatable.JPG" alt="Editable Datatable" />
+
+		<p>Basic script of an editable datatable is</p>
+		<!-- HTML generated using hilite.me --><div style="background: #ffffff; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;"><pre style="margin: 0; line-height: 125%"><span style="color: #0000aa">var</span> dTable = $(<span style="color: #aa5500">&#39;#table_name&#39;</span>).DataTable({});
+dTable.MakeCellsEditable({
+    <span style="color: #aa5500">&quot;onUpdate&quot;</span>: callFunction, <span style="color: #aaaaaa; font-style: italic">//call function to update in backend</span>
+    <span style="color: #aa5500">&quot;inputCss&quot;</span>:<span style="color: #aa5500">&#39;form-control&#39;</span>,
+    <span style="color: #aa5500">&quot;columns&quot;</span>: [<span style="color: #009999">0</span>], <span style="color: #aaaaaa; font-style: italic">// define column numbers to be editable</span>
+    <span style="color: #aa5500">&quot;confirmationButton&quot;</span>: { <span style="color: #aaaaaa; font-style: italic">// could also be true</span>
+        <span style="color: #aa5500">&quot;confirmCss&quot;</span>: <span style="color: #aa5500">&#39;btn btn-success&#39;</span>,
+        <span style="color: #aa5500">&quot;cancelCss&quot;</span>: <span style="color: #aa5500">&#39;btn btn-danger&#39;</span>
+    },
+    <span style="color: #aa5500">&quot;inputTypes&quot;</span>: [
+        {
+            <span style="color: #aa5500">&quot;column&quot;</span>: <span style="color: #009999">0</span>,
+            <span style="color: #aa5500">&quot;type&quot;</span>: <span style="color: #aa5500">&quot;text&quot;</span>,
+            <span style="color: #aa5500">&quot;options&quot;</span>: <span style="color: #0000aa">null</span>
+        }
+        <span style="color: #aaaaaa; font-style: italic">// set column properties if add a new one</span>
+        
+    ]
+});
+
+<span style="color: #aaaaaa; font-style: italic">// update function</span>
+
+<span style="color: #0000aa">function</span> callFunction(updatedCell, updatedRow, oldValue) {
+    <span style="color: #aaaaaa; font-style: italic">//do anything</span>
+}
+</pre></div>
+
+<p>Note: must include the associate css &  js files</p>
+
+		<hr>
+
+
+
+
+
+		<h3 id="credits"><strong>I) Sources and Credits</strong> - <a href="#toc">top</a></h3>
+		<ul>
+			<li>Themekit Admin Template from Lavalite</li>
+			<li>laravel Passport</li>
+			<li>laravel-permission from Spaite</li>
+			<li>Laravel Datatables from Jack Mcdade</li>
+			<li>CellEdit from Ejbeaty</li>
+			<li>Amcharts</li>
+			<li>Ammap3</li>
+			<li>Bootstrap</li>
+			<li>C3.js from C3 Team</li>
+			<li>Chartist from Gion Kunz</li>
+			<li>D3.js from Mike Bostock</li>
+			<li>JSZip from Stuart Knightley</li>
+			<li>DataTables from SpryMedia Ltd</li>
+			<li>Flot-Charts from IOLA and Ole Laursen</li>
+			<li>FullCalendar from Adam Shaw</li>
+			<li>Ionicons from Ben Sperry</li>
+			<li>jQuery MiniColors from Cory LaViska</li>
+			<li>jQuery UI from jQuery Foundation</li>
+			<li>jquery.repeater from Brian Detering</li>
+			<li>Nestable jQuery Plugin from David Bushell</li>
+			<li>Owl Carousel from David Deutsch</li>
+			<li>perfect-scrollbar from Hyunje Jun</li>
+			<li>popper from Federico Zivolo</li>
+			<li>screenfull from Sindre Sorhus</li>
+			<li>Select2 from Select2</li>
+			<li>Summernote from Alan Hong</li>
+			<li>Tempus Dominus Bootstrap4 from Jonathan Peterson</li>
+			<li>Weather Icons from Dave Gandy</li>
+		</ul>
+		
+		<hr>
+		
+		<p>Once again, thank you so much for purchasing this theme. As I said at the beginning, I'd be glad to help you if you have any questions relating to this theme. No guarantees, but I'll do my best to assist. If you have a more general question relating to the themes on Codecanyon, you might consider visiting the forums and asking your question in the "Item Discussion" section.</p> 
+		
+		<p class="append-bottom alt large"><strong>Md. Rakibul Islam</strong></p>
+		<p><a href="#toc">Go To Table of Contents</a></p>
+		
+		<hr class="space">
+	</div><!-- end div .container -->
+</body>
+</html>
