@@ -47,7 +47,7 @@
                         <form class="forms-sample" method="POST" action="{{url('permission/create')}}">
                             @csrf
                             <div class="row">
-                                <div class="col-sm-4">
+                                <div class="col-sm-6">
                                     <div class="form-group">
                                         <label for="permission">{{ __('Permission')}}<span class="text-red">*</span></label>
                                         <input type="text" class="form-control" id="permission" name="permission" placeholder="Permission Name" required>
@@ -59,7 +59,9 @@
                                         {!! Form::select('roles[]', $roles, null,[ 'class'=>'form-control select2', 'multiple' => 'multiple']) !!}
                                     </div>
                                 </div>
-                                <div class="col-sm-2">
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
                                     <div class="form-group">
                                         <button type="submit" class="btn btn-primary btn-rounded">{{ __('Save')}}</button>
                                     </div>

@@ -3,7 +3,7 @@
     <head> 
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title>{{ __('Login | Radmin - Laravel Admin Starter') }}</title>
+        <title>{{ __('Login') }}</title>
         <meta name="description" content="">
         <meta name="keywords" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -23,10 +23,6 @@
     </head>
 
     <body>
-        <!--[if lt IE 8]>
-            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-        <![endif]-->
-
         <div class="auth-wrapper">
             <div class="container-fluid h-100">
                 <div class="row flex-row h-100 bg-white">
@@ -37,10 +33,6 @@
                     </div>
                     <div class="col-xl-4 col-lg-6 col-md-7 my-auto p-0">
                         <div class="authentication-form mx-auto">
-                            <div class="logo-centered">
-                                <a href=""><img src="{{ asset('img/logo.png') }}" alt=""></a>
-                            </div>
-                            <h3>{{ __('Sign In to ThemeKit') }}</h3>
                             <p>{{ __('Happy to see you again!') }}</p>
                             <form method="POST" action="{{ route('login') }}">
                             @csrf
@@ -79,6 +71,9 @@
                                     <button class="btn btn-theme">{{ __('Sign In') }}</button>
                                 </div>
                             </form>
+                            <div class="register">
+                                <p>{{ __('Tidak punya akun?')}} <a href="{{url('register')}}">{{ __('Daftar')}}</a></p>
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -43,7 +43,7 @@
                         <h3>{{ __('Add user')}}</h3>
                     </div>
                     <div class="card-body">
-                        <form class="forms-sample" method="POST" action="{{ route('create-user') }}" >
+                        <form class="forms-sample" method="POST" action="{{ route('create.user') }}" >
                         @csrf
                             <div class="row">
                                 <div class="col-sm-6">
@@ -86,12 +86,7 @@
                                         <label for="password-confirm">{{ __('Confirm Password')}}<span class="text-red">*</span></label>
                                         <input id="password-confirm" type="password" class="form-control" name="password_confirmation" placeholder="Retype password" required>
                                         <div class="help-block with-errors"></div>
-                                    </div>
-                                    
-                                    
-                                    
-                                    
-                                
+                                    </div>                                
                                 </div>
                                 <div class="col-md-6">
                                     <!-- Assign role & view role permisions -->
@@ -108,8 +103,9 @@
                                     </div>
                                 </div>
                                 <div class="col-md-12">
-                                    <div class="form-group">
-                                        <button type="submit" class="btn btn-primary">{{ __('Submit')}}</button>
+                                    <div class="form-group d-flex justify-content-center">
+                                        <a href="{{ url('/user') }}" class="btn btn-danger">Batal</a>&nbsp;
+                                        <button type="submit" class="btn btn-primary">{{ __('Simpan')}}</button>
                                     </div>
                                 </div>
                             </div>

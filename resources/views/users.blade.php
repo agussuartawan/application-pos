@@ -39,9 +39,14 @@
             <!-- end message area-->
             <div class="col-md-12">
                 <div class="card p-3">
-                    <div class="card-header"><h3>{{ __('Users')}}</h3></div>
+                    <div class="card-header">
+                        <h3>{{ __('Users')}}</h3>
+                        <div class="row ml-auto">
+                            <a href="{{ route('create.user') }}" class="btn btn-primary float-right">Tambah</a>
+                        </div>
+                    </div>
                     <div class="card-body">
-                        <table id="user_table" class="table">
+                        <table id="user_table" class="table table-bordered">
                             <thead>
                                 <tr>
                                     <th>{{ __('Name')}}</th>

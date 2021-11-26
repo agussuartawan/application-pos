@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title>{{ __('Sign Up | Radmin - Laravel Admin Starter')}}</title>
+        <title>{{ __('Daftar')}}</title>
         <meta name="description" content="">
         <meta name="keywords" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -38,10 +38,7 @@
                     </div>
                     <div class="col-xl-4 col-lg-6 col-md-7 my-auto p-0">
                         <div class="authentication-form mx-auto">
-                            <div class="logo-centered">
-                                <a href=""><img width="150" src="{{ asset('img/logo.png') }}" alt=""></a>
-                            </div>
-                            <p>{{ __('Join us today! It takes only few steps')}}</p>
+                            <p>{{ __('Daftar akun baru')}}</p>
                             <form action="{{url('register')}}" method="post">
                                 @csrf
                                 <div class="form-group">
