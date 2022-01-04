@@ -128,7 +128,7 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::get('/pricing', function () { return view('pages.pricing'); });
 
 	// product route
-	Route::resource('product', UserController::class);
+	// Route::resource('product', ProductController::class);
 });
 
 

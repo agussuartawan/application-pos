@@ -16,30 +16,28 @@
                     <a href="{{route('dashboard')}}"><i class="ik ik-bar-chart-2"></i><span>{{ __('Dashboard')}}</span></a>
                 </div>
                 @can('mengelola master')
-                <div class="nav-item {{ request()->is('product*') ? 'active open' : '' }} has-sub">
+                <div class="nav-item has-sub">
                     <a href="#"><i class="ik ik-box"></i><span>{{ __('Master')}}</span></a>
                     <div class="submenu-content">
-                        @can('mengelola produk')
-                        <a href="{{route('product')}}" class="menu-item {{ request()->is('product*') ? 'active' : '' }}">{{ __('Produk')}}</a>
-                         @endcan
+                        
                     </div>
                 </div>
                 @endcan 
 
-                @can('manage_administrator')
+                @can('mengelola administrator')
                 <div class="nav-item {{ request()->is('user*') || request()->is('role*') || request()->is('permission*') ? 'active open' : '' }} has-sub">
                     <a href="#"><i class="ik ik-user"></i><span>{{ __('Adminstrator')}}</span></a>
                     <div class="submenu-content">
                         <!-- only those have manage_user permission will get access -->
-                        @can('manage_user')
+                        @can('mengelola user')
                         <a href="{{url('user')}}" class="menu-item {{ request()->is('user*') ? 'active' : '' }}">{{ __('Users')}}</a>
                          @endcan
                          <!-- only those have manage_role permission will get access -->
-                        @can('manage_roles')
+                        @can('mengelola role')
                         <a href="{{url('role')}}" class="menu-item {{ request()->is('role*') ? 'active' : '' }}">{{ __('Roles')}}</a>
                         @endcan
                         <!-- only those have manage_permission permission will get access -->
-                        @can('manage_permission')
+                        @can('mengelola permission')
                         <a href="{{url('permission')}}" class="menu-item {{ request()->is('permission*') ? 'active' : '' }}">{{ __('Permission')}}</a>
                         @endcan
                     </div>
