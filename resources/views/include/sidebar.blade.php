@@ -19,7 +19,9 @@
                 <div class="nav-item has-sub">
                     <a href="#"><i class="ik ik-box"></i><span>{{ __('Master')}}</span></a>
                     <div class="submenu-content">
-                        
+                        @can('mengelola produk')
+                        <a href="{{route('produk')}}" class="menu-item {{ request()->is('produk*') ? 'active' : '' }}">{{ __('Produk')}}</a>
+                        @endcan
                     </div>
                 </div>
                 @endcan 
@@ -30,11 +32,11 @@
                     <div class="submenu-content">
                         <!-- only those have manage_user permission will get access -->
                         @can('mengelola user')
-                        <a href="{{url('user')}}" class="menu-item {{ request()->is('user*') ? 'active' : '' }}">{{ __('Users')}}</a>
-                         @endcan
+                        <a href="{{url('user')}}" class="menu-item {{ request()->is('user*') ? 'active' : '' }}">{{ __('User')}}</a>
+                        @endcan
                          <!-- only those have manage_role permission will get access -->
                         @can('mengelola role')
-                        <a href="{{url('role')}}" class="menu-item {{ request()->is('role*') ? 'active' : '' }}">{{ __('Roles')}}</a>
+                        <a href="{{url('role')}}" class="menu-item {{ request()->is('role*') ? 'active' : '' }}">{{ __('Role')}}</a>
                         @endcan
                         <!-- only those have manage_permission permission will get access -->
                         @can('mengelola permission')

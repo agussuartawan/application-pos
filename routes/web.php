@@ -40,8 +40,8 @@ Route::group(['middleware' => 'auth'], function(){
 
 	//only those have manage_user permission will get access
 	Route::group(['middleware' => 'can:manage_user'], function(){
-	Route::get('user', [UserController::class,'index']);
-	Route::get('user/get-list', [UserController::class,'getUserList']);
+		Route::get('user', [UserController::class,'index']);
+		Route::get('user/get-list', [UserController::class,'getUserList']);
 		Route::get('user/create', [UserController::class,'create']);
 		Route::post('user/create', [UserController::class,'store'])->name('create.user');
 		Route::get('user/{id}', [UserController::class,'edit']);
@@ -129,6 +129,13 @@ Route::group(['middleware' => 'auth'], function(){
 
 	// product route
 	// Route::resource('product', ProductController::class);
+	Route::group(['middleware' => 'can:mengelola master|mengelola produk'], function(){
+		Route::get('permission', [PermissionController::class,'index']);
+		Route::get('permission/get-list', [PermissionController::class,'getPermissionList']);
+		Route::post('permission/create', [PermissionController::class,'create']);
+		Route::get('permission/update', [PermissionController::class,'update']);
+		Route::get('permission/delete/{id}', [PermissionController::class,'delete']);
+	});
 });
 
 

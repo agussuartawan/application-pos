@@ -114,9 +114,9 @@ class UserController extends Controller
             $user->syncRoles($request->role);
 
             if($user){ 
-                return redirect('users')->with('success', 'New user created!');
+                return redirect('user')->with('success', 'New user created!');
             }else{
-                return redirect('users')->with('error', 'Failed to create new user! Try again.');
+                return redirect('user')->with('error', 'Failed to create new user! Try again.');
             }
         }catch (\Exception $e) {
             $bug = $e->getMessage();
