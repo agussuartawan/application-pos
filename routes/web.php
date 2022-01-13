@@ -9,7 +9,8 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\RolesController;
 use App\Http\Controllers\PermissionController;
- 
+use App\Http\Controllers\ProductController;
+
 Route::get('/', function () { 
 	return redirect()->route('login'); 
 });
@@ -128,14 +129,10 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::get('/pricing', function () { return view('pages.pricing'); });
 
 	// product route
-	// Route::resource('product', ProductController::class);
-	Route::group(['middleware' => 'can:mengelola master|mengelola produk'], function(){
-		Route::get('permission', [PermissionController::class,'index']);
-		Route::get('permission/get-list', [PermissionController::class,'getPermissionList']);
-		Route::post('permission/create', [PermissionController::class,'create']);
-		Route::get('permission/update', [PermissionController::class,'update']);
-		Route::get('permission/delete/{id}', [PermissionController::class,'delete']);
+	Route::group(['middleware' => 'can:mengelola produk'], function(){
+		Route::resource('product', ProductController::class);
+		// Route::get('product', [ProductController::class, 'index'])->name('product.index');
+		// Route::get('product/create', [ProductController::class, 'index'])->name('create.product');
+		Route::get('product/get-list', [ProductController::class,'getProductList']);
 	});
 });
-
-

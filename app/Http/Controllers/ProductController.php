@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Product;
+use DataTables, Auth;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -13,7 +15,45 @@ class ProductController extends Controller
      */
     public function index()
     {
-        //
+        return view('product.index');
+    }
+
+    public function getProductList(Request $request)
+    {
+        
+        $data  = Product::get();
+
+        return Datatables::of($data)
+                // ->addColumn('roles', function($data){
+                //     $roles = $data->getRoleNames()->toArray();
+                //     $badge = '';
+                //     if($roles){
+                //         $badge = implode(' , ', $roles);
+                //     }
+
+                //     return $badge;
+                // })
+                // ->addColumn('permissions', function($data){
+                //     $roles = $data->getAllPermissions();
+                //     $badges = '';
+                //     foreach ($roles as $key => $role) {
+                //         $badges .= '<span class="badge badge-dark m-1">'.$role->name.'</span>';
+                //     }
+
+                //     return $badges;
+                // })
+                ->addColumn('action', function($data){
+                    if (Auth::user()->can('mengelola produk')){
+                        return '<div class="table-actions">
+                                <a href="'.url('product/'.$data->id).'/edit" ><i class="ik ik-edit-2 f-16 mr-15 text-green"></i></a>
+                                <a href="'.url('product/'.$data->id).'"><i class="ik ik-trash-2 f-16 text-red"></i></a>
+                            </div>';
+                    }else{
+                        return '';
+                    }
+                })
+                ->rawColumns(['action'])
+                ->make(true);
     }
 
     /**

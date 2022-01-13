@@ -20,7 +20,7 @@
                     <a href="#"><i class="ik ik-box"></i><span>{{ __('Master')}}</span></a>
                     <div class="submenu-content">
                         @can('mengelola produk')
-                        <a href="{{route('produk')}}" class="menu-item {{ request()->is('produk*') ? 'active' : '' }}">{{ __('Produk')}}</a>
+                        <a href="{{route('product.index')}}" class="menu-item {{ request()->is('product*') ? 'active' : '' }}">{{ __('Produk')}}</a>
                         @endcan
                     </div>
                 </div>
