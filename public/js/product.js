@@ -15,7 +15,7 @@
             serverSide: true,
             processing: true,
             language: {
-            processing: '<i class="ace-icon fa fa-spinner fa-spin orange bigger-500" style="font-size:60px;margin-top:50px;"></i>'
+            processing: '<i class="ace-icon fa fa-spinner fa-spin orange bigger-500" style="font-size:60px;"></i>'
             },
             scroller: {
                 loadingIndicator: false
@@ -28,14 +28,14 @@
             },
             columns: [
                 /*{data:'serial_no', name: 'serial_no'},*/
-                {data:'code', name: 'code', orderable: false, searchable: false},
+                {data:'code', name: 'code'},
                 {data:'name', name: 'name'},
                 {data:'size', name: 'size'},
                 {data:'stock', name: 'stock'},
                 {data:'purchase_price', name: 'purchase_price'},
                 {data:'location', name: 'location'},
                 //only those have manage_user permission will get access
-                {data:'action', name: 'action'}
+                {data:'action', name: 'action', orderable: false, searchable: false}
 
             ],
             buttons: [

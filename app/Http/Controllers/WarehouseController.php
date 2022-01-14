@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Warehouse;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use DataTables, Auth;
 
 class WarehouseController extends Controller
 {
@@ -15,7 +16,26 @@ class WarehouseController extends Controller
      */
     public function index()
     {
-        //
+        return view('warehouse.index');
+    }
+
+    public function getWarehouseList()
+    {
+        $data  = Warehouse::get();
+
+        return Datatables::of($data)
+                ->addColumn('action', function($data){
+                    if (Auth::user()->can('mengelola gudang')){
+                        return '<div class="table-actions">
+                                <a href="'.url('warehouse/'.$data->id).'/edit" ><i class="ik ik-edit-2 f-16 mr-15 text-green"></i></a>
+                                <a href="'.url('warehouse/'.$data->id).'"><i class="ik ik-trash-2 f-16 text-red"></i></a>
+                            </div>';
+                    }else{
+                        return '';
+                    }
+                })
+                ->rawColumns(['action'])
+                ->make(true);
     }
 
     /**
@@ -23,9 +43,15 @@ class WarehouseController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function showForm()
     {
-        //
+        try{
+            $model = new Warehouse();
+            return view('include.warehouse.form', compact('model'));
+        } catch (\Exception $e){
+            $bug = $e->getMessage();
+            return $bug;
+        }
     }
 
     /**
@@ -36,7 +62,15 @@ class WarehouseController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $messages = [
+            'name.required' => 'Nama gudang tidak boleh kosong!'
+        ];
+        $this->validate($request, [
+            'name' => 'required|max:255'
+        ], $messages);
+
+        $model = Warehouse::create($request->all());
+        return $model;
     }
 
     /**

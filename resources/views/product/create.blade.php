@@ -7,7 +7,7 @@
     @endpush
 
     
-    <div class="container-fluid">
+    <div class="container-fluid" style="position: relative;">
     	<div class="page-header">
             <div class="row align-items-end">
                 <div class="col-lg-8">
@@ -41,7 +41,7 @@
             @include('include.message')
             <!-- end message area-->
             <div class="col-md-12">
-                <div class="card ">
+                <div class="card">
                     <div class="card-header">
                         <h3>{{ __('Tambah Produk')}}</h3>
                     </div>
@@ -51,6 +51,7 @@
                 </div>
             </div>
         </div>
+        @include('include.preloader')
     </div>
     <!-- push external js -->
     @push('script') 

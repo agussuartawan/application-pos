@@ -79,8 +79,6 @@
     <!-- push external js -->
     @push('script')      
         <script src="{{ asset('plugins/jquery-toast-plugin/dist/jquery.toast.min.js')}}"></script>
-        
-        <script src="{{ asset('js/alerts.js')}}"></script>
     @endpush
 @endsection
         

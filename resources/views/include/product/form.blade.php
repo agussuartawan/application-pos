@@ -1,4 +1,4 @@
-<form class="forms-sample" method="POST" action="{{ route('product.create') }}" >
+<form class="forms-sample" method="POST" action="{{ route('product.create') }}">
     @csrf
     <div class="row">
         <div class="col-sm-6">

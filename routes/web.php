@@ -10,6 +10,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\RolesController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\WarehouseController;
 use App\Product;
 
 Route::get('/', function () { 
@@ -134,5 +135,12 @@ Route::group(['middleware' => 'auth'], function(){
 		Route::get('product/get-list', [ProductController::class,'getProductList']);
 		Route::get('product/show-form', [ProductController::class, 'showForm']);
 		Route::resource('product', ProductController::class);
+	});
+
+	// warehouse route
+	Route::group(['middleware' => 'can:mengelola gudang'], function(){
+		Route::get('warehouse/show-form', [WarehouseController::class, 'showForm']);
+		Route::get('warehouse/get-list', [WarehouseController::class, 'getWarehouseList']);
+		Route::resource('warehouse', WarehouseController::class)->except('show','create','edit');
 	});
 });

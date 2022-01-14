@@ -10,8 +10,13 @@
                 </button>
             </div>
             <div class="top-menu d-flex align-items-center">
+                <strong>{{ auth()->user()->name }}</strong>
                 <div class="dropdown">
-                    <a class="dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img class="avatar" src="{{ asset('img/user.jpg')}}" alt=""></a>
+                    @if(auth()->user()->avatar)
+                        <a class="dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img class="avatar" src="{{ asset('img') }}/{{auth()->user()->avatar}}" alt=""></a>
+                    @else
+                        <a class="dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img class="avatar" src="https://ui-avatars.com/api/?background=0D8ABC&color=fff&name={{ auth()->user()->name }}" alt=""></a>
+                    @endif
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
                         <a class="dropdown-item" href="{{url('profile')}}"><i class="ik ik-user dropdown-icon"></i> {{ __('Profile')}}</a>                
                         <a class="dropdown-item" href="{{ url('logout') }}">
