@@ -16,11 +16,11 @@
                     <a href="{{route('dashboard')}}"><i class="ik ik-bar-chart-2"></i><span>{{ __('Dashboard')}}</span></a>
                 </div>
                 @can('mengelola master')
-                <div class="nav-item has-sub">
+                <div class="nav-item {{ request()->is('product*') ? 'active open' : '' }} has-sub">
                     <a href="#"><i class="ik ik-box"></i><span>{{ __('Master')}}</span></a>
                     <div class="submenu-content">
                         @can('mengelola produk')
-                        <a href="{{route('product.index')}}" class="menu-item {{ request()->is('product*') ? 'active' : '' }}">{{ __('Produk')}}</a>
+                        <a href="{{route('product.index')}}" class="menu-item {{ request()->is('master/product*') ? 'active' : '' }}">{{ __('Produk')}}</a>
                         @endcan
                     </div>
                 </div>

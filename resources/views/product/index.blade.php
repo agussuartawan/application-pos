@@ -5,8 +5,6 @@
     @push('head')
         <link rel="stylesheet" href="{{ asset('plugins/DataTables/datatables.min.css') }}">
     @endpush
-
-    
     <div class="container-fluid">
     	<div class="page-header">
             <div class="row align-items-end">
@@ -55,7 +53,7 @@
                                     <th>{{ __('Stok')}}</th>
                                     <th>{{ __('Harga Beli')}}</th>
                                     <th>{{ __('Lokasi')}}</th>
-                                    <th>{{ __('Action')}}</th>
+                                    <th>{{ __('Aksi')}}</th>
                                 </tr>
                             </thead>
                             <tbody>

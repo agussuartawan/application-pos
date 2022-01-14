@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Group;
 use App\Product;
+use App\Type;
+use App\Unit;
+use App\Warehouse;
 use DataTables, Auth;
 use Illuminate\Http\Request;
 
@@ -18,41 +22,32 @@ class ProductController extends Controller
         return view('product.index');
     }
 
-    public function getProductList(Request $request)
+    public function getProductList()
     {
         
         $data  = Product::get();
 
         return Datatables::of($data)
-                // ->addColumn('roles', function($data){
-                //     $roles = $data->getRoleNames()->toArray();
-                //     $badge = '';
-                //     if($roles){
-                //         $badge = implode(' , ', $roles);
-                //     }
+                ->addColumn('location', function($data){
+                    $warehouses = $data->getWarehouseNames()->toArray();
+                    $badge = '';
+                    if($warehouses){
+                        $badge = implode(' , ', $warehouses);
+                    }
 
-                //     return $badge;
-                // })
-                // ->addColumn('permissions', function($data){
-                //     $roles = $data->getAllPermissions();
-                //     $badges = '';
-                //     foreach ($roles as $key => $role) {
-                //         $badges .= '<span class="badge badge-dark m-1">'.$role->name.'</span>';
-                //     }
-
-                //     return $badges;
-                // })
+                    return $badge;
+                })
                 ->addColumn('action', function($data){
                     if (Auth::user()->can('mengelola produk')){
                         return '<div class="table-actions">
-                                <a href="'.url('product/'.$data->id).'/edit" ><i class="ik ik-edit-2 f-16 mr-15 text-green"></i></a>
-                                <a href="'.url('product/'.$data->id).'"><i class="ik ik-trash-2 f-16 text-red"></i></a>
+                                <a href="'.url('master/product/'.$data->id).'/edit" ><i class="ik ik-edit-2 f-16 mr-15 text-green"></i></a>
+                                <a href="'.url('master/product/'.$data->id).'"><i class="ik ik-trash-2 f-16 text-red"></i></a>
                             </div>';
                     }else{
                         return '';
                     }
                 })
-                ->rawColumns(['action'])
+                ->rawColumns(['location','action'])
                 ->make(true);
     }
 
@@ -63,7 +58,28 @@ class ProductController extends Controller
      */
     public function create()
     {
-        //
+        try
+        {
+            return view('product.create');
+
+        }catch (\Exception $e) {
+            $bug = $e->getMessage();
+            return redirect()->back()->with('error', $bug);
+        }
+    }
+
+    public function showForm()
+    {
+        try{
+            $warehouses = Warehouse::pluck('name','id');
+            $types = Type::pluck('name','id');
+            $groups = Group::pluck('name','id');
+            $units = Unit::pluck('name','id');
+            return view('include.product-form', compact('warehouses','types','groups','units'));
+        } catch (\Exception $e){
+            $bug = $e->getMessage();
+            return $bug;
+        }
     }
 
     /**

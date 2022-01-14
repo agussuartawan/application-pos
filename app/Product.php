@@ -24,4 +24,14 @@ class Product extends Model
         'max_stock',
         'photo'
     ];
+
+    public function warehouse()
+    {
+        return $this->belongsTo(Warehouse::class);
+    }
+
+    public function getWarehouseNames()
+    {
+        return $this->warehouse->pluck('name');
+    }
 }

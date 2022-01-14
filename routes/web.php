@@ -10,6 +10,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\RolesController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\ProductController;
+use App\Product;
 
 Route::get('/', function () { 
 	return redirect()->route('login'); 
@@ -130,9 +131,8 @@ Route::group(['middleware' => 'auth'], function(){
 
 	// product route
 	Route::group(['middleware' => 'can:mengelola produk'], function(){
-		Route::resource('product', ProductController::class);
-		// Route::get('product', [ProductController::class, 'index'])->name('product.index');
-		// Route::get('product/create', [ProductController::class, 'index'])->name('create.product');
 		Route::get('product/get-list', [ProductController::class,'getProductList']);
+		Route::get('product/show-form', [ProductController::class, 'showForm']);
+		Route::resource('product', ProductController::class);
 	});
 });

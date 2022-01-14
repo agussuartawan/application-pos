@@ -98,9 +98,9 @@ class RolesController extends Controller
             $role->syncPermissions($request->permissions);
 
             if($role){ 
-                return redirect('roles')->with('success', 'Role created succesfully!');
+                return redirect('role')->with('success', 'Role created succesfully!');
             }else{
-                return redirect('roles')->with('error', 'Failed to create role! Try again.');
+                return redirect('role')->with('error', 'Failed to create role! Try again.');
             }
         }catch (\Exception $e) {
             $bug = $e->getMessage();

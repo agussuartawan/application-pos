@@ -25,9 +25,10 @@ class CreateProductsTable extends Migration
             $table->integer('size');
             $table->double('purchase_price');
             $table->double('selling_price');
+            $table->integer('stock');
             $table->integer('min_stock');
             $table->integer('max_stock');
-            $table->string('photo');
+            $table->string('photo')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
