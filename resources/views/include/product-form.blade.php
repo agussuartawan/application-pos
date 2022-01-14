@@ -122,12 +122,12 @@
 
             <div class="form-group">
                 <label for="unit">{{ __('Pilih Unit Produk')}}<span class="text-red">*</span></label>
-                {!! Form::select('unit', $units, null,[ 'class'=>'form-control select2', 'placeholder' => 'Pilih unit','id'=> 'group_id', 'required'=> 'required']) !!}
+                {!! Form::select('unit', $units, null,[ 'class'=>'form-control select2', 'placeholder' => 'Pilih unit','id'=> 'unit_id', 'required'=> 'required']) !!}
             </div>
 
             <div class="form-group">
                 <label for="warehouse">{{ __('Pilih Gudang')}}<span class="text-red">*</span></label>
-                {!! Form::select('warehouse', $warehouses, null,[ 'class'=>'form-control select2', 'placeholder' => 'Pilih gudang','id'=> 'group_id', 'required'=> 'required']) !!}
+                {!! Form::select('warehouse', $warehouses, null,[ 'class'=>'form-control select2', 'placeholder' => 'Pilih gudang','id'=> 'warehouse_id', 'required'=> 'required']) !!}
             </div>
         </div>
         <div class="col-md-12">
