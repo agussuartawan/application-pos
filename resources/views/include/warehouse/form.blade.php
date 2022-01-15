@@ -1,13 +1,13 @@
-{!! Form::model($model, [
-    'route' => 'warehouse.store',
-    'method' => 'POST',
+{!! Form::model($warehouse, [
+    'route' => $warehouse->exists ? ['warehouse.update', $warehouse->id] : 'warehouse.store',
+    'method' => $warehouse->exists ? 'PUT' : 'POST',
     'id' => 'form-warehouse'
 ]) !!}
 
     <div class="row">
         <div class="col-sm-8">
             <div class="form-group">
-                <label for="role">{{ __('Gudang')}}<span class="text-red">*</span></label>
+                <label for="name">{{ __('Gudang')}}<span class="text-red">*</span></label>
                 {!! Form::text('name', null,[ 'class'=>'form-control', 'placeholder' => 'Nama gudang','id'=> 'name']) !!}
             </div>
             <div class="form-group">

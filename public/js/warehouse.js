@@ -129,23 +129,36 @@
     }); 
 
     $(document).ready(function(){
+        showCreateForm();
+    });
+    
+    $('body').on('click', '.btn-edit', function(event){
+        event.preventDefault();
+
+        var url = $(this).attr('href');
+
         $.ajax({
-            url: '/warehouse/show-form',
-            type: 'GET',
+            url: url,
             dataType: 'html',
             beforeSend: function() {
-                $('.loader').show();
+                $('.preloader').fadeIn();
             },
             complete: function(){
-                $('.loader').hide();
+                $('.preloader').fadeOut();
             },
             success: function(response){
+                $('.form-title').html('<h3>Edit Gudang</h3>');
                 $('#warehouse-form-body').html(response);
             },
             error: function(xhr, status){
-                alert('Terjadi kesalahan')
+                showErrorToast();
             }
         });
+    });
+
+    $('body').on('click', '.btn-delete', function(event){
+        event.preventDefault();
+        showWarningAlert();
     });
 
     $(document).on('submit','#form-warehouse', function(event) {
@@ -153,7 +166,8 @@
 
         var form = $(this),
             url = form.attr('action'),
-            method = $('input[name=_method').val() == undefined ? 'POST' : 'PUT';
+            method = $('input[name=_method').val() == undefined ? 'POST' : 'PUT',
+            message = $('input[name=_method').val() == undefined ? 'Data gudang berhasil ditambahkan' : 'Data gudang berhasil diubah';
 
         $('.form-control').removeClass('is-invalid');
         $('.invalid-feedback').remove();
@@ -162,13 +176,19 @@
             url: url,
             method: method,
             data: form.serialize(),
+            beforeSend: function() {
+                $('.preloader').fadeIn();
+            },
+            complete: function(){
+                $('.preloader').fadeOut();
+            },
             success: function(response){
-                showSuccessToast();
-                form.trigger('reset');
+                showSuccessToast(message);
+                showCreateForm();
                 $('#warehouse_table').DataTable().ajax.reload();
             },
             error: function(xhr){
-                showDangerToast();
+                showErrorToast();
                 var res = xhr.responseJSON;
                 if($.isEmptyObject(res) == false){
                     $.each(res.errors, function(key, value){
@@ -180,14 +200,35 @@
             }
         });
     });
+
 })(jQuery);
 
-showSuccessToast = function() {
+showCreateForm = function() {
+    $.ajax({
+        url: '/warehouse/show-form',
+        type: 'GET',
+        dataType: 'html',
+        beforeSend: function() {
+            $('.loader').fadeIn();
+        },
+        complete: function(){
+            $('.loader').fadeOut();
+        },
+        success: function(response){
+            $('.form-title').html('<h3>Tambah Gudang</h3>');
+            $('#warehouse-form-body').html(response);
+        },
+        error: function(xhr, status){
+            alert('Terjadi kesalahan')
+        }
+    });
+}
+
+showSuccessToast = function(message) {
     'use strict';
-    resetToastPosition();
     $.toast({
         heading: 'Sukses',
-        text: 'Data gudang berhasil ditambahkan',
+        text: message,
         showHideTransition: 'slide',
         icon: 'success',
         loaderBg: '#f96868',
@@ -195,9 +236,8 @@ showSuccessToast = function() {
     })
 };
 
-showDangerToast = function() {
+showErrorToast = function() {
     'use strict';
-    resetToastPosition();
     $.toast({
         heading: 'Error',
         text: 'Terjadi kesalahan',
@@ -207,3 +247,15 @@ showDangerToast = function() {
         position: 'top-right'
     })
 };
+
+showWarningAlert = function() {
+    Swal.fire({
+        title: 'Anda yakin?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+    })
+}

@@ -7,7 +7,7 @@
     @endpush
 
     
-    <div class="container-fluid" style="position: relative;">
+    <div class="container-fluid">
     	<div class="page-header">
             <div class="row align-items-end">
                 <div class="col-lg-8">
@@ -51,7 +51,6 @@
                 </div>
             </div>
         </div>
-        @include('include.preloader')
     </div>
     <!-- push external js -->
     @push('script') 

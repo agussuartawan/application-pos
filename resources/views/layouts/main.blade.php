@@ -24,6 +24,7 @@
 
     	</div>
     </div>
+	@include('include.preloader')
     
 	<!-- initiate scripts-->
 	@include('include.script')	

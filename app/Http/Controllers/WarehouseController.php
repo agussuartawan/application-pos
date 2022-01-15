@@ -27,8 +27,8 @@ class WarehouseController extends Controller
                 ->addColumn('action', function($data){
                     if (Auth::user()->can('mengelola gudang')){
                         return '<div class="table-actions">
-                                <a href="'.url('warehouse/'.$data->id).'/edit" ><i class="ik ik-edit-2 f-16 mr-15 text-green"></i></a>
-                                <a href="'.url('warehouse/'.$data->id).'"><i class="ik ik-trash-2 f-16 text-red"></i></a>
+                                <a class="btn-edit" href="'.url('warehouse/'.$data->id).'/edit" title="Edit '.$data->name.'"><i class="ik ik-edit-2 f-16 mr-15 text-green"></i></a>
+                                <a class="btn-delete" href="'.url('warehouse/'.$data->id).'" title="Hapus '.$data->name.'"><i class="ik ik-trash-2 f-16 text-red"></i></a>
                             </div>';
                     }else{
                         return '';
@@ -46,8 +46,8 @@ class WarehouseController extends Controller
     public function showForm()
     {
         try{
-            $model = new Warehouse();
-            return view('include.warehouse.form', compact('model'));
+            $warehouse = new Warehouse();
+            return view('include.warehouse.form', compact('warehouse'));
         } catch (\Exception $e){
             $bug = $e->getMessage();
             return $bug;
@@ -74,17 +74,6 @@ class WarehouseController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  \App\Warehouse  $warehouse
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Warehouse $warehouse)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      *
      * @param  \App\Warehouse  $warehouse
@@ -92,7 +81,7 @@ class WarehouseController extends Controller
      */
     public function edit(Warehouse $warehouse)
     {
-        //
+        return view('include.warehouse.form', compact('warehouse'));
     }
 
     /**
@@ -104,7 +93,15 @@ class WarehouseController extends Controller
      */
     public function update(Request $request, Warehouse $warehouse)
     {
-        //
+        $messages = [
+            'name.required' => 'Nama gudang tidak boleh kosong!'
+        ];
+        $this->validate($request, [
+            'name' => 'required|max:255'
+        ], $messages);
+
+        $model = $warehouse->update($request->all());
+        return $model;
     }
 
     /**

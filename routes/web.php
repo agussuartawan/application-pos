@@ -141,6 +141,6 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::group(['middleware' => 'can:mengelola gudang'], function(){
 		Route::get('warehouse/show-form', [WarehouseController::class, 'showForm']);
 		Route::get('warehouse/get-list', [WarehouseController::class, 'getWarehouseList']);
-		Route::resource('warehouse', WarehouseController::class)->except('show','create','edit');
+		Route::resource('warehouse', WarehouseController::class)->except('show','create');
 	});
 });

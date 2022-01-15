@@ -38,10 +38,10 @@
             @can('mengelola gudang')
 			<div class="col-md-12">
 	            <div class="card">
-	                <div class="card-header"><h3>{{ __('Tambah Gudang')}}</h3></div>
+	                <div class="card-header form-title"></div>
 	                <div class="card-body" id="warehouse-form-body">
                         @include('include.loader')
-	                </div>
+                    </div>
 	            </div>
 	        </div>
             @endcan
@@ -55,7 +55,7 @@
 	                        <thead>
 	                            <tr>
 	                                <th>{{ __('Nama Gudang')}}</th>
-	                                <th>{{ __('Aksi')}}</th>
+	                                <th width="10%">{{ __('Aksi')}}</th>
 	                            </tr>
 	                        </thead>
 	                        <tbody>
@@ -64,14 +64,14 @@
 	                </div>
 	            </div>
 	        </div>
-	    </div>
+        </div>
     </div>
     <!-- push external js -->
     @push('script')
-    <script src="{{ asset('plugins/DataTables/datatables.min.js') }}"></script>
-    <script src="{{ asset('plugins/jquery-toast-plugin/dist/jquery.toast.min.js')}}"></script>
-    <script src="{{ asset('js/alerts.js')}}"></script>
-    <!--server side roles table script-->
-    <script src="{{ asset('js/warehouse.js') }}"></script>
+        <script src="{{ asset('plugins/DataTables/datatables.min.js') }}"></script>
+        <script src="{{ asset('plugins/jquery-toast-plugin/dist/jquery.toast.min.js')}}"></script>
+        <script src="{{ asset('plugins/sweetalert/dist/sweetalert.min.js') }}"></script>
+        <!--server side roles table script-->
+        <script src="{{ asset('js/warehouse.js') }}"></script>
 	@endpush
 @endsection
