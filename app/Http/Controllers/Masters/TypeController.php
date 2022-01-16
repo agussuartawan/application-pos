@@ -62,12 +62,6 @@ class TypeController extends Controller
         return $model;
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Type  $product_type
-     * @return \Illuminate\Http\Response
-     */
     public function showForm()
     {
         try{

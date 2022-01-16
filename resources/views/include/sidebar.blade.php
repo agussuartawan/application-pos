@@ -28,6 +28,12 @@
                         @can('mengelola tipe produk')
                         <a href="{{route('product-types.index')}}" class="menu-item {{ request()->is('product-types*') ? 'active' : '' }}">{{ __('Tipe Produk')}}</a>
                         @endcan
+                        @can('mengelola grup produk')
+                        <a href="{{route('product-groups.index')}}" class="menu-item {{ request()->is('product-groups*') ? 'active' : '' }}">{{ __('Grup Produk')}}</a>
+                        @endcan
+                        @can('mengelola unit produk')
+                        <a href="{{route('product-units.index')}}" class="menu-item {{ request()->is('product-units*') ? 'active' : '' }}">{{ __('Unit Produk')}}</a>
+                        @endcan
                     </div>
                 </div>
                 @endcan 

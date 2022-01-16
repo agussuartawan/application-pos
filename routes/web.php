@@ -12,6 +12,8 @@ use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\Masters\ProductController;
 use App\Http\Controllers\Masters\WarehouseController;
 use App\Http\Controllers\Masters\TypeController;
+use App\Http\Controllers\Masters\GroupController;
+use App\Http\Controllers\Masters\UnitController;
 
 Route::get('/', function () { 
 	return redirect()->route('login'); 
@@ -149,5 +151,19 @@ Route::group(['middleware' => 'auth'], function(){
 		Route::get('product-type/show-form', [TypeController::class, 'showForm']);
 		Route::get('product-type/get-list', [TypeController::class, 'getProductTypeList']);
 		Route::resource('product-types', TypeController::class)->except('show','create');
+	});
+
+	// group route
+	Route::group(['middleware' => 'can:mengelola grup produk'], function(){
+		Route::get('product-group/show-form', [GroupController::class, 'showForm']);
+		Route::get('product-group/get-list', [GroupController::class, 'getProductGroupList']);
+		Route::resource('product-groups', GroupController::class)->except('show','create');
+	});
+
+	// unit route
+	Route::group(['middleware' => 'can:mengelola unit produk'], function(){
+		Route::get('product-unit/show-form', [UnitController::class, 'showForm']);
+		Route::get('product-unit/get-list', [UnitController::class, 'getProductUnitList']);
+		Route::resource('product-units', UnitController::class)->except('show','create');
 	});
 });
