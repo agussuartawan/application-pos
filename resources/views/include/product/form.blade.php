@@ -1,4 +1,4 @@
-<form class="forms-sample" method="POST" action="{{ route('product.create') }}">
+<form class="forms-sample" method="POST" action="{{ route('products.create') }}">
     @csrf
     <div class="row">
         <div class="col-sm-6">
@@ -132,7 +132,7 @@
         </div>
         <div class="col-md-12">
             <div class="form-group d-flex justify-content-center">
-                <a href="{{ route('product.index') }}" class="btn btn-danger">Batal</a>&nbsp;
+                <a href="{{ route('products.index') }}" class="btn btn-danger">Batal</a>&nbsp;
                 <button type="submit" class="btn btn-primary">{{ __('Simpan')}}</button>
             </div>
         </div>

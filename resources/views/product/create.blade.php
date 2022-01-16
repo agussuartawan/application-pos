@@ -26,7 +26,7 @@
                                 <a href="{{url('dashboard')}}"><i class="ik ik-home"></i></a>
                             </li>
                             <li class="breadcrumb-item">
-                                <a href="{{ route('product.index') }}">{{ __('Produk')}}</a>
+                                <a href="{{ route('products.index') }}">{{ __('Produk')}}</a>
                             </li>
                             <li class="breadcrumb-item">
                                 <a href="#">{{ __('Tambah Produk')}}</a>
@@ -37,9 +37,6 @@
             </div>
         </div>
         <div class="row">
-            <!-- start message area-->
-            @include('include.message')
-            <!-- end message area-->
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
@@ -54,26 +51,6 @@
     </div>
     <!-- push external js -->
     @push('script') 
-        <script>
-            $(document).ready(function(){
-                $.ajax({
-                    url: '/product/show-form',
-                    type: 'GET',
-                    dataType: 'html',
-                    beforeSend: function() {
-                        $('.loader').show();
-                    },
-                    complete: function(){
-                        $('.loader').hide();
-                    },
-                    success: function(response){
-                        $('.card-body').html(response);
-                    },
-                    error: function(xhr, status){
-                        alert('Terjadi kesalahan')
-                    }
-                });
-            });
-        </script>
+        <script src="{{ asset('js/masters/product-create.js') }}"></script>
     @endpush
 @endsection

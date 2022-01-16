@@ -11,6 +11,7 @@ use App\Http\Controllers\RolesController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\Masters\ProductController;
 use App\Http\Controllers\Masters\WarehouseController;
+use App\Http\Controllers\Masters\TypeController;
 
 Route::get('/', function () { 
 	return redirect()->route('login'); 
@@ -133,13 +134,20 @@ Route::group(['middleware' => 'auth'], function(){
 	Route::group(['middleware' => 'can:mengelola produk'], function(){
 		Route::get('product/get-list', [ProductController::class,'getProductList']);
 		Route::get('product/show-form', [ProductController::class, 'showForm']);
-		Route::resource('product', ProductController::class);
+		Route::resource('products', ProductController::class);
 	});
 
 	// warehouse route
 	Route::group(['middleware' => 'can:mengelola gudang'], function(){
 		Route::get('warehouse/show-form', [WarehouseController::class, 'showForm']);
 		Route::get('warehouse/get-list', [WarehouseController::class, 'getWarehouseList']);
-		Route::resource('warehouse', WarehouseController::class)->except('show','create');
+		Route::resource('warehouses', WarehouseController::class)->except('show','create');
+	});
+
+	// type route
+	Route::group(['middleware' => 'can:mengelola tipe produk'], function(){
+		Route::get('product-type/show-form', [TypeController::class, 'showForm']);
+		Route::get('product-type/get-list', [TypeController::class, 'getProductTypeList']);
+		Route::resource('product-types', TypeController::class)->except('show','create');
 	});
 });

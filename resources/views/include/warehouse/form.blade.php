@@ -1,5 +1,5 @@
 {!! Form::model($warehouse, [
-    'route' => $warehouse->exists ? ['warehouse.update', $warehouse->id] : 'warehouse.store',
+    'route' => $warehouse->exists ? ['warehouses.update', $warehouse->id] : 'warehouses.store',
     'method' => $warehouse->exists ? 'PUT' : 'POST',
     'id' => 'form-warehouse'
 ]) !!}

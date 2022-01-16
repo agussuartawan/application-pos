@@ -27,8 +27,8 @@ class WarehouseController extends Controller
                 ->addColumn('action', function($data){
                     if (Auth::user()->can('mengelola gudang')){
                         return '<div class="table-actions">
-                                <a class="btn-edit" href="'.url('warehouse/'.$data->id).'/edit" title="Edit '.$data->name.'"><i class="ik ik-edit-2 f-16 mr-15 text-green"></i></a>
-                                <a class="btn-delete" href="'.url('warehouse/'.$data->id).'" title="Hapus '.$data->name.'" data-name="'.$data->name.'"><i class="ik ik-trash-2 f-16 text-red"></i></a>
+                                <a class="btn-edit" href="'.url('warehouses/'.$data->id).'/edit" title="Edit '.$data->name.'"><i class="ik ik-edit-2 f-16 mr-15 text-green"></i></a>
+                                <a class="btn-delete" href="'.url('warehouses/'.$data->id).'" title="Hapus '.$data->name.'" data-name="'.$data->name.'"><i class="ik ik-trash-2 f-16 text-red"></i></a>
                             </div>';
                     }else{
                         return '';
@@ -99,7 +99,7 @@ class WarehouseController extends Controller
         $this->validate($request, [
             'name' => 'required|max:255'
         ], $messages);
-
+        
         $model = $warehouse->update($request->all());
         return $model;
     }

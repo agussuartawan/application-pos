@@ -16,14 +16,17 @@
                     <a href="{{route('dashboard')}}"><i class="ik ik-bar-chart-2"></i><span>{{ __('Dashboard')}}</span></a>
                 </div>
                 @can('mengelola master')
-                <div class="nav-item {{ request()->is(['product*', 'warehouse*']) ? 'active open' : '' }} has-sub">
+                <div class="nav-item {{ request()->is(['product*', 'warehouse*', 'product-type*']) ? 'active open' : '' }} has-sub">
                     <a href="#"><i class="ik ik-box"></i><span>{{ __('Master')}}</span></a>
                     <div class="submenu-content">
                         @can('mengelola produk')
-                        <a href="{{route('product.index')}}" class="menu-item {{ request()->is('product*') ? 'active' : '' }}">{{ __('Produk')}}</a>
+                        <a href="{{route('products.index')}}" class="menu-item {{ request()->is('products*') ? 'active' : '' }}">{{ __('Produk')}}</a>
                         @endcan
                         @can('mengelola gudang')
-                        <a href="{{route('warehouse.index')}}" class="menu-item {{ request()->is('warehouse*') ? 'active' : '' }}">{{ __('Gudang')}}</a>
+                        <a href="{{route('warehouses.index')}}" class="menu-item {{ request()->is('warehouses*') ? 'active' : '' }}">{{ __('Gudang')}}</a>
+                        @endcan
+                        @can('mengelola tipe produk')
+                        <a href="{{route('product-types.index')}}" class="menu-item {{ request()->is('product-types*') ? 'active' : '' }}">{{ __('Tipe Produk')}}</a>
                         @endcan
                     </div>
                 </div>

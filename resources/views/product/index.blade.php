@@ -40,7 +40,7 @@
                     <div class="card-header">
                         <h3>{{ __('Product')}}</h3>
                         <div class="row ml-auto">
-                            <a href="{{ route('product.create') }}" class="btn btn-primary float-right">Tambah</a>
+                            <a href="{{ route('products.create') }}" class="btn btn-primary float-right">Tambah</a>
                         </div>
                     </div>
                     <div class="card-body">
@@ -67,8 +67,7 @@
     <!-- push external js -->
     @push('script')
     <script src="{{ asset('plugins/DataTables/datatables.min.js') }}"></script>
-    <script src="{{ asset('plugins/select2/dist/js/select2.min.js') }}"></script>
     <!--server side users table script-->
-    <script src="{{ asset('js/product.js') }}"></script>
+    <script src="{{ asset('js/masters/product.js') }}"></script>
     @endpush
 @endsection

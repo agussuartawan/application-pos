@@ -7,9 +7,9 @@
         var selectable = []; 
         
 
-        var dTable = $('#warehouse_table').DataTable({
+        var dTable = $('#product_table').DataTable({
             order: [],
-            lengthMenu: [[5, 10, 50, 100], [5, 10, 50, 100]],
+            lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
             processing: true,
             responsive: false,
             serverSide: true,
@@ -23,14 +23,20 @@
             pagingType: "full_numbers",
             dom: "<'row'<'col-sm-2'l><'col-sm-7 text-center'B><'col-sm-3'f>>tipr",
             ajax: {
-                url: 'warehouse/get-list',
+                url: 'product/get-list',
                 type: "get"
             },
             columns: [
                 /*{data:'serial_no', name: 'serial_no'},*/
+                {data:'code', name: 'code'},
                 {data:'name', name: 'name'},
+                {data:'size', name: 'size'},
+                {data:'stock', name: 'stock'},
+                {data:'purchase_price', name: 'purchase_price'},
+                {data:'location', name: 'location'},
                 //only those have manage_user permission will get access
                 {data:'action', name: 'action', orderable: false, searchable: false}
+
             ],
             buttons: [
                 {
@@ -126,161 +132,5 @@
                 });
             }
         });
-    }); 
-
-    $(document).ready(function(){
-        showCreateForm();
     });
-    
-    $('body').on('click', '.btn-edit', function(event){
-        event.preventDefault();
-
-        var url = $(this).attr('href');
-
-        $.ajax({
-            url: url,
-            dataType: 'html',
-            beforeSend: function() {
-                $('.preloader').fadeIn();
-            },
-            complete: function(){
-                $('.preloader').fadeOut();
-            },
-            success: function(response){
-                $('.form-title').html('<h3>Edit Gudang</h3>');
-                $('#warehouse-form-body').html(response);
-                $('#name').focus();
-                $("html, body").animate({ scrollTop: 0 }, "slow");
-            },
-            error: function(xhr, status){
-                showErrorToast();
-            }
-        });
-    });
-
-    $('body').on('click', '.btn-delete', function(event){
-        event.preventDefault();
-        var me = $(this);
-        showDeleteAlert(me);
-    });
-
-    $(document).on('submit','#form-warehouse', function(event) {
-        event.preventDefault();
-
-        var form = $(this),
-            url = form.attr('action'),
-            method = $('input[name=_method').val() == undefined ? 'POST' : 'PUT',
-            message = $('input[name=_method').val() == undefined ? 'Data gudang berhasil ditambahkan' : 'Data gudang berhasil diubah';
-
-        $('.form-control').removeClass('is-invalid');
-        $('.invalid-feedback').remove();
-        
-        $.ajax({
-            url: url,
-            method: method,
-            data: form.serialize(),
-            beforeSend: function() {
-                $('.preloader').fadeIn();
-            },
-            complete: function(){
-                $('.preloader').fadeOut();
-            },
-            success: function(response){
-                showSuccessToast(message);
-                showCreateForm();
-                $('#warehouse_table').DataTable().ajax.reload();
-            },
-            error: function(xhr){
-                showErrorToast();
-                var res = xhr.responseJSON;
-                if($.isEmptyObject(res) == false){
-                    $.each(res.errors, function(key, value){
-                        $('#' + key)
-                            .addClass('is-invalid')
-                            .after('<span class="invalid-feedback" role="alert"><strong>' +value+ '</strong></span>');
-                    });
-                }
-            }
-        });
-    });
-
 })(jQuery);
-
-showCreateForm = function() {
-    $.ajax({
-        url: '/warehouse/show-form',
-        type: 'GET',
-        dataType: 'html',
-        beforeSend: function() {
-            $('.loader').fadeIn();
-        },
-        complete: function(){
-            $('.loader').fadeOut();
-        },
-        success: function(response){
-            $('.form-title').html('<h3>Tambah Gudang</h3>');
-            $('#warehouse-form-body').html(response);
-        },
-        error: function(xhr, status){
-            alert('Terjadi kesalahan')
-        }
-    });
-}
-
-showSuccessToast = function(message) {
-    'use strict';
-    $.toast({
-        heading: 'Sukses',
-        text: message,
-        showHideTransition: 'slide',
-        icon: 'success',
-        loaderBg: '#f96868',
-        position: 'top-right'
-    })
-};
-
-showErrorToast = function() {
-    'use strict';
-    $.toast({
-        heading: 'Error',
-        text: 'Terjadi kesalahan',
-        showHideTransition: 'slide',
-        icon: 'error',
-        loaderBg: '#f2a654',
-        position: 'top-right'
-    })
-};
-
-showDeleteAlert = function(me) {
-    var url = me.attr('href'),
-                title = me.attr('data-name'),
-                token = $('meta[name="csrf-token"]').attr('content');
-
-    Swal.fire({
-        title: 'Perhatian!',
-        text: "Hapus data "+ title +"?",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, delete it!'
-    }).then((result) => {
-        if (result.isConfirmed) {
-            $.ajax({
-                url: url,
-                type: 'POST',
-                data: {
-                    '_method': 'DELETE',
-                    '_token': token, 
-                },
-                success: function(response){
-                    $('#warehouse_table').DataTable().ajax.reload();
-                    showSuccessToast('Data gudang berhasil dihapus');
-                },
-                error: function(xhr){
-                    showErrorToast();
-                }
-            });
-        }
-    });
-}

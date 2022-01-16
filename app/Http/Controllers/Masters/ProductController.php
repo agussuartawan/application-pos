@@ -41,8 +41,8 @@ class ProductController extends Controller
                 ->addColumn('action', function($data){
                     if (Auth::user()->can('mengelola produk')){
                         return '<div class="table-actions">
-                                <a href="'.url('product/'.$data->id).'/edit" ><i class="ik ik-edit-2 f-16 mr-15 text-green"></i></a>
-                                <a href="'.url('product/'.$data->id).'"><i class="ik ik-trash-2 f-16 text-red"></i></a>
+                                <a href="'.url('products/'.$data->id).'/edit" class="btn-edit" title="Edit '. $data->name .'" data-name="'.$data->name.'"><i class="ik ik-edit-2 f-16 mr-15 text-green"></i></a>
+                                <a href="'.url('products/'.$data->id).'" class="btn-delete" title="Hapus '. $data->name .'" data-name="'.$data->name.'"><i class="ik ik-trash-2 f-16 text-red"></i></a>
                             </div>';
                     }else{
                         return '';
