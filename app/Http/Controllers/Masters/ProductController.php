@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Masters;
 
-use App\Group;
-use App\Product;
-use App\Type;
-use App\Unit;
-use App\Warehouse;
+use App\Http\Controllers\Controller;
+use App\Models\Group;
+use App\Models\Product;
+use App\Models\Type;
+use App\Models\Unit;
+use App\Models\Warehouse;
 use DataTables, Auth;
 use Illuminate\Http\Request;
 

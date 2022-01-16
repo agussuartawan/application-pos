@@ -9,7 +9,7 @@
 
         var dTable = $('#warehouse_table').DataTable({
             order: [],
-            lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
+            lengthMenu: [[5, 10, 50, 100], [5, 10, 50, 100]],
             processing: true,
             responsive: false,
             serverSide: true,
@@ -149,6 +149,8 @@
             success: function(response){
                 $('.form-title').html('<h3>Edit Gudang</h3>');
                 $('#warehouse-form-body').html(response);
+                $('#name').focus();
+                $("html, body").animate({ scrollTop: 0 }, "slow");
             },
             error: function(xhr, status){
                 showErrorToast();
@@ -158,7 +160,8 @@
 
     $('body').on('click', '.btn-delete', function(event){
         event.preventDefault();
-        showWarningAlert();
+        var me = $(this);
+        showDeleteAlert(me);
     });
 
     $(document).on('submit','#form-warehouse', function(event) {
@@ -248,14 +251,36 @@ showErrorToast = function() {
     })
 };
 
-showWarningAlert = function() {
+showDeleteAlert = function(me) {
+    var url = me.attr('href'),
+                title = me.attr('data-name'),
+                token = $('meta[name="csrf-token"]').attr('content');
+
     Swal.fire({
-        title: 'Anda yakin?',
-        text: "You won't be able to revert this!",
+        title: 'Perhatian!',
+        text: "Hapus data "+ title +"?",
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
         confirmButtonText: 'Yes, delete it!'
-    })
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: {
+                    '_method': 'DELETE',
+                    '_token': token, 
+                },
+                success: function(response){
+                    $('#warehouse_table').DataTable().ajax.reload();
+                    showSuccessToast('Data gudang berhasil dihapus');
+                },
+                error: function(xhr){
+                    showErrorToast();
+                }
+            });
+        }
+    });
 }

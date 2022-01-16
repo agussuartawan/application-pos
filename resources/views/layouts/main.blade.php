@@ -3,6 +3,7 @@
 <head>
 	<title>@yield('title','')</title>
 	<!-- initiate head with meta tags, css and script -->
+	<meta name="csrf-token" content="{{ csrf_token() }}" />
 	@include('include.head')
 
 </head>

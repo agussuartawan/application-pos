@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Masters;
 
-use App\Warehouse;
+use App\Models\Warehouse;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use DataTables, Auth;
@@ -21,14 +21,14 @@ class WarehouseController extends Controller
 
     public function getWarehouseList()
     {
-        $data  = Warehouse::get();
+        $data  = Warehouse::orderBy('created_at', 'DESC')->get();
 
         return Datatables::of($data)
                 ->addColumn('action', function($data){
                     if (Auth::user()->can('mengelola gudang')){
                         return '<div class="table-actions">
                                 <a class="btn-edit" href="'.url('warehouse/'.$data->id).'/edit" title="Edit '.$data->name.'"><i class="ik ik-edit-2 f-16 mr-15 text-green"></i></a>
-                                <a class="btn-delete" href="'.url('warehouse/'.$data->id).'" title="Hapus '.$data->name.'"><i class="ik ik-trash-2 f-16 text-red"></i></a>
+                                <a class="btn-delete" href="'.url('warehouse/'.$data->id).'" title="Hapus '.$data->name.'" data-name="'.$data->name.'"><i class="ik ik-trash-2 f-16 text-red"></i></a>
                             </div>';
                     }else{
                         return '';
@@ -112,6 +112,11 @@ class WarehouseController extends Controller
      */
     public function destroy(Warehouse $warehouse)
     {
-        //
+        try{
+            $warehouse->delete();
+        } catch(\Exception $e){
+            $bug = $e->getMessage();
+            return $bug;
+        }
     }
 }

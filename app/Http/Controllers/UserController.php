@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 
-use App\User;
+use App\Models\User;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use DataTables,Auth;
@@ -30,7 +30,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        return view('users');
+        return view('user.index');
     }
 
     public function getUserList(Request $request)
@@ -79,7 +79,7 @@ class UserController extends Controller
         try
         {
             $roles = Role::pluck('name','id');
-            return view('create-user', compact('roles'));
+            return view('user.create', compact('roles'));
 
         }catch (\Exception $e) {
             $bug = $e->getMessage();
@@ -134,7 +134,7 @@ class UserController extends Controller
                 $user_role = $user->roles->first();
                 $roles     = Role::pluck('name','id');
 
-                return view('user-edit', compact('user','user_role','roles'));
+                return view('user.edit', compact('user','user_role','roles'));
             }else{
                 return redirect('404');
             }
@@ -200,9 +200,9 @@ class UserController extends Controller
         $user   = User::find($id);
         if($user){
             $user->delete();
-            return redirect('users')->with('success', 'User removed!');
+            return redirect('user')->with('success', 'User removed!');
         }else{
-            return redirect('users')->with('error', 'User not found');
+            return redirect('user')->with('error', 'User not found');
         }
     }
 }

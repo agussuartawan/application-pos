@@ -9,9 +9,8 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\RolesController;
 use App\Http\Controllers\PermissionController;
-use App\Http\Controllers\ProductController;
-use App\Http\Controllers\WarehouseController;
-use App\Product;
+use App\Http\Controllers\Masters\ProductController;
+use App\Http\Controllers\Masters\WarehouseController;
 
 Route::get('/', function () { 
 	return redirect()->route('login'); 

@@ -29,7 +29,7 @@ class RolesController extends Controller
         try{
             $permissions = Permission::pluck('name','id');
 
-            return view('roles', compact('permissions'));
+            return view('role.index', compact('permissions'));
         }catch (\Exception $e) {
             $bug = $e->getMessage();
             return redirect()->back()->with('error', $bug);
@@ -119,7 +119,7 @@ class RolesController extends Controller
 
             $permissions = Permission::pluck('name','id');
 
-            return view('edit-roles', compact('role','role_permission','permissions'));
+            return view('role.edit', compact('role','role_permission','permissions'));
         }else{
             return redirect('404');
         }
@@ -149,7 +149,7 @@ class RolesController extends Controller
             // Sync role permissions
             $role->syncPermissions($request->permissions);
 
-            return redirect('roles')->with('success', 'Role info updated succesfully!');
+            return redirect('role')->with('success', 'Role info updated succesfully!');
         }catch (\Exception $e) {
             $bug = $e->getMessage();
             return redirect()->back()->with('error', $bug);
@@ -165,7 +165,7 @@ class RolesController extends Controller
             $delete = $role->delete();
             $perm   = $role->permissions()->delete();
 
-            return redirect('roles')->with('success', 'Role deleted!');
+            return redirect('role')->with('success', 'Role deleted!');
         }else{
             return redirect('404');
         }

@@ -29,7 +29,7 @@ class PermissionController extends Controller
         try{
             $roles = Role::pluck('name','id');
 
-            return view('permission', compact('roles'));
+            return view('permission.index', compact('roles'));
         }catch (\Exception $e) {
             $bug = $e->getMessage();
             return redirect()->back()->with('error', $bug);
