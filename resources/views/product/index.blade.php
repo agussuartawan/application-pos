@@ -32,13 +32,10 @@
             </div>
         </div>
         <div class="row">
-            <!-- start message area-->
-            @include('include.message')
-            <!-- end message area-->
             <div class="col-md-12">
                 <div class="card p-3">
                     <div class="card-header">
-                        <h3>{{ __('Product')}}</h3>
+                        <h3>{{ __('Produk')}}</h3>
                         <div class="row ml-auto">
                             <a href="{{ route('products.create') }}" class="btn btn-primary float-right">Tambah</a>
                         </div>

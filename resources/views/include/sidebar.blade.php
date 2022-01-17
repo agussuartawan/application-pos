@@ -39,7 +39,7 @@
                 @endcan 
 
                 @can('mengelola administrator')
-                <div class="nav-item {{ request()->is('user*') || request()->is('role*') || request()->is('permission*') ? 'active open' : '' }} has-sub">
+                <div class="nav-item {{ request()->is('user*') || request()->is('role*') || request()->is('permission*') || request()->is('activity-log') ? 'active open' : '' }} has-sub">
                     <a href="#"><i class="ik ik-user"></i><span>{{ __('Adminstrator')}}</span></a>
                     <div class="submenu-content">
                         <!-- only those have manage_user permission will get access -->
@@ -53,6 +53,9 @@
                         <!-- only those have manage_permission permission will get access -->
                         @can('mengelola permission')
                         <a href="{{url('permission')}}" class="menu-item {{ request()->is('permission*') ? 'active' : '' }}">{{ __('Permission')}}</a>
+                        @endcan
+                        @can('melihat log aktivitas')
+                        <a href="{{route('activity.log')}}" class="menu-item {{ request()->is('activity-log') ? 'active' : '' }}">{{ __('Log Aktivitas')}}</a>
                         @endcan
                     </div>
                 </div>

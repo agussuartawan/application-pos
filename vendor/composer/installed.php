@@ -5,7 +5,7 @@
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '782698207f524254868c59bafad8ee575d4382e2',
+        'reference' => 'f8401420f3d74736437f09ef10bb8327f5e820b1',
         'name' => 'laravel/laravel',
         'dev' => true,
     ),
@@ -427,7 +427,7 @@
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '782698207f524254868c59bafad8ee575d4382e2',
+            'reference' => 'f8401420f3d74736437f09ef10bb8327f5e820b1',
             'dev_requirement' => false,
         ),
         'laravel/passport' => array(
@@ -1069,6 +1069,15 @@
             'aliases' => array(),
             'reference' => 'c6c1022351a901512170118436c764e473f6de8c',
             'dev_requirement' => true,
+        ),
+        'spatie/laravel-activitylog' => array(
+            'pretty_version' => '3.17.0',
+            'version' => '3.17.0.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../spatie/laravel-activitylog',
+            'aliases' => array(),
+            'reference' => 'bdc44862aaca39ecbd824133b80dbd7c8017ed7f',
+            'dev_requirement' => false,
         ),
         'spatie/laravel-permission' => array(
             'pretty_version' => '3.18.0',

@@ -39,7 +39,7 @@
 
         <div class="row">
             <div class="col-md-12">
-                <div class="card">
+                <div class="card p-3">
                     <div class="card-header"><h3>{{ __('Data Table')}}</h3></div>
                     <div class="card-body">
                         <table id="data_table" class="table">

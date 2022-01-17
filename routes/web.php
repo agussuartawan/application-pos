@@ -14,6 +14,8 @@ use App\Http\Controllers\Masters\WarehouseController;
 use App\Http\Controllers\Masters\TypeController;
 use App\Http\Controllers\Masters\GroupController;
 use App\Http\Controllers\Masters\UnitController;
+use App\Http\Controllers\ActivityLogController;
+
 
 Route::get('/', function () { 
 	return redirect()->route('login'); 
@@ -165,5 +167,9 @@ Route::group(['middleware' => 'auth'], function(){
 		Route::get('product-unit/show-form', [UnitController::class, 'showForm']);
 		Route::get('product-unit/get-list', [UnitController::class, 'getProductUnitList']);
 		Route::resource('product-units', UnitController::class)->except('show','create');
+	});
+
+	Route::group(['middleware' => 'can:melihat log aktivitas'], function(){
+		Route::get('activity-log', ActivityLogController::class)->name('activity.log');
 	});
 });

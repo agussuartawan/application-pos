@@ -21,21 +21,26 @@ class GroupController extends Controller
 
     public function getProductGroupList()
     {
-        $data  = Group::orderBy('created_at', 'DESC')->get();
+        try{
+            $data  = Group::orderBy('created_at', 'DESC')->get();
 
-        return Datatables::of($data)
-                ->addColumn('action', function($data){
-                    if (Auth::user()->can('mengelola grup produk')){
-                        return '<div class="table-actions">
-                                <a class="btn-edit" href="'.url('product-groups/'.$data->id).'/edit" title="Edit '.$data->name.'"><i class="ik ik-edit-2 f-16 mr-15 text-green"></i></a>
-                                <a class="btn-delete" href="'.url('product-groups/'.$data->id).'" title="Hapus '.$data->name.'" data-name="'.$data->name.'"><i class="ik ik-trash-2 f-16 text-red"></i></a>
-                            </div>';
-                    }else{
-                        return '';
-                    }
-                })
-                ->rawColumns(['action'])
-                ->make(true);
+            return Datatables::of($data)
+                    ->addColumn('action', function($data){
+                        if (Auth::user()->can('mengelola grup produk')){
+                            return '<div class="table-actions">
+                                    <a class="btn-edit" href="'.url('product-groups/'.$data->id).'/edit" title="Edit '.$data->name.'"><i class="ik ik-edit-2 f-16 mr-15 text-green"></i></a>
+                                    <a class="btn-delete" href="'.url('product-groups/'.$data->id).'" title="Hapus '.$data->name.'" data-name="'.$data->name.'"><i class="ik ik-trash-2 f-16 text-red"></i></a>
+                                </div>';
+                        }else{
+                            return '';
+                        }
+                    })
+                    ->rawColumns(['action'])
+                    ->make(true);
+        } catch (\Exception $e) {
+            $bug = $e->getMessage();
+            return $bug;
+        }
     }
 
     /**
@@ -46,15 +51,20 @@ class GroupController extends Controller
      */
     public function store(Request $request)
     {
-        $messages = [
-            'name.required' => 'Nama grup tidak boleh kosong!'
-        ];
-        $this->validate($request, [
-            'name' => 'required|max:255'
-        ], $messages);
+        try{
+            $messages = [
+                'name.required' => 'Nama grup tidak boleh kosong!'
+            ];
+            $this->validate($request, [
+                'name' => 'required|max:255'
+            ], $messages);
 
-        $model = Group::create($request->all());
-        return $model;
+            $model = Group::create($request->all());
+            return $model;
+        } catch (\Exception $e) {
+            $bug = $e->getMessage();
+            return $bug;
+        }
     }
 
     public function showForm()
@@ -88,15 +98,20 @@ class GroupController extends Controller
      */
     public function update(Request $request, Group $product_group)
     {
-        $messages = [
-            'name.required' => 'Nama grup tidak boleh kosong!'
-        ];
-        $this->validate($request, [
-            'name' => 'required|max:255'
-        ], $messages);
+        try{
+            $messages = [
+                'name.required' => 'Nama grup tidak boleh kosong!'
+            ];
+            $this->validate($request, [
+                'name' => 'required|max:255'
+            ], $messages);
 
-        $model = $product_group->update($request->all());
-        return $model;
+            $model = $product_group->update($request->all());
+            return $model;
+        } catch(\Exception $e){
+            $bug = $e->getMessage();
+            return $bug;
+        }
     }
 
     /**

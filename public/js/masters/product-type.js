@@ -10,12 +10,25 @@
         var dTable = $('#product_type_table').DataTable({
             order: [],
             lengthMenu: [[5, 10, 50, 100], [5, 10, 50, 100]],
-            processing: true,
-            responsive: false,
+            responsive: true,
             serverSide: true,
             processing: true,
+            autoWidth: false,
             language: {
-            processing: '<i class="ace-icon fa fa-spinner fa-spin orange bigger-500" style="font-size:60px;"></i>'
+                processing: '<i class="ace-icon fa fa-spinner fa-spin orange bigger-500" style="font-size:60px;"></i>',
+                lengthMenu: 'Tampilkan _MENU_ data',
+                zeroRecords: 'Data tidak ditemukan',
+                info: 'Menampilkan _START_ ke _END_ dari _TOTAL_ data',
+                infoEmpty: 'Menampilkan 0 ke 0 dari 0 data',
+                emptyTable: 'Tidak ada data tersedia pada tabel',
+                infoFiltered: '(Difilter dari _MAX_ total data)',
+                search: 'Cari:',
+                paginate: {
+                    first: 'Awal',
+                    last: 'Akhir',
+                    next: 'Selanjutnya',
+                    previous: 'Sebelumnya'
+                }
             },
             scroller: {
                 loadingIndicator: false
