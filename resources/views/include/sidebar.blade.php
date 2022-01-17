@@ -17,7 +17,7 @@
                 </div>
                 @can('mengelola master')
                 <div class="nav-item {{ request()->is(['product*', 'warehouse*', 'product-type*']) ? 'active open' : '' }} has-sub">
-                    <a href="#"><i class="ik ik-box"></i><span>{{ __('Master')}}</span></a>
+                    <a href="javascript:void(0)"><i class="ik ik-box"></i><span>{{ __('Master')}}</span></a>
                     <div class="submenu-content">
                         @can('mengelola produk')
                         <a href="{{route('products.index')}}" class="menu-item {{ request()->is('products*') ? 'active' : '' }}">{{ __('Produk')}}</a>
@@ -39,8 +39,8 @@
                 @endcan 
 
                 @can('mengelola administrator')
-                <div class="nav-item {{ request()->is('user*') || request()->is('role*') || request()->is('permission*') || request()->is('activity-log') ? 'active open' : '' }} has-sub">
-                    <a href="#"><i class="ik ik-user"></i><span>{{ __('Adminstrator')}}</span></a>
+                <div class="nav-item {{ request()->is('user*') || request()->is('role*') || request()->is('permission*') || request()->is('activity-logs') ? 'active open' : '' }} has-sub">
+                    <a href="javascript:void(0)"><i class="ik ik-user"></i><span>{{ __('Adminstrator')}}</span></a>
                     <div class="submenu-content">
                         <!-- only those have manage_user permission will get access -->
                         @can('mengelola user')
@@ -55,7 +55,7 @@
                         <a href="{{url('permission')}}" class="menu-item {{ request()->is('permission*') ? 'active' : '' }}">{{ __('Permission')}}</a>
                         @endcan
                         @can('melihat log aktivitas')
-                        <a href="{{route('activity.log')}}" class="menu-item {{ request()->is('activity-log') ? 'active' : '' }}">{{ __('Log Aktivitas')}}</a>
+                        <a href="{{route('activity.log')}}" class="menu-item {{ request()->is('activity-logs') ? 'active' : '' }}">{{ __('Log Aktivitas')}}</a>
                         @endcan
                     </div>
                 </div>

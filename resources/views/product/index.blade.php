@@ -23,9 +23,7 @@
                             <li class="breadcrumb-item">
                                 <a href="{{route('dashboard')}}"><i class="ik ik-home"></i></a>
                             </li>
-                            <li class="breadcrumb-item">
-                                <a href="#">{{ __('Produk')}}</a>
-                            </li>
+                            <li class="breadcrumb-item active" aria-current="page">{{ __('Produk')}}</li>
                         </ol>
                     </nav>
                 </div>

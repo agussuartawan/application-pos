@@ -51,20 +51,15 @@ class GroupController extends Controller
      */
     public function store(Request $request)
     {
-        try{
-            $messages = [
-                'name.required' => 'Nama grup tidak boleh kosong!'
-            ];
-            $this->validate($request, [
-                'name' => 'required|max:255'
-            ], $messages);
+        $messages = [
+            'name.required' => 'Nama grup tidak boleh kosong!'
+        ];
+        $this->validate($request, [
+            'name' => 'required|max:255'
+        ], $messages);
 
-            $model = Group::create($request->all());
-            return $model;
-        } catch (\Exception $e) {
-            $bug = $e->getMessage();
-            return $bug;
-        }
+        $model = Group::create($request->all());
+        return $model;
     }
 
     public function showForm()
@@ -98,20 +93,15 @@ class GroupController extends Controller
      */
     public function update(Request $request, Group $product_group)
     {
-        try{
-            $messages = [
-                'name.required' => 'Nama grup tidak boleh kosong!'
-            ];
-            $this->validate($request, [
-                'name' => 'required|max:255'
-            ], $messages);
+        $messages = [
+            'name.required' => 'Nama grup tidak boleh kosong!'
+        ];
+        $this->validate($request, [
+            'name' => 'required|max:255'
+        ], $messages);
 
-            $model = $product_group->update($request->all());
-            return $model;
-        } catch(\Exception $e){
-            $bug = $e->getMessage();
-            return $bug;
-        }
+        $model = $product_group->update($request->all());
+        return $model;
     }
 
     /**

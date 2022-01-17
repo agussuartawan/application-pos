@@ -28,9 +28,7 @@
                             <li class="breadcrumb-item">
                                 <a href="{{ route('products.index') }}">{{ __('Produk')}}</a>
                             </li>
-                            <li class="breadcrumb-item">
-                                <a href="#">{{ __('Tambah Produk')}}</a>
-                            </li>
+                            <li class="breadcrumb-item active" aria-current="page">{{ __('Tambah Produk')}}</li>
                         </ol>
                     </nav>
                 </div>

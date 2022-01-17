@@ -170,6 +170,7 @@ Route::group(['middleware' => 'auth'], function(){
 	});
 
 	Route::group(['middleware' => 'can:melihat log aktivitas'], function(){
-		Route::get('activity-log', ActivityLogController::class)->name('activity.log');
+		Route::get('activity-log/get-list', [ActivityLogController::class, 'getActivityLogList']);
+		Route::get('activity-logs', [ActivityLogController::class, 'index'])->name('activity.log');
 	});
 });

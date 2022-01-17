@@ -3,25 +3,38 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use Spatie\Activitylog\Models\Activity;
+use Illuminate\Support\Carbon;
+use DataTables, Auth;
 
 class ActivityLogController extends Controller
 {
-    /**
-     * Handle the incoming request.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function __invoke(Request $request)
+    public function index()
     {
-        try{
-            $activityLog = Activity::orderBy('created_at', 'DESC')->paginate(10);
-            return view('activity-log.index', compact('activityLog'));
-        } catch(\Exception $e){
-            $bug = $e->getMessage();
-            return $bug;
-        }
+        return view('activity-log.index');
+    }
+
+    public function getActivityLogList()
+    {
+        $data = Activity::whereDate('created_at', Carbon::today())->orderBy('created_at', 'DESC')->get();
+
+        return Datatables::of($data)
+                ->addColumn('description', function($data){
+                    return $data->description;
+                })
+                ->addColumn('created_at', function($data){
+                    return $data->created_at->diffForHumans();
+                })
+                ->addColumn('action', function($data){
+                    if (Auth::user()->can('melihat log aktivitas')){
+                        return '<div class="table-actions">
+                                <a class="btn-show" href="'.url('activity-logs/'.$data->id).'/show"><i class="ik ik-eye f-16 mr-15 text-info"></i></a>
+                            </div>';
+                    }else{
+                        return '';
+                    }
+                })
+                ->rawColumns(['description','created_at','action'])
+                ->make(true);
     }
 }
