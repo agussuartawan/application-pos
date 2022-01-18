@@ -218,32 +218,41 @@ Route::group(['middleware' => 'auth'], function () {
 	});
 
 	// warehouse route
-	Route::group(['middleware' => 'can:mengelola gudang'], function () {
-		Route::get('warehouse/show-form', [WarehouseController::class, 'showForm']);
-		Route::get('warehouse/get-list', [WarehouseController::class, 'getWarehouseList']);
-		Route::resource('warehouses', WarehouseController::class)->except('show', 'create');
-	});
+	Route::get('warehouse/show-form', [WarehouseController::class, 'showForm']);
+	Route::get('warehouse/get-list', [WarehouseController::class, 'getWarehouseList']);
+	Route::get('warehouses', [WarehouseController::class, 'index'])->middleware('can:lihat gudang')->name('warehouses.index');
+	Route::post('warehouses', [WarehouseController::class, 'store'])->middleware('can:tambah gudang')->name('warehouses.store');
+	Route::get('warehouses/{warehouse}/edit', [WarehouseController::class, 'edit'])->name('warehouses.edit');
+	Route::put('warehouses/{warehouse}', [WarehouseController::class, 'update'])->middleware('can:edit gudang')->name('warehouses.update');
+	Route::delete('warehouses/{warehouse}', [WarehouseController::class, 'destroy'])->middleware('can:hapus gudang')->name('warehouses.destroy');
 
 	// type route
-	Route::group(['middleware' => 'can:mengelola tipe produk'], function () {
-		Route::get('product-type/show-form', [TypeController::class, 'showForm']);
-		Route::get('product-type/get-list', [TypeController::class, 'getProductTypeList']);
-		Route::resource('product-types', TypeController::class)->except('show', 'create');
-	});
+	Route::get('product-type/show-form', [TypeController::class, 'showForm']);
+	Route::get('product-type/get-list', [TypeController::class, 'getProductTypeList']);
+	Route::get('product-types', [TypeController::class, 'index'])->middleware('can:lihat tipe produk')->name('product-types.index');
+	Route::post('product-types', [TypeController::class, 'store'])->middleware('can:tambah tipe produk')->name('product-types.store');
+	Route::get('product-types/{product_type}/edit', [TypeController::class, 'edit'])->name('product-types.edit');
+	Route::put('product-types/{product_type}', [TypeController::class, 'update'])->middleware('can:edit tipe produk')->name('product-types.update');
+	Route::delete('product-types/{product_type}', [TypeController::class, 'destroy'])->middleware('can:hapus tipe produk')->name('product-types.destroy');
 
 	// group route
-	Route::group(['middleware' => 'can:mengelola grup produk'], function () {
-		Route::get('product-group/show-form', [GroupController::class, 'showForm']);
-		Route::get('product-group/get-list', [GroupController::class, 'getProductGroupList']);
-		Route::resource('product-groups', GroupController::class)->except('show', 'create');
-	});
+	Route::get('product-group/show-form', [GroupController::class, 'showForm']);
+	Route::get('product-group/get-list', [GroupController::class, 'getProductGroupList']);	
+	Route::get('product-groups', [GroupController::class, 'index'])->middleware('can:lihat grup produk')->name('product-groups.index');
+	Route::post('product-groups', [GroupController::class, 'store'])->middleware('can:tambah grup produk')->name('product-groups.store');
+	Route::get('product-groups/{product_group}/edit', [GroupController::class, 'edit'])->name('product-groups.edit');	
+	Route::put('product-groups/{product_group}', [GroupController::class, 'update'])->middleware('can:edit grup produk')->name('product-groups.update');
+	Route::delete('product-groups/{product_group}', [GroupController::class, 'destroy'])->middleware('can:hapus grup produk')->name('product-groups.destroy');
+
 
 	// unit route
-	Route::group(['middleware' => 'can:mengelola unit produk'], function () {
-		Route::get('product-unit/show-form', [UnitController::class, 'showForm']);
-		Route::get('product-unit/get-list', [UnitController::class, 'getProductUnitList']);
-		Route::resource('product-units', UnitController::class)->except('show', 'create');
-	});
+	Route::get('product-unit/show-form', [UnitController::class, 'showForm']);
+	Route::get('product-unit/get-list', [UnitController::class, 'getProductUnitList']);
+	Route::get('product-units', [UnitController::class, 'index'])->middleware('can:lihat unit produk')->name('product-units.index');
+	Route::post('product-units', [UnitController::class, 'store'])->middleware('can:tambah unit produk')->name('product-units.store');
+	Route::get('product-units/{product_unit}/edit', [UnitController::class, 'edit'])->name('product-units.edit');
+	Route::put('product-units/{product_unit}', [UnitController::class, 'update'])->middleware('can:edit unit produk')->name('product-units.update');
+	Route::delete('product-units/{product_unit}', [UnitController::class, 'destroy'])->middleware('can:hapus unit produk')->name('product-units.destroy');
 
 	Route::group(['middleware' => 'can:melihat log aktivitas'], function () {
 		Route::get('activity-log/get-list', [ActivityLogController::class, 'getActivityLogList']);

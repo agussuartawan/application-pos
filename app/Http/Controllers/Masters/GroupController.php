@@ -26,14 +26,12 @@ class GroupController extends Controller
 
             return Datatables::of($data)
                     ->addColumn('action', function($data){
-                        if (Auth::user()->can('mengelola grup produk')){
-                            return '<div class="table-actions">
-                                    <a class="btn-edit" href="'.url('product-groups/'.$data->id).'/edit" title="Edit '.$data->name.'"><i class="ik ik-edit-2 f-16 mr-15 text-green"></i></a>
-                                    <a class="btn-delete" href="'.url('product-groups/'.$data->id).'" title="Hapus '.$data->name.'" data-name="'.$data->name.'"><i class="ik ik-trash-2 f-16 text-red"></i></a>
-                                </div>';
-                        }else{
-                            return '';
+                        $buttons = '<a class="btn-edit" href="'.url('product-groups/'.$data->id).'/edit" title="Edit '.$data->name.'"><i class="ik ik-edit-2 f-16 mr-15 text-green"></i></a>';
+                        if(Auth::user()->can('hapus grup produk')){
+                            $buttons .= '<a class="btn-delete" href="'.url('product-groups/'.$data->id).'" title="Hapus '.$data->name.'" data-name="'.$data->name.'"><i class="ik ik-trash-2 f-16 text-red"></i></a>';
                         }
+                            
+                        return '<div class="table-actions">'. $buttons .'</div>';
                     })
                     ->rawColumns(['action'])
                     ->make(true);
@@ -65,8 +63,12 @@ class GroupController extends Controller
     public function showForm()
     {
         try{
-            $product_group = new Group();
-            return view('include.product-group.form', compact('product_group'));
+            if (Auth::user()->can('tambah grup produk')){
+                $product_group = new Group();
+                return view('include.product-group.form', compact('product_group'));
+            } else {
+                return '<div class="text-center">Anda tidak memiliki akses untuk menambah grup produk</div>';
+            }
         } catch (\Exception $e){
             $bug = $e->getMessage();
             return $bug;
@@ -81,7 +83,11 @@ class GroupController extends Controller
      */
     public function edit(Group $product_group)
     {
-        return view('include.product-group.form', compact('product_group'));
+        if (Auth::user()->can('edit grup produk')){
+            return view('include.product-group.form', compact('product_group'));
+        } else {
+            return '<div class="text-center">Anda tidak memiliki akses untuk mengedit grup produk</div>';
+        }
     }
 
     /**

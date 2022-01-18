@@ -25,14 +25,12 @@ class UnitController extends Controller
 
         return Datatables::of($data)
                 ->addColumn('action', function($data){
-                    if (Auth::user()->can('mengelola unit produk')){
-                        return '<div class="table-actions">
-                                <a class="btn-edit" href="'.url('product-units/'.$data->id).'/edit" title="Edit '.$data->name.'"><i class="ik ik-edit-2 f-16 mr-15 text-green"></i></a>
-                                <a class="btn-delete" href="'.url('product-units/'.$data->id).'" title="Hapus '.$data->name.'" data-name="'.$data->name.'"><i class="ik ik-trash-2 f-16 text-red"></i></a>
-                            </div>';
-                    }else{
-                        return '';
+                    $buttons = '<a class="btn-edit" href="'.url('product-units/'.$data->id).'/edit" title="Edit '.$data->name.'"><i class="ik ik-edit-2 f-16 mr-15 text-green"></i></a>';
+                    if(Auth::user()->can('hapus unit produk')){
+                        $buttons .= '<a class="btn-delete" href="'.url('product-units/'.$data->id).'" title="Hapus '.$data->name.'" data-name="'.$data->name.'"><i class="ik ik-trash-2 f-16 text-red"></i></a>';
                     }
+                        
+                    return '<div class="table-actions">'. $buttons .'</div>';
                 })
                 ->rawColumns(['action'])
                 ->make(true);
@@ -60,8 +58,12 @@ class UnitController extends Controller
     public function showForm()
     {
         try{
-            $product_unit = new Unit();
-            return view('include.product-unit.form', compact('product_unit'));
+            if (Auth::user()->can('tambah unit produk')){
+                $product_unit = new Unit();
+                return view('include.product-unit.form', compact('product_unit'));
+            } else {
+                return '<div class="text-center">Anda tidak memiliki akses untuk menambah unit produk</div>';
+            }
         } catch (\Exception $e){
             $bug = $e->getMessage();
             return $bug;
@@ -76,7 +78,11 @@ class UnitController extends Controller
      */
     public function edit(Unit $product_unit)
     {
-        return view('include.product-unit.form', compact('product_unit'));
+        if (Auth::user()->can('edit unit produk')){
+            return view('include.product-unit.form', compact('product_unit'));
+        } else {
+            return '<div class="text-center">Anda tidak memiliki akses untuk mengedit unit produk</div>';
+        }
     }
 
     /**
