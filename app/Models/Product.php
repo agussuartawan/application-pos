@@ -3,9 +3,13 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\Traits\LogsActivity;
+
 
 class Product extends Model
 {
+    use LogsActivity; 
+
     protected $fillable = [
         'type_id',
         'group_id',
@@ -21,6 +25,26 @@ class Product extends Model
         'max_stock',
         'photo'
     ];
+
+    // acitivity log option
+    protected static $logFillable = true;
+
+    protected static $logName = 'Produk';
+
+    protected static $logOnlyDirty = true;
+
+    public function getDescriptionForEvent(string $eventName): string
+    {
+    	if($eventName == 'created'){
+    		$newEventName = 'menambahkan';
+    	} else if($eventName == 'updated'){
+    		$newEventName = 'mengubah';
+    	} else if ($eventName == 'deleted'){
+    		$newEventName = 'menghapus';
+    	}
+
+        return ":causer.name {$newEventName} :subject.name pada <span class='badge badge-info'>Produk</span>";
+    }
 
     public function warehouse()
     {

@@ -139,4 +139,54 @@
             }
         });
     });
+
+    $('body').on('click', '.btn-show', function(event){
+        var me = $(this);
+
+        event.preventDefault();
+        $('#modal').modal('show');
+        showActivityDetail(me);
+    });
+
+    $('#modal').on('hidden.bs.modal', function(){
+        $('.load-here').empty();
+    });
 })(jQuery);
+
+showActivityDetail = function(me){
+    var url = me.attr('href'),
+        title = 'Detail Aktivitas';
+
+    $('.modal-title').text(title);
+    $('.modal-save').hide();
+
+    $.ajax({
+        url: url,
+        type: 'GET',
+        dataType: 'html',
+        beforeSend: function(){
+            $('.loader').fadeIn();
+        },
+        complete: function(){
+            $('.loader').fadeOut();
+        },
+        success: function(response){
+            $('.load-here').html(response);
+        },
+        error: function(xhr){
+            showErrorToast();
+        }
+    });
+}
+
+showErrorToast = function() {
+    'use strict';
+    $.toast({
+        heading: 'Error',
+        text: 'Terjadi kesalahan',
+        showHideTransition: 'slide',
+        icon: 'error',
+        loaderBg: '#f2a654',
+        position: 'top-right'
+    })
+}

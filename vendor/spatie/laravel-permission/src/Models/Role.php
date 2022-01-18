@@ -4,6 +4,7 @@ namespace Spatie\Permission\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Permission\Contracts\Role as RoleContract;
 use Spatie\Permission\Exceptions\GuardDoesNotMatch;
 use Spatie\Permission\Exceptions\RoleAlreadyExists;
@@ -15,7 +16,7 @@ use Spatie\Permission\Traits\RefreshesPermissionCache;
 class Role extends Model implements RoleContract
 {
     use HasPermissions;
-    use RefreshesPermissionCache;
+    use RefreshesPermissionCache, LogsActivity;
 
     protected $guarded = ['id'];
 
@@ -156,5 +157,25 @@ class Role extends Model implements RoleContract
         }
 
         return $this->permissions->contains('id', $permission->id);
+    }
+
+    // acitivity log option
+    protected static $logFillable = true;
+
+    protected static $logName = 'Role';
+
+    protected static $logOnlyDirty = true;
+
+    public function getDescriptionForEvent(string $eventName): string
+    {
+    	if($eventName == 'created'){
+    		$newEventName = 'menambahkan';
+    	} else if($eventName == 'updated'){
+    		$newEventName = 'mengubah';
+    	} else if ($eventName == 'deleted'){
+    		$newEventName = 'menghapus';
+    	}
+
+        return ":causer.name {$newEventName} :subject.name pada <span class='badge badge-info'>Role</span>";
     }
 }

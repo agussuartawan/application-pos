@@ -26,6 +26,7 @@
     	</div>
     </div>
 	@include('include.preloader')
+	@include('include.modal')
     
 	<!-- initiate scripts-->
 	@include('include.script')	

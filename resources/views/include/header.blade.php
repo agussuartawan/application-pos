@@ -10,7 +10,7 @@
                 </button>
             </div>
             <div class="top-menu d-flex align-items-center">
-                <strong>{{ auth()->user()->name }}</strong>
+                <strong>{{ auth()->user()->name }} ({{ auth()->user()->roles->pluck('name')[0] }})</strong>
                 <div class="dropdown">
                     @if(auth()->user()->avatar)
                         <a class="dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img class="avatar" src="{{ asset('img') }}/{{auth()->user()->avatar}}" alt=""></a>
