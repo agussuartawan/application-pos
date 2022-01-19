@@ -30,14 +30,14 @@
                 <div class="col-sm-6">
                     <div class="form-group">
                         <label for="purchase_price">{{ __('Harga Beli')}}</label>
-                        {!! Form::text('purchase_price', null,[ 'class'=>'form-control', 'placeholder' => 'Harga beli produk', 'id'=> 'purchase_price']) !!}
+                        {!! Form::text('purchase_price', null,[ 'class'=>'form-control money', 'placeholder' => 'Harga beli produk', 'id'=> 'purchase_price']) !!}
                     </div> 
                 </div>   
 
                 <div class="col-sm-6">
                     <div class="form-group">
                         <label for="selling_price">{{ __('Harga Jual')}}</label>
-                        {!! Form::text('selling_price', null,[ 'class'=>'form-control', 'placeholder' => 'Harga jual produk', 'id'=> 'selling_price']) !!}
+                        {!! Form::text('selling_price', null,[ 'class'=>'form-control money', 'placeholder' => 'Harga jual produk', 'id'=> 'selling_price']) !!}
                     </div>
                 </div>
             </div>
@@ -45,14 +45,14 @@
                 <div class="col-sm-6">
                     <div class="form-group">
                         <label for="min_stock">{{ __('Stok Minimum')}}</label>
-                        {!! Form::number('min_stock', null,[ 'class'=>'form-control', 'placeholder' => 'Stok minimum produk', 'id'=> 'min_stock']) !!}
+                        {!! Form::number('min_stock', 0,[ 'class'=>'form-control', 'placeholder' => 'Stok minimum produk', 'id'=> 'min_stock']) !!}
                     </div>
                 </div>
 
                 <div class="col-sm-6">
                     <div class="form-group">
                         <label for="max_stock">{{ __('Stok Maksimum')}}</label>
-                        {!! Form::number('max_stock', null,[ 'class'=>'form-control', 'placeholder' => 'Stok maksimum produk', 'id'=> 'max_stock']) !!}
+                        {!! Form::number('max_stock', 0,[ 'class'=>'form-control', 'placeholder' => 'Stok maksimum produk', 'id'=> 'max_stock']) !!}
                     </div>
                 </div>
             </div>
@@ -83,5 +83,11 @@
 {!! Form::close() !!}
 
 <script>
+    $('.money').maskMoney({
+        thousands:'.', 
+        decimal:',',
+        affixesStay: false, 
+        precision: 0
+    });
     $('select').select2();
 </script>

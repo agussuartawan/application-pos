@@ -40,16 +40,11 @@
                 type: "get"
             },
             columns: [
-                /*{data:'serial_no', name: 'serial_no'},*/
                 {data:'code', name: 'code'},
                 {data:'name', name: 'name'},
                 {data:'size', name: 'size'},
                 {data:'stock', name: 'stock'},
-                {data:'purchase_price', name: 'purchase_price'},
-                {data:'location', name: 'location'},
-                //only those have manage_user permission will get access
                 {data:'action', name: 'action', orderable: false, searchable: false}
-
             ],
             buttons: [
                 {
@@ -147,12 +142,26 @@
         });
     });
 
-    $('body').on('click', '.btn-create-product', function(){
+    $('body').on('click', '.modal-show', function(){
         var me = $(this);
-
         event.preventDefault();
+        $('.modal-save').removeClass('hide');
         $('#modal').modal('show');
-        showModalForm(me);
+        showModal(me);
+    });
+
+    $('body').on('click', '.btn-delete', function(){
+        event.preventDefault();
+        var me = $(this);
+        showDeleteAlert(me);
+    });
+
+    $('body').on('click', '.btn-show', function(){
+        event.preventDefault();
+    	var me = $(this);
+    	$('.modal-save').addClass('hide');
+        $('#modal').modal('show');
+    	showModal(me);
     });
 
     $('.modal-save').on('click', function(event) {
@@ -163,8 +172,8 @@
             method = $('input[name=_method').val() == undefined ? 'POST' : 'PUT',
             message = $('input[name=_method').val() == undefined ? 'Data produk berhasil ditambahkan' : 'Data produk berhasil diubah';
 
-        $('.form-control').removeClass('is-invalid');
-        $('.invalid-feedback').remove();
+        $('.form-group').removeClass('input-group-danger');
+        $('.text-danger').remove();
         
         $.ajax({
             url: url,
@@ -178,7 +187,8 @@
             },
             success: function(response){
                 showSuccessToast(message);
-                showCreateForm();
+                $('#modal').modal('hide');
+                $('#product_table').DataTable().ajax.reload();
             },
             error: function(xhr){
                 showErrorToast();
@@ -188,7 +198,7 @@
                         $('#' + key)
                             .closest('.form-group')
                             .addClass('input-group-danger')
-                            .append(value);
+                            .append(`<small class="text-danger">${value}</small>`);
                     });
                 }
             }
@@ -198,16 +208,25 @@
     $('#modal').on('hidden.bs.modal', function(){
         $('.load-here').empty();
     });
+
+    $('body').on('change', '#name', function() {
+    	const name = $(this),
+			slug = $('#slug');
+
+    	fetch(`/product/get-slug?name=${name.val()}`)
+    	.then(response => response.json())
+    	.then(data => slug.val(data.slug))
+    });
 })(jQuery);
 
-showModalForm = function(me){
+showModal = function(me){
     var url = me.attr('href'),
-        title = 'Tambah Produk';
+        title = me.attr('title');
 
     $('.modal-title').text(title);
 
     $.ajax({
-        url: '/products/create',
+        url: url,
         type: 'GET',
         dataType: 'html',
         beforeSend: function() {
@@ -220,7 +239,7 @@ showModalForm = function(me){
             $('.load-here').html(response);
         },
         error: function(xhr, status){
-            alert('Terjadi kesalahan')
+            alert('Terjadi kesalahan');
         }
     });
 }
@@ -248,3 +267,38 @@ showErrorToast = function() {
         position: 'top-right'
     })
 };
+
+showDeleteAlert = function(me) {
+    var url = me.attr('href'),
+                title = me.attr('data-name'),
+                token = $('meta[name="csrf-token"]').attr('content');
+
+    Swal.fire({
+        title: 'Perhatian!',
+        text: "Hapus data "+ title +"?",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Hapus',
+        cancelButtonText: 'Batal',
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: {
+                    '_method': 'DELETE',
+                    '_token': token, 
+                },
+                success: function(response){
+                    $('#product_table').DataTable().ajax.reload();
+                    showSuccessToast('Data produk berhasil dihapus');
+                },
+                error: function(xhr){
+                    showErrorToast();
+                }
+            });
+        }
+    });
+}

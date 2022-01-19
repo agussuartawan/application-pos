@@ -4,11 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Cviebrock\EloquentSluggable\Sluggable;
+use Wuwx\LaravelAutoNumber\AutoNumberTrait;
 
 
 class Product extends Model
 {
-    use LogsActivity; 
+    use LogsActivity,SoftDeletes,Sluggable,AutoNumberTrait;
 
     protected $fillable = [
         'type_id',
@@ -21,10 +24,13 @@ class Product extends Model
         'size',
         'purchase_price',
         'selling_price',
+        'stock',
         'min_stock',
         'max_stock',
         'photo'
     ];
+
+    protected $dates = ['deleted_at'];
 
     // acitivity log option
     protected static $logFillable = true;
@@ -54,5 +60,24 @@ class Product extends Model
     public function getWarehouseNames()
     {
         return $this->warehouse->pluck('name');
+    }
+
+    public function sluggable(): array
+    {
+        return [
+            'slug' => [
+                'source' => 'name'
+            ]
+        ];
+    }
+
+    public function getAutoNumberOptions()
+    {
+        return [
+            'code' => [
+                'format' => 'CK-?', // autonumber format. '?' will be replaced with the generated number.
+                'length' => 5, // The number of digits in an autonumber
+            ],
+        ];
     }
 }

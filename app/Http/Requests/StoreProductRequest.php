@@ -24,10 +24,10 @@ class StoreProductRequest extends FormRequest
     public function rules()
     {
         return [
-            'code' => 'required|min:3|max:50',
+            // 'code' => 'min:3|max:50|unique:products,code',
             'name' => 'required|max:255',
             'slug' => 'required',
-            'size' => 'required|integer',
+            'size' => 'required|integer|unique:products,slug',
             'purchase_price' => 'required|numeric',
             'selling_price' => 'required|numeric',
             'min_stock' => 'required|integer',

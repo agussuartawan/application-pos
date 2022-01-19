@@ -223,11 +223,15 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::group(['middleware' => 'can:lihat produk'], function () {
 		Route::get('product/get-list', [ProductController::class, 'getProductList']);
 		Route::get('products', [ProductController::class, 'index'])->name('products.index');
+		Route::get('products/{product}/show', [ProductController::class, 'show'])->name('products.show');
 	});
 	Route::get('products/create', [ProductController::class, 'create'])->name('products.create');
-	Route::post('products', [ProductController::class, 'store'])->middleware('can:tambah produk')->name('products.store');
+	Route::group(['middleware' => 'can:tambah produk'], function () {
+		Route::post('products', [ProductController::class, 'store'])->name('products.store');
+		Route::get('product/get-slug', [ProductController::class, 'getSlug']);
+	});
 	Route::group(['middleware' => 'can:edit produk'], function () {
-		Route::get('products/{product}/create', [ProductController::class, 'edit'])->name('products.edit');
+		Route::get('products/{product}/edit', [ProductController::class, 'edit'])->name('products.edit');
 		Route::put('products/{product}', [ProductController::class, 'update'])->name('products.update');
 	});
 	Route::delete('products/{product}', [ProductController::class, 'destroy'])->middleware('can:hapus produk')->name('products.destroy');

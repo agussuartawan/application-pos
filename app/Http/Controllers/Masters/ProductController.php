@@ -4,13 +4,16 @@ namespace App\Http\Controllers\Masters;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreProductRequest;
+use App\Http\Requests\UpdateProductRequest;
+use \Cviebrock\EloquentSluggable\Services\SlugService;
+use Illuminate\Support\Facades\Crypt;
+use Illuminate\Http\Request;
 use App\Models\Group;
 use App\Models\Product;
 use App\Models\Type;
 use App\Models\Unit;
 use App\Models\Warehouse;
-use DataTables, Auth;
-use Illuminate\Http\Request;
+use DataTables, Auth, DB;
 
 class ProductController extends Controller
 {
@@ -27,30 +30,24 @@ class ProductController extends Controller
     public function getProductList()
     {
 
-        $data  = Product::get();
+        $data  = Product::orderBy('created_at', 'DESC')->get();
 
         return Datatables::of($data)
-            ->addColumn('location', function ($data) {
-                $warehouses = $data->getWarehouseNames()->toArray();
-                $badge = '';
-                if ($warehouses) {
-                    $badge = implode(' , ', $warehouses);
-                }
-
-                return $badge;
-            })
             ->addColumn('action', function ($data) {
                 $buttons = '';
+                if (Auth::user()->can('lihat produk')) {
+                    $buttons .= '<a class="modal-show btn-show" href="' . url('products/' . $data->id) . '/show" title="Detail ' . $data->name . '" data-name="' . $data->name . '"><i class="ik ik-eye f-16 mr-15 text-info"></i></a>';
+                }
                 if (Auth::user()->can('edit produk')) {
-                    $buttons .= '<a class="btn-edit" href="' . url('products/' . $data->id) . '/edit" title="Edit ' . $data->name . '"><i class="ik ik-edit f-16 mr-15 text-green"></i></a>';
+                    $buttons .= '<a class="modal-show" href="' . url('products/' . $data->id) . '/edit" title="Edit ' . $data->name . '"><i class="ik ik-edit f-16 mr-15 text-green"></i></a>';
                 }
                 if (Auth::user()->can('hapus produk')) {
-                    $buttons .= '<a class="btn-delete" href="' . url('products/' . $data->id) . '" title="Hapus ' . $data->name . '" data-name="' . $data->name . '"><i class="ik ik-trash-2 f-16 text-red"></i></a>';
+                    $buttons .= '<a class="modal-show btn-delete" href="' . url('products/' . $data->id) . '" title="Hapus ' . $data->name . '" data-name="' . $data->name . '"><i class="ik ik-trash-2 f-16 mr-15 text-red"></i></a>';
                 }
 
                 return '<div class="table-actions">' . $buttons . '</div>';
             })
-            ->rawColumns(['location', 'action'])
+            ->rawColumns(['action'])
             ->make(true);
     }
 
@@ -87,7 +84,23 @@ class ProductController extends Controller
      */
     public function store(StoreProductRequest $request)
     {
-        $model = Product::create($request->all());
+        $purchase_price = str_replace(".", "", $request->purchase_price);
+        $selling_price = str_replace(".", "", $request->selling_price);
+        $model = Product::create([
+            'code' => $request->code,
+            'name' => $request->name,
+            'slug' => $request->slug,
+            'size' => $request->size,
+            'purchase_price' => $purchase_price,
+            'selling_price' =>$selling_price,
+            'min_stock' => $request->min_stock,
+            'max_stock' => $request->max_stock,
+            'photo' => $request->photo,
+            'type_id' => $request->type_id,
+            'group_id' => $request->group_id,
+            'warehouse_id' => $request->warehouse_id,
+            'unit_id' => $request->unit_id
+        ]);
         return $model;
     }
 
@@ -97,9 +110,16 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Product $product)
     {
-        //
+        $created_at = $product->created_at->isoFormat('LLLL');
+        $purchase_price = rupiah($product->purchase_price);
+        $selling_price = rupiah($product->selling_price);
+        $warehouses = Warehouse::pluck('name', 'id');
+        $groups = Group::pluck('name', 'id');
+        $types = Type::pluck('name', 'id');
+        $units = Unit::pluck('name', 'id');
+        return view('include.product.show', compact('product','units','types','groups','warehouses','created_at','purchase_price', 'selling_price'));
     }
 
     /**
@@ -108,9 +128,17 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Product $product)
     {
-        //
+        if (Auth::user()->can('edit produk')) {
+            $warehouses = Warehouse::pluck('name', 'id');
+            $groups = Group::pluck('name', 'id');
+            $types = Type::pluck('name', 'id');
+            $units = Unit::pluck('name', 'id');
+            return view('include.product.form', compact('product','groups','types','units','warehouses'));
+        } else {
+            return '<div class="text-center">Anda tidak memiliki akses untuk mengedit produk</div>';
+        }
     }
 
     /**
@@ -120,9 +148,26 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateProductRequest $request, Product $product)
     {
-        //
+        $purchase_price = str_replace(".", "", $request->purchase_price);
+        $selling_price = str_replace(".", "", $request->selling_price);
+        $model = $product->update([
+            'code' => $request->code,
+            'name' => $request->name,
+            'slug' => $request->slug,
+            'size' => $request->size,
+            'purchase_price' => $purchase_price,
+            'selling_price' =>$selling_price,
+            'min_stock' => $request->min_stock,
+            'max_stock' => $request->max_stock,
+            'photo' => $request->photo,
+            'type_id' => $request->type_id,
+            'group_id' => $request->group_id,
+            'warehouse_id' => $request->warehouse_id,
+            'unit_id' => $request->unit_id
+        ]);
+        return $model;
     }
 
     /**
@@ -131,8 +176,19 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Product $product)
     {
-        //
+        try {
+            $product->delete();
+        } catch (\Exception $e) {
+            $bug = $e->getMessage();
+            return $bug;
+        }
+    }
+
+    public function getSlug(Request $request)
+    {
+        $slug = SlugService::createSlug(Product::class, 'slug', $request->name);
+        return response()->json(['slug' => $slug]);
     }
 }

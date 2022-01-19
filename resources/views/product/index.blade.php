@@ -38,7 +38,7 @@
                         <h3>{{ __('Produk')}}</h3>
                         @can('tambah produk')
                         <div class="row ml-auto">
-                            <a href="{{ route('products.create') }}" class="btn btn-primary float-right btn-create-product">Tambah</a>
+                            <a href="{{ route('products.create') }}" class="btn btn-primary float-right modal-show" title="Tambah Produk">Tambah</a>
                         </div>
                         @endcan
                     </div>
@@ -46,13 +46,11 @@
                         <table id="product_table" class="table table-bordered">
                             <thead class="text-center">
                                 <tr>
-                                    <th>{{ __('Kode')}}</th>
-                                    <th>{{ __('Nama Barang')}}</th>
-                                    <th>{{ __('Ukuran (ml)')}}</th>
-                                    <th>{{ __('Stok')}}</th>
-                                    <th>{{ __('Harga Beli')}}</th>
-                                    <th>{{ __('Lokasi')}}</th>
-                                    <th>{{ __('Aksi')}}</th>
+                                    <th width="15%">{{ __('Kode')}}</th>
+                                    <th width="45%">{{ __('Nama Barang')}}</th>
+                                    <th width="15%">{{ __('Ukuran (ml)')}}</th>
+                                    <th width="10%">{{ __('Stok')}}</th>
+                                    <th width="15%">{{ __('Aksi')}}</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -67,6 +65,8 @@
     @push('script')
     <script src="{{ asset('plugins/DataTables/datatables.min.js') }}"></script>
     <script src="{{ asset('plugins/select2/dist/js/select2.min.js') }}"></script>
+    <script src="{{ asset('plugins/sweetalert/dist/sweetalert.min.js') }}"></script>
+	<script src="{{ asset('plugins/mask-money/jquery.mask.min.js') }}"></script>
     <script src="{{ asset('plugins/jquery-toast-plugin/dist/jquery.toast.min.js')}}"></script>
     <!--server side users table script-->
     <script src="{{ asset('js/masters/product.js') }}"></script>

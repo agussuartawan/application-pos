@@ -1,4 +1,11 @@
 <?php return array (
+  'cviebrock/eloquent-sluggable' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'Cviebrock\\EloquentSluggable\\ServiceProvider',
+    ),
+  ),
   'facade/ignition' => 
   array (
     'providers' => 
@@ -94,6 +101,13 @@
     'providers' => 
     array (
       0 => 'Spatie\\Permission\\PermissionServiceProvider',
+    ),
+  ),
+  'wuwx/laravel-autonumber' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'Wuwx\\LaravelAutoNumber\\AutoNumberServiceProvider',
     ),
   ),
   'yajra/laravel-datatables-oracle' => 
