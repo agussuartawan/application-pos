@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Masters;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreProductRequest;
 use App\Models\Group;
 use App\Models\Product;
 use App\Models\Type;
@@ -25,31 +26,32 @@ class ProductController extends Controller
 
     public function getProductList()
     {
-        
+
         $data  = Product::get();
 
         return Datatables::of($data)
-                ->addColumn('location', function($data){
-                    $warehouses = $data->getWarehouseNames()->toArray();
-                    $badge = '';
-                    if($warehouses){
-                        $badge = implode(' , ', $warehouses);
-                    }
+            ->addColumn('location', function ($data) {
+                $warehouses = $data->getWarehouseNames()->toArray();
+                $badge = '';
+                if ($warehouses) {
+                    $badge = implode(' , ', $warehouses);
+                }
 
-                    return $badge;
-                })
-                ->addColumn('action', function($data){
-                    if (Auth::user()->can('mengelola produk')){
-                        return '<div class="table-actions">
-                                <a href="'.url('products/'.$data->id).'/edit" class="btn-edit" title="Edit '. $data->name .'" data-name="'.$data->name.'"><i class="ik ik-edit-2 f-16 mr-15 text-green"></i></a>
-                                <a href="'.url('products/'.$data->id).'" class="btn-delete" title="Hapus '. $data->name .'" data-name="'.$data->name.'"><i class="ik ik-trash-2 f-16 text-red"></i></a>
-                            </div>';
-                    }else{
-                        return '';
-                    }
-                })
-                ->rawColumns(['location','action'])
-                ->make(true);
+                return $badge;
+            })
+            ->addColumn('action', function ($data) {
+                $buttons = '';
+                if (Auth::user()->can('edit produk')) {
+                    $buttons .= '<a class="btn-edit" href="' . url('products/' . $data->id) . '/edit" title="Edit ' . $data->name . '"><i class="ik ik-edit f-16 mr-15 text-green"></i></a>';
+                }
+                if (Auth::user()->can('hapus produk')) {
+                    $buttons .= '<a class="btn-delete" href="' . url('products/' . $data->id) . '" title="Hapus ' . $data->name . '" data-name="' . $data->name . '"><i class="ik ik-trash-2 f-16 text-red"></i></a>';
+                }
+
+                return '<div class="table-actions">' . $buttons . '</div>';
+            })
+            ->rawColumns(['location', 'action'])
+            ->make(true);
     }
 
     /**
@@ -59,25 +61,19 @@ class ProductController extends Controller
      */
     public function create()
     {
-        try
-        {
-            return view('product.create');
+        try {
+            if (Auth::user()->can('tambah produk')) {
+                $product = new Product();
+                $warehouses = Warehouse::pluck('name', 'id');
+                $groups = Group::pluck('name', 'id');
+                $types = Type::pluck('name', 'id');
+                $units = Unit::pluck('name', 'id');
 
-        }catch (\Exception $e) {
-            $bug = $e->getMessage();
-            return redirect()->back()->with('error', $bug);
-        }
-    }
-
-    public function showForm()
-    {
-        try{
-            $warehouses = Warehouse::pluck('name','id');
-            $types = Type::pluck('name','id');
-            $groups = Group::pluck('name','id');
-            $units = Unit::pluck('name','id');
-            return view('include.product.form', compact('warehouses','types','groups','units'));
-        } catch (\Exception $e){
+                return view('include.product.form', compact('product', 'warehouses', 'groups', 'types', 'units'));
+            } else {
+                return '<div class="text-center">Anda tidak memiliki akses untuk menambah produk</div>';
+            }
+        } catch (\Exception $e) {
             $bug = $e->getMessage();
             return $bug;
         }
@@ -89,9 +85,10 @@ class ProductController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreProductRequest $request)
     {
-        //
+        $model = Product::create($request->all());
+        return $model;
     }
 
     /**

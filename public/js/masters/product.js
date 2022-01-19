@@ -146,4 +146,105 @@
             }
         });
     });
+
+    $('body').on('click', '.btn-create-product', function(){
+        var me = $(this);
+
+        event.preventDefault();
+        $('#modal').modal('show');
+        showModalForm(me);
+    });
+
+    $('.modal-save').on('click', function(event) {
+        event.preventDefault();
+
+        var form = $('#form-product'),
+            url = form.attr('action'),
+            method = $('input[name=_method').val() == undefined ? 'POST' : 'PUT',
+            message = $('input[name=_method').val() == undefined ? 'Data produk berhasil ditambahkan' : 'Data produk berhasil diubah';
+
+        $('.form-control').removeClass('is-invalid');
+        $('.invalid-feedback').remove();
+        
+        $.ajax({
+            url: url,
+            method: method,
+            data: form.serialize(),
+            beforeSend: function() {
+                $('.preloader').fadeIn();
+            },
+            complete: function(){
+                $('.preloader').fadeOut();
+            },
+            success: function(response){
+                showSuccessToast(message);
+                showCreateForm();
+            },
+            error: function(xhr){
+                showErrorToast();
+                var res = xhr.responseJSON;
+                if($.isEmptyObject(res) == false){
+                    $.each(res.errors, function(key, value){
+                        $('#' + key)
+                            .closest('.form-group')
+                            .addClass('input-group-danger')
+                            .append(value);
+                    });
+                }
+            }
+        });
+    });
+
+    $('#modal').on('hidden.bs.modal', function(){
+        $('.load-here').empty();
+    });
 })(jQuery);
+
+showModalForm = function(me){
+    var url = me.attr('href'),
+        title = 'Tambah Produk';
+
+    $('.modal-title').text(title);
+
+    $.ajax({
+        url: '/products/create',
+        type: 'GET',
+        dataType: 'html',
+        beforeSend: function() {
+            $('.loader').show();
+        },
+        complete: function(){
+            $('.loader').hide();
+        },
+        success: function(response){
+            $('.load-here').html(response);
+        },
+        error: function(xhr, status){
+            alert('Terjadi kesalahan')
+        }
+    });
+}
+
+showSuccessToast = function(message) {
+    'use strict';
+    $.toast({
+        heading: 'Sukses',
+        text: message,
+        showHideTransition: 'slide',
+        icon: 'success',
+        loaderBg: '#f96868',
+        position: 'top-right'
+    })
+};
+
+showErrorToast = function() {
+    'use strict';
+    $.toast({
+        heading: 'Error',
+        text: 'Terjadi kesalahan',
+        showHideTransition: 'slide',
+        icon: 'error',
+        loaderBg: '#f2a654',
+        position: 'top-right'
+    })
+};

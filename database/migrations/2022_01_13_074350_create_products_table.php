@@ -23,8 +23,8 @@ class CreateProductsTable extends Migration
             $table->string('name');
             $table->string('slug');
             $table->integer('size');
-            $table->double('purchase_price');
-            $table->double('selling_price');
+            $table->decimal('purchase_price', $precision = 19, $scale = 2);
+            $table->decimal('selling_price', $precision = 19, $scale = 2);
             $table->integer('stock');
             $table->integer('min_stock');
             $table->integer('max_stock');

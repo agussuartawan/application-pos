@@ -4,6 +4,8 @@
     <!-- push external head elements to head -->
     @push('head')
         <link rel="stylesheet" href="{{ asset('plugins/DataTables/datatables.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('plugins/jquery-toast-plugin/dist/jquery.toast.min.css')}}">
+        <link rel="stylesheet" href="{{ asset('plugins/select2/dist/css/select2.min.css') }}">
     @endpush
     <div class="container-fluid">
     	<div class="page-header">
@@ -34,13 +36,15 @@
                 <div class="card p-3">
                     <div class="card-header">
                         <h3>{{ __('Produk')}}</h3>
+                        @can('tambah produk')
                         <div class="row ml-auto">
-                            <a href="{{ route('products.create') }}" class="btn btn-primary float-right">Tambah</a>
+                            <a href="{{ route('products.create') }}" class="btn btn-primary float-right btn-create-product">Tambah</a>
                         </div>
+                        @endcan
                     </div>
                     <div class="card-body">
                         <table id="product_table" class="table table-bordered">
-                            <thead>
+                            <thead class="text-center">
                                 <tr>
                                     <th>{{ __('Kode')}}</th>
                                     <th>{{ __('Nama Barang')}}</th>
@@ -62,6 +66,8 @@
     <!-- push external js -->
     @push('script')
     <script src="{{ asset('plugins/DataTables/datatables.min.js') }}"></script>
+    <script src="{{ asset('plugins/select2/dist/js/select2.min.js') }}"></script>
+    <script src="{{ asset('plugins/jquery-toast-plugin/dist/jquery.toast.min.js')}}"></script>
     <!--server side users table script-->
     <script src="{{ asset('js/masters/product.js') }}"></script>
     @endpush

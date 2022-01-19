@@ -29,18 +29,19 @@ class TypeController extends Controller
         $data  = Type::orderBy('created_at', 'DESC')->get();
 
         return Datatables::of($data)
-                ->addColumn('action', function($data){
-                    if (Auth::user()->can('mengelola tipe produk')){
-                        return '<div class="table-actions">
-                                <a class="btn-edit" href="'.url('product-types/'.$data->id).'/edit" title="Edit '.$data->name.'"><i class="ik ik-edit-2 f-16 mr-15 text-green"></i></a>
-                                <a class="btn-delete" href="'.url('product-types/'.$data->id).'" title="Hapus '.$data->name.'" data-name="'.$data->name.'"><i class="ik ik-trash-2 f-16 text-red"></i></a>
-                            </div>';
-                    }else{
-                        return '';
-                    }
-                })
-                ->rawColumns(['action'])
-                ->make(true);
+            ->addColumn('action', function ($data) {
+                $buttons = '';
+                if (Auth::user()->can('edit tipe produk')) {
+                    $buttons .= '<a class="btn-edit" href="' . url('product-types/' . $data->id) . '/edit" title="Edit ' . $data->name . '"><i class="ik ik-edit f-16 mr-15 text-green"></i></a>';
+                }
+                if (Auth::user()->can('hapus tipe produk')) {
+                    $buttons .= '<a class="btn-delete" href="' . url('product-types/' . $data->id) . '" title="Hapus ' . $data->name . '" data-name="' . $data->name . '"><i class="ik ik-trash-2 f-16 text-red"></i></a>';
+                }
+
+                return '<div class="table-actions">' . $buttons . '</div>';
+            })
+            ->rawColumns(['action'])
+            ->make(true);
     }
 
     /**
@@ -64,10 +65,14 @@ class TypeController extends Controller
 
     public function showForm()
     {
-        try{
-            $product_type = new Type();
-            return view('include.product-type.form', compact('product_type'));
-        } catch (\Exception $e){
+        try {
+            if (Auth::user()->can('tambah tipe produk')) {
+                $product_type = new Type();
+                return view('include.product-type.form', compact('product_type'));
+            } else {
+                return '<div class="text-center">Anda tidak memiliki akses untuk menambah tipe produk</div>';
+            }
+        } catch (\Exception $e) {
             $bug = $e->getMessage();
             return $bug;
         }
@@ -81,7 +86,11 @@ class TypeController extends Controller
      */
     public function edit(Type $product_type)
     {
-        return view('include.product-type.form', compact('product_type'));
+        if (Auth::user()->can('edit tipe produk')) {
+            return view('include.product-type.form', compact('product_type'));
+        } else {
+            return '<div class="text-center">Anda tidak memiliki akses untuk mengedit tipe produk</div>';
+        }
     }
 
     /**
@@ -112,9 +121,9 @@ class TypeController extends Controller
      */
     public function destroy(Type $product_type)
     {
-        try{
+        try {
             $product_type->delete();
-        } catch(\Exception $e){
+        } catch (\Exception $e) {
             $bug = $e->getMessage();
             return $bug;
         }

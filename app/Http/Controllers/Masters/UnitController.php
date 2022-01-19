@@ -16,7 +16,7 @@ class UnitController extends Controller
      */
     public function index()
     {
-        return view('product-unit.index');        
+        return view('product-unit.index');
     }
 
     public function getProductUnitList()
@@ -24,16 +24,19 @@ class UnitController extends Controller
         $data  = Unit::orderBy('created_at', 'DESC')->get();
 
         return Datatables::of($data)
-                ->addColumn('action', function($data){
-                    $buttons = '<a class="btn-edit" href="'.url('product-units/'.$data->id).'/edit" title="Edit '.$data->name.'"><i class="ik ik-edit-2 f-16 mr-15 text-green"></i></a>';
-                    if(Auth::user()->can('hapus unit produk')){
-                        $buttons .= '<a class="btn-delete" href="'.url('product-units/'.$data->id).'" title="Hapus '.$data->name.'" data-name="'.$data->name.'"><i class="ik ik-trash-2 f-16 text-red"></i></a>';
-                    }
-                        
-                    return '<div class="table-actions">'. $buttons .'</div>';
-                })
-                ->rawColumns(['action'])
-                ->make(true);
+            ->addColumn('action', function ($data) {
+                $buttons = '';
+                if (Auth::user()->can('edit unit produk')) {
+                    $buttons .= '<a class="btn-edit" href="' . url('product-units/' . $data->id) . '/edit" title="Edit ' . $data->name . '"><i class="ik ik-edit f-16 mr-15 text-green"></i></a>';
+                }
+                if (Auth::user()->can('hapus unit produk')) {
+                    $buttons .= '<a class="btn-delete" href="' . url('product-units/' . $data->id) . '" title="Hapus ' . $data->name . '" data-name="' . $data->name . '"><i class="ik ik-trash-2 f-16 text-red"></i></a>';
+                }
+
+                return '<div class="table-actions">' . $buttons . '</div>';
+            })
+            ->rawColumns(['action'])
+            ->make(true);
     }
 
     /**
@@ -57,14 +60,14 @@ class UnitController extends Controller
 
     public function showForm()
     {
-        try{
-            if (Auth::user()->can('tambah unit produk')){
+        try {
+            if (Auth::user()->can('tambah unit produk')) {
                 $product_unit = new Unit();
                 return view('include.product-unit.form', compact('product_unit'));
             } else {
                 return '<div class="text-center">Anda tidak memiliki akses untuk menambah unit produk</div>';
             }
-        } catch (\Exception $e){
+        } catch (\Exception $e) {
             $bug = $e->getMessage();
             return $bug;
         }
@@ -78,7 +81,7 @@ class UnitController extends Controller
      */
     public function edit(Unit $product_unit)
     {
-        if (Auth::user()->can('edit unit produk')){
+        if (Auth::user()->can('edit unit produk')) {
             return view('include.product-unit.form', compact('product_unit'));
         } else {
             return '<div class="text-center">Anda tidak memiliki akses untuk mengedit unit produk</div>';
@@ -113,9 +116,9 @@ class UnitController extends Controller
      */
     public function destroy(Unit $product_unit)
     {
-        try{
+        try {
             $product_unit->delete();
-        } catch(\Exception $e){
+        } catch (\Exception $e) {
             $bug = $e->getMessage();
             return $bug;
         }

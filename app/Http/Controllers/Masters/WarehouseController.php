@@ -24,18 +24,19 @@ class WarehouseController extends Controller
         $data  = Warehouse::orderBy('created_at', 'DESC')->get();
 
         return Datatables::of($data)
-                ->addColumn('action', function($data){
-                    if (Auth::user()->can('mengelola gudang')){
-                        return '<div class="table-actions">
-                                <a class="btn-edit" href="'.url('warehouses/'.$data->id).'/edit" title="Edit '.$data->name.'"><i class="ik ik-edit-2 f-16 mr-15 text-green"></i></a>
-                                <a class="btn-delete" href="'.url('warehouses/'.$data->id).'" title="Hapus '.$data->name.'" data-name="'.$data->name.'"><i class="ik ik-trash-2 f-16 text-red"></i></a>
-                            </div>';
-                    }else{
-                        return '';
-                    }
-                })
-                ->rawColumns(['action'])
-                ->make(true);
+            ->addColumn('action', function ($data) {
+                $buttons = '';
+                if (Auth::user()->can('edit gudang')) {
+                    $buttons .= '<a class="btn-edit" href="' . url('warehouses/' . $data->id) . '/edit" title="Edit ' . $data->name . '"><i class="ik ik-edit f-16 mr-15 text-green"></i></a>';
+                }
+                if (Auth::user()->can('hapus gudang')) {
+                    $buttons .= '<a class="btn-delete" href="' . url('warehouses/' . $data->id) . '" title="Hapus ' . $data->name . '" data-name="' . $data->name . '"><i class="ik ik-trash-2 f-16 text-red"></i></a>';
+                }
+
+                return '<div class="table-actions">' . $buttons . '</div>';
+            })
+            ->rawColumns(['action'])
+            ->make(true);
     }
 
     /**
@@ -45,10 +46,14 @@ class WarehouseController extends Controller
      */
     public function showForm()
     {
-        try{
-            $warehouse = new Warehouse();
-            return view('include.warehouse.form', compact('warehouse'));
-        } catch (\Exception $e){
+        try {
+            if (Auth::user()->can('tambah gudang')) {
+                $warehouse = new Warehouse();
+                return view('include.warehouse.form', compact('warehouse'));
+            } else {
+                return '<div class="text-center">Anda tidak memiliki akses untuk menambah gudang</div>';
+            }
+        } catch (\Exception $e) {
             $bug = $e->getMessage();
             return $bug;
         }
@@ -81,7 +86,11 @@ class WarehouseController extends Controller
      */
     public function edit(Warehouse $warehouse)
     {
-        return view('include.warehouse.form', compact('warehouse'));
+        if (Auth::user()->can('edit gudang')) {
+            return view('include.warehouse.form', compact('warehouse'));
+        } else {
+            return '<div class="text-center">Anda tidak memiliki akses untuk mengedit gudang</div>';
+        }
     }
 
     /**
@@ -99,7 +108,7 @@ class WarehouseController extends Controller
         $this->validate($request, [
             'name' => 'required|max:255'
         ], $messages);
-        
+
         $model = $warehouse->update($request->all());
         return $model;
     }
@@ -112,9 +121,9 @@ class WarehouseController extends Controller
      */
     public function destroy(Warehouse $warehouse)
     {
-        try{
+        try {
             $warehouse->delete();
-        } catch(\Exception $e){
+        } catch (\Exception $e) {
             $bug = $e->getMessage();
             return $bug;
         }

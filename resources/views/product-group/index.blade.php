@@ -33,7 +33,6 @@
             </div>
         </div>
         <div class="row clearfix">
-            @can('mengelola grup produk')
 			<div class="col-md-12">
 	            <div class="card">
 	                <div class="card-header form-title"></div>
@@ -42,7 +41,6 @@
                     </div>
 	            </div>
 	        </div>
-            @endcan
 		</div>
 		<div class="row">
 	        <div class="col-md-12">
@@ -50,7 +48,7 @@
 	                <div class="card-header"><h3>{{ __('Grup Produk')}}</h3></div>
 	                <div class="card-body">
 	                    <table id="product_group_table" class="table table-bordered">
-	                        <thead>
+	                        <thead class="text-center">
 	                            <tr>
 	                                <th>{{ __('Nama Grup')}}</th>
 	                                <th width="10%">{{ __('Aksi')}}</th>

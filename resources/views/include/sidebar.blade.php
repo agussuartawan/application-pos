@@ -43,15 +43,15 @@
                     <a href="javascript:void(0)"><i class="ik ik-user"></i><span>{{ __('Adminstrator')}}</span></a>
                     <div class="submenu-content">
                         <!-- only those have manage_user permission will get access -->
-                        @can('mengelola user')
+                        @can('lihat user')
                         <a href="{{url('user')}}" class="menu-item {{ request()->is('user*') ? 'active' : '' }}">{{ __('User')}}</a>
                         @endcan
                          <!-- only those have manage_role permission will get access -->
-                        @can('mengelola role')
+                        @can('lihat role')
                         <a href="{{url('role')}}" class="menu-item {{ request()->is('role*') ? 'active' : '' }}">{{ __('Role')}}</a>
                         @endcan
                         <!-- only those have manage_permission permission will get access -->
-                        @can('mengelola permission')
+                        @can('lihat permission')
                         <a href="{{url('permission')}}" class="menu-item {{ request()->is('permission*') ? 'active' : '' }}">{{ __('Permission')}}</a>
                         @endcan
                         @can('melihat log aktivitas')

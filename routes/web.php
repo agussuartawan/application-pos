@@ -46,35 +46,44 @@ Route::group(['middleware' => 'auth'], function () {
 	})->name('dashboard');
 
 	//only those have manage_user permission will get access
-	Route::group(['middleware' => 'can:mengelola user'], function () {
+	Route::group(['middleware' => 'can:lihat user'], function () {
 		Route::get('user', [UserController::class, 'index']);
 		Route::get('user/get-list', [UserController::class, 'getUserList']);
+	});
+	Route::group(['middleware' => 'can:tambah user'], function () {
 		Route::get('user/create', [UserController::class, 'create']);
 		Route::post('user/create', [UserController::class, 'store'])->name('create.user');
+	});
+	Route::group(['middleware' => 'can:edit user'], function () {
 		Route::get('user/{id}', [UserController::class, 'edit']);
 		Route::post('user/update', [UserController::class, 'update']);
-		Route::get('user/delete/{id}', [UserController::class, 'delete']);
 	});
+	Route::get('user/delete/{id}', [UserController::class, 'delete'])->middleware('can:hapus user');
 
 	//only those have manage_role permission will get access
-	Route::group(['middleware' => 'can:mengelola role,mengelola user'], function () {
+	Route::group(['middleware' => 'can:lihat role'], function () {
 		Route::get('role', [RolesController::class, 'index']);
 		Route::get('role/get-list', [RolesController::class, 'getRoleList']);
-		Route::post('role/create', [RolesController::class, 'create']);
+	});
+	Route::post('role/create', [RolesController::class, 'create'])->middleware('can:tambah role');
+	Route::group(['middleware' => 'can:edit role'], function () {
 		Route::get('role/edit/{id}', [RolesController::class, 'edit']);
 		Route::post('role/update', [RolesController::class, 'update']);
-		Route::get('role/delete/{id}', [RolesController::class, 'delete']);
 	});
+	Route::get('role/delete/{id}', [RolesController::class, 'delete'])->middleware('can:hapus role');
 
 
 	//only those have manage_permission permission will get access
-	Route::group(['middleware' => 'can:mengelola permission,mengelola user'], function () {
+	Route::group(['middleware' => 'can:lihat permission'], function () {
 		Route::get('permission', [PermissionController::class, 'index']);
 		Route::get('permission/get-list', [PermissionController::class, 'getPermissionList']);
-		Route::post('permission/create', [PermissionController::class, 'create']);
-		Route::get('permission/update', [PermissionController::class, 'update']);
-		Route::get('permission/delete/{id}', [PermissionController::class, 'delete']);
 	});
+	Route::post('permission/create', [PermissionController::class, 'create'])->middleware('can:tambah permission');
+	Route::group(['middleware' => 'can:edit permission'], function () {
+		Route::get('permission/update', [PermissionController::class, 'update']);
+	});
+	Route::get('permission/delete/{id}', [PermissionController::class, 'delete'])->middleware('can:hapus permission');
+
 
 	// get permissions
 	Route::get('get-role-permissions-badge', [PermissionController::class, 'getPermissionBadgeByRole']);
@@ -82,7 +91,7 @@ Route::group(['middleware' => 'auth'], function () {
 
 	// permission examples
 	Route::get('permission-example', function () {
-		return view('permission-example');
+		return view('permission.permission-example');
 	});
 	// API Documentation
 	Route::get('/rest-api', function () {
@@ -211,11 +220,18 @@ Route::group(['middleware' => 'auth'], function () {
 	});
 
 	// product route
-	Route::group(['middleware' => 'can:mengelola produk'], function () {
+	Route::group(['middleware' => 'can:lihat produk'], function () {
 		Route::get('product/get-list', [ProductController::class, 'getProductList']);
-		Route::get('product/show-form', [ProductController::class, 'showForm']);
-		Route::resource('products', ProductController::class);
+		Route::get('products', [ProductController::class, 'index'])->name('products.index');
 	});
+	Route::get('products/create', [ProductController::class, 'create'])->name('products.create');
+	Route::post('products', [ProductController::class, 'store'])->middleware('can:tambah produk')->name('products.store');
+	Route::group(['middleware' => 'can:edit produk'], function () {
+		Route::get('products/{product}/create', [ProductController::class, 'edit'])->name('products.edit');
+		Route::put('products/{product}', [ProductController::class, 'update'])->name('products.update');
+	});
+	Route::delete('products/{product}', [ProductController::class, 'destroy'])->middleware('can:hapus produk')->name('products.destroy');
+
 
 	// warehouse route
 	Route::get('warehouse/show-form', [WarehouseController::class, 'showForm']);
@@ -237,10 +253,10 @@ Route::group(['middleware' => 'auth'], function () {
 
 	// group route
 	Route::get('product-group/show-form', [GroupController::class, 'showForm']);
-	Route::get('product-group/get-list', [GroupController::class, 'getProductGroupList']);	
+	Route::get('product-group/get-list', [GroupController::class, 'getProductGroupList']);
 	Route::get('product-groups', [GroupController::class, 'index'])->middleware('can:lihat grup produk')->name('product-groups.index');
 	Route::post('product-groups', [GroupController::class, 'store'])->middleware('can:tambah grup produk')->name('product-groups.store');
-	Route::get('product-groups/{product_group}/edit', [GroupController::class, 'edit'])->name('product-groups.edit');	
+	Route::get('product-groups/{product_group}/edit', [GroupController::class, 'edit'])->name('product-groups.edit');
 	Route::put('product-groups/{product_group}', [GroupController::class, 'update'])->middleware('can:edit grup produk')->name('product-groups.update');
 	Route::delete('product-groups/{product_group}', [GroupController::class, 'destroy'])->middleware('can:hapus grup produk')->name('product-groups.destroy');
 
@@ -254,6 +270,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::put('product-units/{product_unit}', [UnitController::class, 'update'])->middleware('can:edit unit produk')->name('product-units.update');
 	Route::delete('product-units/{product_unit}', [UnitController::class, 'destroy'])->middleware('can:hapus unit produk')->name('product-units.destroy');
 
+	#activity log route
 	Route::group(['middleware' => 'can:melihat log aktivitas'], function () {
 		Route::get('activity-log/get-list', [ActivityLogController::class, 'getActivityLogList']);
 		Route::get('activity-log/{activity}/show', [ActivityLogController::class, 'show']);

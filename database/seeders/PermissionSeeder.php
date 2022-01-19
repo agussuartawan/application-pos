@@ -15,16 +15,47 @@ class PermissionSeeder extends Seeder
     public function run()
     {
         $permissions = [
-        	['name' => 'mengelola master'],
-        	['name' => 'mengelola produk'],
-        	['name' => 'mengelola unit produk'],
-        	['name' => 'mengelola grup produk'],
-        	['name' => 'mengelola tipe produk'],
-        	['name' => 'mengelola gudang'],
-        	['name' => 'mengelola administrator'],
-        	['name' => 'mengelola user'],
-            ['name' => 'mengelola role'],
-        	['name' => 'melihat log aktivitas'],
+            ['name' => 'mengelola master'],
+
+            ['name' => 'lihat produk'],
+            ['name' => 'tambah produk'],
+            ['name' => 'edit produk'],
+            ['name' => 'hapus produk'],
+
+            ['name' => 'lihat unit produk'],
+            ['name' => 'tambah unit produk'],
+            ['name' => 'edit unit produk'],
+            ['name' => 'hapus unit produk'],
+
+            ['name' => 'lihat grup produk'],
+            ['name' => 'tambah grup produk'],
+            ['name' => 'edit grup produk'],
+            ['name' => 'update grup produk'],
+
+
+            ['name' => 'lihat tipe produk'],
+            ['name' => 'tambah tipe produk'],
+            ['name' => 'edit tipe produk'],
+            ['name' => 'hapus tipe produk'],
+
+            ['name' => 'lihat gudang'],
+            ['name' => 'tambah gudang'],
+            ['name' => 'edit gudang'],
+            ['name' => 'hapus gudang'],
+
+            ['name' => 'mengelola administrator'],
+
+            ['name' => 'lihat role'],
+            ['name' => 'tambah role'],
+            ['name' => 'edit role'],
+            ['name' => 'hapus role'],
+
+            ['name' => 'lihat user'],
+            ['name' => 'tambah user'],
+            ['name' => 'edit user'],
+            ['name' => 'hapus user'],
+
+            ['name' => 'melihat log aktivitas'],
         ];
 
         foreach ($permissions as $value) {

@@ -78,7 +78,7 @@
                 <div class="card p-3">
                     <div class="card-body">
                         <table id="permission_table" class="table">
-                            <thead>
+                            <thead class="text-center">
                                 <tr>
                                     <th>{{ __('Permission')}}</th>
                                     <th>{{ __('Assigned Role')}}</th>

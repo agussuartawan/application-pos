@@ -12,7 +12,7 @@
                 @include('include.loader')
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary modal-save">{{ __('Save changes')}}</button>
+                <button type="button" class="btn btn-primary modal-save">{{ __('Simpan')}}</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('Tutup')}}</button>
             </div>
         </div>

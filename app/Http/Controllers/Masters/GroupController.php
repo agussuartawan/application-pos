@@ -16,25 +16,28 @@ class GroupController extends Controller
      */
     public function index()
     {
-        return view('product-group.index');        
+        return view('product-group.index');
     }
 
     public function getProductGroupList()
     {
-        try{
+        try {
             $data  = Group::orderBy('created_at', 'DESC')->get();
 
             return Datatables::of($data)
-                    ->addColumn('action', function($data){
-                        $buttons = '<a class="btn-edit" href="'.url('product-groups/'.$data->id).'/edit" title="Edit '.$data->name.'"><i class="ik ik-edit-2 f-16 mr-15 text-green"></i></a>';
-                        if(Auth::user()->can('hapus grup produk')){
-                            $buttons .= '<a class="btn-delete" href="'.url('product-groups/'.$data->id).'" title="Hapus '.$data->name.'" data-name="'.$data->name.'"><i class="ik ik-trash-2 f-16 text-red"></i></a>';
-                        }
-                            
-                        return '<div class="table-actions">'. $buttons .'</div>';
-                    })
-                    ->rawColumns(['action'])
-                    ->make(true);
+                ->addColumn('action', function ($data) {
+                    $buttons = '';
+                    if (Auth::user()->can('edit grup produk')) {
+                        $buttons .= '<a class="btn-edit" href="' . url('product-groups/' . $data->id) . '/edit" title="Edit ' . $data->name . '"><i class="ik ik-edit f-16 mr-15 text-green"></i></a>';
+                    }
+                    if (Auth::user()->can('hapus grup produk')) {
+                        $buttons .= '<a class="btn-delete" href="' . url('product-groups/' . $data->id) . '" title="Hapus ' . $data->name . '" data-name="' . $data->name . '"><i class="ik ik-trash-2 f-16 text-red"></i></a>';
+                    }
+
+                    return '<div class="table-actions">' . $buttons . '</div>';
+                })
+                ->rawColumns(['action'])
+                ->make(true);
         } catch (\Exception $e) {
             $bug = $e->getMessage();
             return $bug;
@@ -62,14 +65,14 @@ class GroupController extends Controller
 
     public function showForm()
     {
-        try{
-            if (Auth::user()->can('tambah grup produk')){
+        try {
+            if (Auth::user()->can('tambah grup produk')) {
                 $product_group = new Group();
                 return view('include.product-group.form', compact('product_group'));
             } else {
                 return '<div class="text-center">Anda tidak memiliki akses untuk menambah grup produk</div>';
             }
-        } catch (\Exception $e){
+        } catch (\Exception $e) {
             $bug = $e->getMessage();
             return $bug;
         }
@@ -83,7 +86,7 @@ class GroupController extends Controller
      */
     public function edit(Group $product_group)
     {
-        if (Auth::user()->can('edit grup produk')){
+        if (Auth::user()->can('edit grup produk')) {
             return view('include.product-group.form', compact('product_group'));
         } else {
             return '<div class="text-center">Anda tidak memiliki akses untuk mengedit grup produk</div>';
@@ -118,9 +121,9 @@ class GroupController extends Controller
      */
     public function destroy(Group $product_group)
     {
-        try{
+        try {
             $product_group->delete();
-        } catch(\Exception $e){
+        } catch (\Exception $e) {
             $bug = $e->getMessage();
             return $bug;
         }

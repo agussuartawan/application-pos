@@ -47,7 +47,7 @@
                     </div>
                     <div class="card-body">
                         <table id="user_table" class="table table-bordered">
-                            <thead>
+                            <thead class="text-center">
                                 <tr>
                                     <th>{{ __('Name')}}</th>
                                     <th>{{ __('Email')}}</th>

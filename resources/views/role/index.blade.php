@@ -86,7 +86,7 @@
 	                <div class="card-header"><h3>{{ __('Roles')}}</h3></div>
 	                <div class="card-body">
 	                    <table id="roles_table" class="table">
-	                        <thead>
+	                        <thead class="text-center">
 	                            <tr>
 	                                <th>{{ __('Role')}}</th>
 	                                <th>{{ __('Permissions')}}</th>
