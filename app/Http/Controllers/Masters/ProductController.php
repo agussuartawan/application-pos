@@ -42,10 +42,10 @@ class ProductController extends Controller
                     $buttons .= '<a class="modal-show" href="' . url('products/' . $data->id) . '/edit" title="Edit ' . $data->name . '"><i class="ik ik-edit f-16 mr-15 text-green"></i></a>';
                 }
                 if (Auth::user()->can('hapus produk')) {
-                    $buttons .= '<a class="modal-show btn-delete" href="' . url('products/' . $data->id) . '" title="Hapus ' . $data->name . '" data-name="' . $data->name . '"><i class="ik ik-trash-2 f-16 mr-15 text-red"></i></a>';
+                    $buttons .= '<a class="btn-delete" href="' . url('products/' . $data->id) . '" title="Hapus ' . $data->name . '" data-name="' . $data->name . '"><i class="ik ik-trash-2 f-16 mr-15 text-red"></i></a>';
                 }
 
-                return '<div class="table-actions">' . $buttons . '</div>';
+                return '<div class="table-actions text-center">' . $buttons . '</div>';
             })
             ->rawColumns(['action'])
             ->make(true);
@@ -87,12 +87,11 @@ class ProductController extends Controller
         $purchase_price = str_replace(".", "", $request->purchase_price);
         $selling_price = str_replace(".", "", $request->selling_price);
         $model = Product::create([
-            'code' => $request->code,
             'name' => $request->name,
             'slug' => $request->slug,
             'size' => $request->size,
             'purchase_price' => $purchase_price,
-            'selling_price' =>$selling_price,
+            'selling_price' => $selling_price,
             'min_stock' => $request->min_stock,
             'max_stock' => $request->max_stock,
             'photo' => $request->photo,
@@ -119,7 +118,7 @@ class ProductController extends Controller
         $groups = Group::pluck('name', 'id');
         $types = Type::pluck('name', 'id');
         $units = Unit::pluck('name', 'id');
-        return view('include.product.show', compact('product','units','types','groups','warehouses','created_at','purchase_price', 'selling_price'));
+        return view('include.product.show', compact('product', 'units', 'types', 'groups', 'warehouses', 'created_at', 'purchase_price', 'selling_price'));
     }
 
     /**
@@ -135,7 +134,7 @@ class ProductController extends Controller
             $groups = Group::pluck('name', 'id');
             $types = Type::pluck('name', 'id');
             $units = Unit::pluck('name', 'id');
-            return view('include.product.form', compact('product','groups','types','units','warehouses'));
+            return view('include.product.form', compact('product', 'groups', 'types', 'units', 'warehouses'));
         } else {
             return '<div class="text-center">Anda tidak memiliki akses untuk mengedit produk</div>';
         }
@@ -153,12 +152,11 @@ class ProductController extends Controller
         $purchase_price = str_replace(".", "", $request->purchase_price);
         $selling_price = str_replace(".", "", $request->selling_price);
         $model = $product->update([
-            'code' => $request->code,
             'name' => $request->name,
             'slug' => $request->slug,
             'size' => $request->size,
             'purchase_price' => $purchase_price,
-            'selling_price' =>$selling_price,
+            'selling_price' => $selling_price,
             'min_stock' => $request->min_stock,
             'max_stock' => $request->max_stock,
             'photo' => $request->photo,

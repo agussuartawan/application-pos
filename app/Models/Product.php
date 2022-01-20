@@ -11,14 +11,13 @@ use Wuwx\LaravelAutoNumber\AutoNumberTrait;
 
 class Product extends Model
 {
-    use LogsActivity,SoftDeletes,Sluggable,AutoNumberTrait;
+    use LogsActivity, SoftDeletes, Sluggable, AutoNumberTrait;
 
     protected $fillable = [
         'type_id',
         'group_id',
         'unit_id',
         'warehouse_id',
-        'code',
         'name',
         'slug',
         'size',
@@ -41,13 +40,13 @@ class Product extends Model
 
     public function getDescriptionForEvent(string $eventName): string
     {
-    	if($eventName == 'created'){
-    		$newEventName = 'menambahkan';
-    	} else if($eventName == 'updated'){
-    		$newEventName = 'mengubah';
-    	} else if ($eventName == 'deleted'){
-    		$newEventName = 'menghapus';
-    	}
+        if ($eventName == 'created') {
+            $newEventName = 'menambahkan';
+        } else if ($eventName == 'updated') {
+            $newEventName = 'mengubah';
+        } else if ($eventName == 'deleted') {
+            $newEventName = 'menghapus';
+        }
 
         return ":causer.name {$newEventName} :subject.name pada <span class='badge badge-info'>Produk</span>";
     }

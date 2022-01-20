@@ -15,7 +15,7 @@ use App\Http\Controllers\Masters\TypeController;
 use App\Http\Controllers\Masters\GroupController;
 use App\Http\Controllers\Masters\UnitController;
 use App\Http\Controllers\ActivityLogController;
-
+use App\Models\Product;
 
 Route::get('/', function () {
 	return redirect()->route('login');

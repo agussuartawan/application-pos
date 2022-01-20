@@ -34,7 +34,7 @@ class GroupController extends Controller
                         $buttons .= '<a class="btn-delete" href="' . url('product-groups/' . $data->id) . '" title="Hapus ' . $data->name . '" data-name="' . $data->name . '"><i class="ik ik-trash-2 f-16 text-red"></i></a>';
                     }
 
-                    return '<div class="table-actions">' . $buttons . '</div>';
+                    return '<div class="table-actions text-center">' . $buttons . '</div>';
                 })
                 ->rawColumns(['action'])
                 ->make(true);

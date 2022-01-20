@@ -8,7 +8,7 @@
         <div class="col-sm-6">
             <div class="form-group">
                 <label for="code">{{ __('Kode')}}<span class="text-red">*</span></label>
-                {!! Form::text('code', null,[ 'class'=>'form-control', 'placeholder' => 'Kode produk','id'=> 'code']) !!}
+                {!! Form::text('code', null,[ 'class'=>'form-control', 'placeholder' => '[Auto]','id'=> 'code', 'disabled' => 'disabled']) !!}
             </div>
 
             <div class="form-group">

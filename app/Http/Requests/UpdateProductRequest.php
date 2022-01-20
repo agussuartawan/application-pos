@@ -24,12 +24,12 @@ class UpdateProductRequest extends FormRequest
     public function rules()
     {
         return [
-            'code' => 'required|min:3|max:50|unique:products,code,'. $this->product->id,
+            // 'code' => 'required|min:3|max:50|unique:products,code,'. $this->product->id,
             'name' => 'required|max:255',
             'slug' => 'required|unique:products,slug,' . $this->product->id,
             'size' => 'required|integer',
-            'purchase_price' => 'required|numeric',
-            'selling_price' => 'required|numeric',
+            'purchase_price' => 'required',
+            'selling_price' => 'required',
             'min_stock' => 'required|integer',
             'max_stock' => 'required|integer',
             'photo' => 'image',
@@ -43,10 +43,10 @@ class UpdateProductRequest extends FormRequest
     public function messages()
     {
         return [
-            'code.required' => 'Kode produk tidak boleh kosong.',
-            'code.min' => 'Kode harus terdiri dari minimal 3 digit.',
-            'code.max' => 'Kode harus terdiri dari maksimal 50 digit.',
-            'code.unique' => 'Kode sudah digunakan',
+            // 'code.required' => 'Kode produk tidak boleh kosong.',
+            // 'code.min' => 'Kode harus terdiri dari minimal 3 digit.',
+            // 'code.max' => 'Kode harus terdiri dari maksimal 50 digit.',
+            // 'code.unique' => 'Kode sudah digunakan',
             'name.required' => 'Nama tidak boleh kosong.',
             'name.max' => 'Nama harus terdiri dari maksimal 255 kata.',
             'slug.required' => 'Slug tidak boleh kosong.',
@@ -54,9 +54,7 @@ class UpdateProductRequest extends FormRequest
             'size.integer' => 'Ukuran harus angka.',
             'slug.unique' => 'Slug sudah digunakan',
             'purchase_price.required' => 'Harga beli tidak boleh kosong.',
-            'purchase_price.numeric' => 'Harga beli harus numerik.',
             'selling_price.required' => 'Harga jual tidak boleh kosong.',
-            'selling_price.numeric' => 'Harga jual harus numerik.',
             'min_stock.required' => 'Stok minimum tidak boleh kosong.',
             'min_stock.integer' => 'Stok minimum harus angka.',
             'max_stock.required' => 'Stok maksimum tidak boleh kosong.',

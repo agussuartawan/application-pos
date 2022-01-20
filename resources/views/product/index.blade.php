@@ -35,22 +35,41 @@
             <div class="col-md-12">
                 <div class="card p-3">
                     <div class="card-header">
-                        <h3>{{ __('Produk')}}</h3>
-                        @can('tambah produk')
-                        <div class="row ml-auto">
-                            <a href="{{ route('products.create') }}" class="btn btn-primary float-right modal-show" title="Tambah Produk">Tambah</a>
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-md-2 p-0 float-left">
+                                    <h3>{{ __('Produk')}}</h3>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="d-flex justify-content-center">
+                                        <select name="" class="form-control mr-sm-2" id="">
+                                            <option value="">Filter Tipe</option>
+                                        </select>
+                                        <select name="" class="form-control mr-sm-2" id="">
+                                            <option value="">Filter Grup</option>
+                                        </select>
+                                        <select name="" class="form-control" id="">
+                                            <option value="">Filter Gudang</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-2 p-0 float-right">
+                                    @can('tambah produk')
+                                        <a href="{{ route('products.create') }}" class="btn btn-primary float-right modal-show" title="Tambah Produk">Tambah</a>
+                                    @endcan
+                                </div>
+                            </div>
                         </div>
-                        @endcan
                     </div>
                     <div class="card-body">
                         <table id="product_table" class="table table-bordered">
                             <thead class="text-center">
                                 <tr>
                                     <th width="15%">{{ __('Kode')}}</th>
-                                    <th width="45%">{{ __('Nama Barang')}}</th>
+                                    <th width="40%">{{ __('Nama Barang')}}</th>
                                     <th width="15%">{{ __('Ukuran (ml)')}}</th>
                                     <th width="10%">{{ __('Stok')}}</th>
-                                    <th width="15%">{{ __('Aksi')}}</th>
+                                    <th width="20%">{{ __('Aksi')}}</th>
                                 </tr>
                             </thead>
                             <tbody>
