@@ -42,15 +42,15 @@
                                 </div>
                                 <div class="col-md-8">
                                     <div class="d-flex justify-content-center">
-                                        <select name="" class="form-control mr-sm-2" id="">
-                                            <option value="">Filter Tipe</option>
-                                        </select>
-                                        <select name="" class="form-control mr-sm-2" id="">
-                                            <option value="">Filter Grup</option>
-                                        </select>
-                                        <select name="" class="form-control" id="">
-                                            <option value="">Filter Gudang</option>
-                                        </select>
+                                        <div class="col-md-4">
+                                        {!! Form::select('warehouse_id', $warehouses, null,[ 'class'=>'form-control custom-filter', 'placeholder' => 'Filter gudang','id'=> 'warehouse_id']) !!}
+                                        </div>
+                                        <div class="col-md-4">
+                                        {!! Form::select('type_id', $types, null,[ 'class'=>'form-control custom-filter', 'placeholder' => 'Filter tipe','id'=> 'type_id']) !!}
+                                        </div>
+                                        <div class="col-md-4">
+                                        {!! Form::select('group_id', $groups, null,[ 'class'=>'form-control custom-filter', 'placeholder' => 'Filter grup','id'=> 'group_id']) !!}
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-md-2 p-0 float-right">

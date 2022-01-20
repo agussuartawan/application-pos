@@ -24,13 +24,16 @@ class ProductController extends Controller
      */
     public function index()
     {
-        return view('product.index');
+        $warehouses = Warehouse::pluck('name', 'id');
+        $groups = Group::pluck('name', 'id');
+        $types = Type::pluck('name', 'id');
+        return view('product.index', compact('warehouses', 'groups', 'types'));
     }
 
-    public function getProductList()
+    public function getProductList(Request $request)
     {
 
-        $data  = Product::orderBy('created_at', 'DESC')->get();
+        $data  = Product::query();
 
         return Datatables::of($data)
             ->addColumn('action', function ($data) {
@@ -46,6 +49,28 @@ class ProductController extends Controller
                 }
 
                 return '<div class="table-actions text-center">' . $buttons . '</div>';
+            })
+            ->filter(function ($instance) use ($request) {
+                if ($request->get('type_id') != NULL) {
+                    $instance->where('type_id', $request->type_id);
+                }
+                if($request->get('group_id') != NULL){
+                    $instance->where('group_id', $request->group_id);
+                }
+                if($request->get('warehouse_id') != NULL){
+                    $instance->where('warehouse_id', $request->warehouse_id);
+                }
+                if (!empty($request->search)) {
+                     $instance->where(function($w) use($request){
+                        $search = $request->search;
+                        $w->orWhere('code', 'LIKE', "%$search%")
+                        ->orWhere('name', 'LIKE', "%$search%")
+                        ->orWhere('size', 'LIKE', "%$search%");
+                    });
+
+                }
+
+                return $instance;
             })
             ->rawColumns(['action'])
             ->make(true);
