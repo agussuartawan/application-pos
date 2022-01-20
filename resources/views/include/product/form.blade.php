@@ -89,5 +89,5 @@
         affixesStay: false, 
         precision: 0
     });
-    $('select').select2();
+    $('.select2').select2();
 </script>

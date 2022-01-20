@@ -43,13 +43,13 @@
                                 <div class="col-md-8">
                                     <div class="d-flex justify-content-center">
                                         <div class="col-md-4">
-                                        {!! Form::select('warehouse_id', $warehouses, null,[ 'class'=>'form-control custom-filter', 'placeholder' => 'Filter gudang','id'=> 'warehouse_id']) !!}
+                                            {!! Form::select('warehouse', $warehouse, null,[ 'class'=>'form-control custom-filter', 'placeholder' => 'Filter gudang','id'=> 'warehouse']) !!}
                                         </div>
                                         <div class="col-md-4">
-                                        {!! Form::select('type_id', $types, null,[ 'class'=>'form-control custom-filter', 'placeholder' => 'Filter tipe','id'=> 'type_id']) !!}
+                                            {!! Form::select('type', $type, null,[ 'class'=>'form-control custom-filter', 'placeholder' => 'Filter tipe','id'=> 'type']) !!}
                                         </div>
                                         <div class="col-md-4">
-                                        {!! Form::select('group_id', $groups, null,[ 'class'=>'form-control custom-filter', 'placeholder' => 'Filter grup','id'=> 'group_id']) !!}
+                                            {!! Form::select('group', $group, null,[ 'class'=>'form-control custom-filter', 'placeholder' => 'Filter grup','id'=> 'group']) !!}
                                         </div>
                                     </div>
                                 </div>

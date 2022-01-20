@@ -33,9 +33,9 @@
             ajax: {
                 url: "product/get-list",
 	            data: function (d) {
-	                d.type_id = $('#type_id').val(),
-	                d.group_id = $('#group_id').val(),
-	                d.warehous_id = $('#warehous_id').val(),
+	                d.type = $('#type').val(),
+	                d.group = $('#group').val(),
+	                d.warehouse = $('#warehouse').val(),
 	                d.search = $('input[type="search"]').val()
 	            }
             },
@@ -116,10 +116,8 @@
 	    $('.custom-filter').change(function(){
 	        dTable.draw();
 	    });
-
     });
 
-    $('.custom-filter').select2();
 
     $('body').on('click', '.modal-show', function(){
         var me = $(this);
@@ -279,5 +277,89 @@ showDeleteAlert = function(me) {
                 }
             });
         }
+    });
+}
+
+searchWarehouse = function(){
+	$('#warehouse').select2({
+    	ajax: {
+    		url: '/product/warehouse',
+    		dataType: 'json',
+    		data: function(params){
+    			var query = {
+    				search: params.search
+    			}
+
+    			return query;
+    		},
+		    processResults: function (data){
+		      return {
+		        results:  $.map(data, function (item) {
+		              return {
+		                  text: item.name,
+		                  id: item.id
+		              }
+		          })
+		      };
+		    },
+    	},
+    	placeholder: 'Filter Gudang',
+    	cache: true
+    });
+}
+
+searchType = function(){
+	$('#type').select2({
+    	ajax: {
+    		url: '/product/type',
+    		dataType: 'json',
+    		data: function(params){
+    			var query = {
+    				search: params.search
+    			}
+
+    			return query;
+    		},
+		    processResults: function (data){
+		      return {
+		        results:  $.map(data, function (item) {
+		              return {
+		                  text: item.name,
+		                  id: item.id
+		              }
+		          })
+		      };
+		    },
+    	},
+    	placeholder: 'Filter Tipe',
+    	cache: true
+    });
+}
+
+searchGroup = function(){
+	$('#group').select2({
+    	ajax: {
+    		url: '/product/group',
+    		dataType: 'json',
+    		data: function(params){
+    			var query = {
+    				search: params.search
+    			}
+
+    			return query;
+    		},
+		    processResults: function (data){
+		      return {
+		        results:  $.map(data, function (item) {
+		              return {
+		                  text: item.name,
+		                  id: item.id
+		              }
+		          })
+		      };
+		    },
+    	},
+    	placeholder: 'Filter Grup',
+    	cache: true
     });
 }

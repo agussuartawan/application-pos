@@ -24,10 +24,10 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $warehouses = Warehouse::pluck('name', 'id');
-        $groups = Group::pluck('name', 'id');
-        $types = Type::pluck('name', 'id');
-        return view('product.index', compact('warehouses', 'groups', 'types'));
+        $warehouse = Warehouse::pluck('name', 'id');
+        $group = Group::pluck('name', 'id');
+        $type = Type::pluck('name', 'id');
+        return view('product.index', compact('warehouse', 'group', 'type'));
     }
 
     public function getProductList(Request $request)
@@ -51,14 +51,14 @@ class ProductController extends Controller
                 return '<div class="table-actions text-center">' . $buttons . '</div>';
             })
             ->filter(function ($instance) use ($request) {
-                if ($request->get('type_id') != NULL) {
-                    $instance->where('type_id', $request->type_id);
+                if ($request->type != NULL) {
+                    $instance->where('type_id', $request->type);
                 }
-                if($request->get('group_id') != NULL){
-                    $instance->where('group_id', $request->group_id);
+                if($request->group != NULL){
+                    $instance->where('group_id', $request->group);
                 }
-                if($request->get('warehouse_id') != NULL){
-                    $instance->where('warehouse_id', $request->warehouse_id);
+                if($request->warehouse != NULL){
+                    $instance->where('warehouse_id', $request->warehouse);
                 }
                 if (!empty($request->search)) {
                      $instance->where(function($w) use($request){
@@ -213,5 +213,29 @@ class ProductController extends Controller
     {
         $slug = SlugService::createSlug(Product::class, 'slug', $request->name);
         return response()->json(['slug' => $slug]);
+    }
+
+    public function searchWarehouse(Request $request)
+    {
+        $search = $request->search;
+        return Warehouse::where('name','LIKE', "%$search%")->select('id','name')->get();
+    }
+
+    public function searchType(Request $request)
+    {
+        $search = $request->search;
+        return Type::where('name','LIKE', "%$search%")->select('id','name')->get();
+    }
+
+    public function searchUnit(Request $request)
+    {
+        $search = $request->search;
+        return Unit::where('name','LIKE', "%$search%")->select('id','name')->get();
+    }
+
+    public function searchGroup(Request $request)
+    {
+        $search = $request->search;
+        return Group::where('name','LIKE', "%$search%")->select('id','name')->get();
     }
 }
