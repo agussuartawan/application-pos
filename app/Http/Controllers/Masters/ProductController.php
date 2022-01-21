@@ -12,6 +12,7 @@ use App\Models\Group;
 use App\Models\Product;
 use App\Models\Type;
 use App\Models\Unit;
+use App\Models\Stock;
 use App\Models\Warehouse;
 use DataTables, Auth, DB;
 
@@ -24,10 +25,9 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $warehouse = Warehouse::pluck('name', 'id');
         $group = Group::pluck('name', 'id');
         $type = Type::pluck('name', 'id');
-        return view('product.index', compact('warehouse', 'group', 'type'));
+        return view('product.index', compact('group', 'type'));
     }
 
     public function getProductList(Request $request)
@@ -36,6 +36,9 @@ class ProductController extends Controller
         $data  = Product::query();
 
         return Datatables::of($data)
+            ->addColumn('selling_price', function($data){
+                return 'Rp. ' . rupiah($data->selling_price);
+            })
             ->addColumn('action', function ($data) {
                 $buttons = '';
                 if (Auth::user()->can('lihat produk')) {
@@ -86,12 +89,12 @@ class ProductController extends Controller
         try {
             if (Auth::user()->can('tambah produk')) {
                 $product = new Product();
-                $warehouses = Warehouse::pluck('name', 'id');
                 $groups = Group::pluck('name', 'id');
+                $warehouses = Warehouse::pluck('name', 'id');
                 $types = Type::pluck('name', 'id');
                 $units = Unit::pluck('name', 'id');
 
-                return view('include.product.form', compact('product', 'warehouses', 'groups', 'types', 'units'));
+                return view('include.product.form', compact('product','groups', 'types', 'units', 'warehouses'));
             } else {
                 return '<div class="text-center">Anda tidak memiliki akses untuk menambah produk</div>';
             }
@@ -109,23 +112,29 @@ class ProductController extends Controller
      */
     public function store(StoreProductRequest $request)
     {
-        $purchase_price = str_replace(".", "", $request->purchase_price);
-        $selling_price = str_replace(".", "", $request->selling_price);
-        $model = Product::create([
-            'name' => $request->name,
-            'slug' => $request->slug,
-            'size' => $request->size,
-            'purchase_price' => $purchase_price,
-            'selling_price' => $selling_price,
-            'min_stock' => $request->min_stock,
-            'max_stock' => $request->max_stock,
-            'photo' => $request->photo,
-            'type_id' => $request->type_id,
-            'group_id' => $request->group_id,
-            'warehouse_id' => $request->warehouse_id,
-            'unit_id' => $request->unit_id
-        ]);
-        return $model;
+        DB::transaction(function () use ($request) {
+            $purchase_price = str_replace(".", "", $request->purchase_price);
+            $selling_price = str_replace(".", "", $request->selling_price);
+            $product = Product::create([
+                'name' => $request->name,
+                'slug' => $request->slug,
+                'size' => $request->size,
+                'purchase_price' => $purchase_price,
+                'selling_price' => $selling_price,
+                'photo' => $request->photo,
+                'type_id' => $request->type_id,
+                'group_id' => $request->group_id,
+                'unit_id' => $request->unit_id
+            ]);
+
+            foreach ($request->warehouse_id as $warehouse) {
+                $warehouses[] = ['warehouse_id' => $warehouse];
+            }
+
+            $product->stock()->createMany($warehouses);
+
+            return $product;
+        });
     }
 
     /**
@@ -137,13 +146,14 @@ class ProductController extends Controller
     public function show(Product $product)
     {
         $created_at = $product->created_at->isoFormat('LLLL');
+        $updated_at = $product->updated_at->isoFormat('LLLL');
         $purchase_price = rupiah($product->purchase_price);
         $selling_price = rupiah($product->selling_price);
-        $warehouses = Warehouse::pluck('name', 'id');
+        $warehouses = Warehouse::whereIn('id', $product->stock->pluck('warehouse_id'))->get();
         $groups = Group::pluck('name', 'id');
         $types = Type::pluck('name', 'id');
         $units = Unit::pluck('name', 'id');
-        return view('include.product.show', compact('product', 'units', 'types', 'groups', 'warehouses', 'created_at', 'purchase_price', 'selling_price'));
+        return view('include.product.show', compact('product', 'units', 'types', 'groups', 'warehouses','updated_at', 'created_at', 'purchase_price', 'selling_price'));
     }
 
     /**
@@ -155,7 +165,7 @@ class ProductController extends Controller
     public function edit(Product $product)
     {
         if (Auth::user()->can('edit produk')) {
-            $warehouses = Warehouse::pluck('name', 'id');
+            $warehouses = Warehouse::pluck('name','id');
             $groups = Group::pluck('name', 'id');
             $types = Type::pluck('name', 'id');
             $units = Unit::pluck('name', 'id');
@@ -174,23 +184,35 @@ class ProductController extends Controller
      */
     public function update(UpdateProductRequest $request, Product $product)
     {
-        $purchase_price = str_replace(".", "", $request->purchase_price);
-        $selling_price = str_replace(".", "", $request->selling_price);
-        $model = $product->update([
-            'name' => $request->name,
-            'slug' => $request->slug,
-            'size' => $request->size,
-            'purchase_price' => $purchase_price,
-            'selling_price' => $selling_price,
-            'min_stock' => $request->min_stock,
-            'max_stock' => $request->max_stock,
-            'photo' => $request->photo,
-            'type_id' => $request->type_id,
-            'group_id' => $request->group_id,
-            'warehouse_id' => $request->warehouse_id,
-            'unit_id' => $request->unit_id
-        ]);
-        return $model;
+        DB::transaction(function () use ($product,$request) {
+            $purchase_price = str_replace(".", "", $request->purchase_price);
+            $selling_price = str_replace(".", "", $request->selling_price);
+            $model = $product->update([
+                'name' => $request->name,
+                'slug' => $request->slug,
+                'size' => $request->size,
+                'purchase_price' => $purchase_price,
+                'selling_price' => $selling_price,
+                'photo' => $request->photo,
+                'type_id' => $request->type_id,
+                'group_id' => $request->group_id,
+                'warehouse_id' => $request->warehouse_id,
+                'unit_id' => $request->unit_id
+            ]);
+
+            // foreach ($request->warehouse_id as $warehouse_id) {
+            //     $product->stock()->update([
+            //         'warehouse_id' => $warehouse_id
+            //     ]);
+            // }
+
+            foreach ($request->warehouse_id as $warehouse) {
+                $product->stock()->updateOrCreate(['warehouse_id' => $warehouse]);
+            }
+
+
+            return $model;
+        });
     }
 
     /**

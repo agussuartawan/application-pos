@@ -39,51 +39,42 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-sm-6">
-                    <div class="form-group">
-                        <label for="min_stock">{{ __('Stok Minimum')}}</label>
-                        {!! Form::number('min_stock', null,[ 'class'=>'form-control', 'placeholder' => 'Stok minimum produk', 'id'=> 'min_stock', 'disabled' => 'disabled']) !!}
-                    </div>
-                </div>
-
-                <div class="col-sm-6">
-                    <div class="form-group">
-                        <label for="max_stock">{{ __('Stok Maksimum')}}</label>
-                        {!! Form::number('max_stock', null,[ 'class'=>'form-control', 'placeholder' => 'Stok maksimum produk', 'id'=> 'max_stock', 'disabled' => 'disabled']) !!}
-                    </div>
-                </div>
-            </div>
         </div>
         <div class="col-md-6">
             <div class="form-group">
-                <label for="type">{{ __('Pilih Tipe Produk')}}</label>
+                <label for="type">{{ __('Tipe Produk')}}</label>
                 {!! Form::select('type_id', $types, null,[ 'class'=>'form-control select2', 'placeholder' => 'Pilih tipe','id'=> 'type_id', 'disabled' => 'disabled']) !!}
             </div>
 
             <div class="form-group">
-                <label for="group">{{ __('Pilih Grup Produk')}}</label>
+                <label for="group">{{ __('Grup Produk')}}</label>
                 {!! Form::select('group_id', $groups, null,[ 'class'=>'form-control select2', 'placeholder' => 'Pilih grup','id'=> 'group_id', 'disabled' => 'disabled']) !!}
             </div>
 
-            <div class="form-group">
-                <label for="unit">{{ __('Pilih Unit Produk')}}</label>
-                {!! Form::select('unit_id', $units, null,[ 'class'=>'form-control select2', 'placeholder' => 'Pilih unit','id'=> 'unit_id', 'disabled' => 'disabled']) !!}
-            </div>
 
             <div class="form-group">
-                <label for="warehouse">{{ __('Pilih Gudang')}}</label>
-                {!! Form::select('warehouse_id', $warehouses, null,[ 'class'=>'form-control select2', 'placeholder' => 'Pilih gudang','id'=> 'warehouse_id', 'disabled' => 'disabled']) !!}
-            </div>
-
-            <div class="form-group">
-                <label for="stock">{{ __('Sisa Stok')}}</label>
-                {!! Form::number('stock', null,[ 'class'=>'form-control', 'id'=> 'stock', 'disabled' => 'disabled']) !!}
+                <label for="unit">{{ __('Unit Produk')}}</label>
+                {!! Form::select('unit_id', $units, null,[ 'class'=>'form-control select2','id'=> 'unit', 'disabled' => 'disabled']) !!}
             </div>
 
             <div class="form-group">
                 <label for="created">{{ __('Ditambahkan Pada')}}</label>
                 {!! Form::text('created', $created_at,[ 'class'=>'form-control', 'id'=> 'created', 'disabled' => 'disabled']) !!}
+            </div>
+
+            <div class="form-group">
+                <label for="updated">{{ __('Terakhir Diubah Pada')}}</label>
+                {!! Form::text('updated', $updated_at,[ 'class'=>'form-control', 'id'=> 'updated', 'disabled' => 'disabled']) !!}
+            </div>
+
+        </div>
+
+        <div class="col-md-12">
+            <div class="form-group">
+                <label>{{ __('Gudang')}}</label><br>
+                @foreach($warehouses as $warehouse)
+                    <div class="badge badge-secondary">{{ $warehouse->name }}</div>
+                @endforeach
             </div>
         </div>
     </div>

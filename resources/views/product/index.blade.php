@@ -42,13 +42,10 @@
                                 </div>
                                 <div class="col-md-8">
                                     <div class="d-flex justify-content-center">
-                                        <div class="col-md-4">
-                                            {!! Form::select('warehouse', $warehouse, null,[ 'class'=>'form-control custom-filter', 'placeholder' => 'Filter gudang','id'=> 'warehouse']) !!}
-                                        </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-6">
                                             {!! Form::select('type', $type, null,[ 'class'=>'form-control custom-filter', 'placeholder' => 'Filter tipe','id'=> 'type']) !!}
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-6">
                                             {!! Form::select('group', $group, null,[ 'class'=>'form-control custom-filter', 'placeholder' => 'Filter grup','id'=> 'group']) !!}
                                         </div>
                                     </div>
@@ -66,9 +63,9 @@
                             <thead class="text-center">
                                 <tr>
                                     <th width="15%">{{ __('Kode')}}</th>
-                                    <th width="40%">{{ __('Nama Barang')}}</th>
+                                    <th width="35%">{{ __('Nama Barang')}}</th>
                                     <th width="15%">{{ __('Ukuran (ml)')}}</th>
-                                    <th width="10%">{{ __('Stok')}}</th>
+                                    <th width="20%">{{ __('Harga Jual')}}</th>
                                     <th width="20%">{{ __('Aksi')}}</th>
                                 </tr>
                             </thead>

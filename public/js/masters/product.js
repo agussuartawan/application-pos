@@ -43,7 +43,7 @@
                 {data:'code', name: 'code'},
                 {data:'name', name: 'name'},
                 {data:'size', name: 'size'},
-                {data:'stock', name: 'stock'},
+                {data:'selling_price', name: 'selling_price'},
                 {data:'action', name: 'action', orderable: false}
             ],
             buttons: [

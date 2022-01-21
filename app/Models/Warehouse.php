@@ -30,4 +30,9 @@ class Warehouse extends Model
 
         return ":causer.name {$newEventName} :subject.name pada <span class='badge badge-info'>Gudang</span>";
     }
+
+    public function stock()
+    {
+        return $this->hasMany(Stock::class);
+    }
 }

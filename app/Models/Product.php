@@ -17,15 +17,11 @@ class Product extends Model
         'type_id',
         'group_id',
         'unit_id',
-        'warehouse_id',
         'name',
         'slug',
         'size',
         'purchase_price',
         'selling_price',
-        'stock',
-        'min_stock',
-        'max_stock',
         'photo'
     ];
 
@@ -38,6 +34,11 @@ class Product extends Model
 
     protected static $logOnlyDirty = true;
 
+    public function stock()
+    {
+        return $this->hasMany(Stock::class);
+    }
+
     public function getDescriptionForEvent(string $eventName): string
     {
         if ($eventName == 'created') {
@@ -49,16 +50,6 @@ class Product extends Model
         }
 
         return ":causer.name {$newEventName} :subject.name pada <span class='badge badge-info'>Produk</span>";
-    }
-
-    public function warehouse()
-    {
-        return $this->belongsTo(Warehouse::class);
-    }
-
-    public function getWarehouseNames()
-    {
-        return $this->warehouse->pluck('name');
     }
 
     public function sluggable(): array

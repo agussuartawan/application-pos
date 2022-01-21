@@ -41,21 +41,6 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-sm-6">
-                    <div class="form-group">
-                        <label for="min_stock">{{ __('Stok Minimum')}}</label>
-                        {!! Form::number('min_stock', 0,[ 'class'=>'form-control', 'placeholder' => 'Stok minimum produk', 'id'=> 'min_stock']) !!}
-                    </div>
-                </div>
-
-                <div class="col-sm-6">
-                    <div class="form-group">
-                        <label for="max_stock">{{ __('Stok Maksimum')}}</label>
-                        {!! Form::number('max_stock', 0,[ 'class'=>'form-control', 'placeholder' => 'Stok maksimum produk', 'id'=> 'max_stock']) !!}
-                    </div>
-                </div>
-            </div>
         </div>
         <div class="col-md-6">
             <div class="form-group">
@@ -75,7 +60,7 @@
 
             <div class="form-group">
                 <label for="warehouse">{{ __('Pilih Gudang')}}<span class="text-red">*</span></label>
-                {!! Form::select('warehouse_id', $warehouses, null,[ 'class'=>'form-control select2', 'placeholder' => 'Pilih gudang','id'=> 'warehouse_id']) !!}
+                {!! Form::select('warehouse_id[]', $warehouses, $product->stock->pluck('warehouse_id'),[ 'class'=>'form-control select2', 'multiple' => 'multiple','id'=> 'warehouse_id']) !!}
             </div>
         </div>
     </div>

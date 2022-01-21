@@ -30,13 +30,10 @@ class UpdateProductRequest extends FormRequest
             'size' => 'required|integer',
             'purchase_price' => 'required',
             'selling_price' => 'required',
-            'min_stock' => 'required|integer',
-            'max_stock' => 'required|integer',
             'photo' => 'image',
             'type_id' => 'required',
             'unit_id' => 'required',
             'group_id' => 'required',
-            'warehouse_id' => 'required',
         ];
     }
 
@@ -55,15 +52,10 @@ class UpdateProductRequest extends FormRequest
             'slug.unique' => 'Slug sudah digunakan',
             'purchase_price.required' => 'Harga beli tidak boleh kosong.',
             'selling_price.required' => 'Harga jual tidak boleh kosong.',
-            'min_stock.required' => 'Stok minimum tidak boleh kosong.',
-            'min_stock.integer' => 'Stok minimum harus angka.',
-            'max_stock.required' => 'Stok maksimum tidak boleh kosong.',
-            'max_stock.integer' => 'Stok maksimum harus angka.',
             'photo.image' => 'Format gambar tidak sesuai.',
             'type_id.required' => 'Tipe produk tidak boleh kosong.',
             'unit_id.required' => 'Unit produk tidak boleh kosong.',
             'group_id.required' => 'Grup produk tidak boleh kosong.',
-            'warehouse_id.required' => 'Gudang tidak boleh kosong.',
         ];
     }
 }
