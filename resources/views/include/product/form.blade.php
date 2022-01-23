@@ -30,37 +30,37 @@
                 <div class="col-sm-6">
                     <div class="form-group">
                         <label for="purchase_price">{{ __('Harga Beli')}}</label>
-                        {!! Form::text('purchase_price', null,[ 'class'=>'form-control money', 'placeholder' => 'Harga beli produk', 'id'=> 'purchase_price']) !!}
+                        {!! Form::text('purchase_price', $purchase_price ?? null,[ 'class'=>'form-control money', 'placeholder' => 'Harga beli produk', 'id'=> 'purchase_price']) !!}
                     </div> 
                 </div>   
 
                 <div class="col-sm-6">
                     <div class="form-group">
                         <label for="selling_price">{{ __('Harga Jual')}}</label>
-                        {!! Form::text('selling_price', null,[ 'class'=>'form-control money', 'placeholder' => 'Harga jual produk', 'id'=> 'selling_price']) !!}
+                        {!! Form::text('selling_price', $selling_price ?? null,[ 'class'=>'form-control money', 'placeholder' => 'Harga jual produk', 'id'=> 'selling_price']) !!}
                     </div>
                 </div>
             </div>
         </div>
         <div class="col-md-6">
             <div class="form-group">
-                <label for="type">{{ __('Pilih Tipe Produk')}}<span class="text-red">*</span></label>
+                <label for="type_id">{{ __('Pilih Tipe Produk')}}<span class="text-red">*</span></label>
                 {!! Form::select('type_id', $types, null,[ 'class'=>'form-control select2', 'placeholder' => 'Pilih tipe','id'=> 'type_id']) !!}
             </div>
 
             <div class="form-group">
-                <label for="group">{{ __('Pilih Grup Produk')}}<span class="text-red">*</span></label>
+                <label for="group_id">{{ __('Pilih Grup Produk')}}<span class="text-red">*</span></label>
                 {!! Form::select('group_id', $groups, null,[ 'class'=>'form-control select2', 'placeholder' => 'Pilih grup','id'=> 'group_id']) !!}
             </div>
 
             <div class="form-group">
-                <label for="unit">{{ __('Pilih Unit Produk')}}<span class="text-red">*</span></label>
+                <label for="unit_id">{{ __('Pilih Unit Produk')}}<span class="text-red">*</span></label>
                 {!! Form::select('unit_id', $units, null,[ 'class'=>'form-control select2', 'placeholder' => 'Pilih unit','id'=> 'unit_id']) !!}
             </div>
 
             <div class="form-group">
-                <label for="warehouse">{{ __('Pilih Gudang')}}<span class="text-red">*</span></label>
-                {!! Form::select('warehouse_id[]', $warehouses, $product->stock->pluck('warehouse_id'),[ 'class'=>'form-control select2', 'multiple' => 'multiple','id'=> 'warehouse_id']) !!}
+                <label for="warehouse_id">{{ __('Pilih Gudang')}}<span class="text-red">*</span></label>
+                {!! Form::select('warehouse_id[]', $warehouses, $product->warehouse()->pluck('warehouse_id'),[ 'class'=>'form-control select2', 'multiple' => 'multiple','id'=> 'warehouse_id']) !!}
             </div>
         </div>
     </div>
@@ -74,5 +74,4 @@
         affixesStay: false, 
         precision: 0
     });
-    $('.select2').select2();
 </script>

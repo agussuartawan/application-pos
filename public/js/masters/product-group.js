@@ -185,7 +185,7 @@
             method = $('input[name=_method').val() == undefined ? 'POST' : 'PUT',
             message = $('input[name=_method').val() == undefined ? 'Data grup berhasil ditambahkan' : 'Data grup berhasil diubah';
 
-        $('.form-control').removeClass('is-invalid');
+        $('.form-group').removeClass('input-group-danger');
         $('.invalid-feedback').remove();
         
         $.ajax({
@@ -209,8 +209,9 @@
                 if($.isEmptyObject(res) == false){
                     $.each(res.errors, function(key, value){
                         $('#' + key)
-                            .addClass('is-invalid')
-                            .after('<span class="invalid-feedback" role="alert"><strong>' +value+ '</strong></span>');
+                            .closest('.form-group')
+                            .addClass('input-group-danger')
+                            .append(`<small class="text-danger">${value}</small>`);
                     });
                 }
             }

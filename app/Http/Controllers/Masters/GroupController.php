@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Masters;
 
 use App\Models\Group;
+use App\Models\Type;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use DataTables, Auth;
@@ -53,10 +54,12 @@ class GroupController extends Controller
     public function store(Request $request)
     {
         $messages = [
-            'name.required' => 'Nama grup tidak boleh kosong!'
+            'name.required' => 'Nama grup tidak boleh kosong!',
+            'type_id.required' => 'Tipe tidak boleh kosong'
         ];
         $this->validate($request, [
-            'name' => 'required|max:255'
+            'name' => 'required|max:255',
+            'type_id' => 'required'
         ], $messages);
 
         $model = Group::create($request->all());
@@ -68,7 +71,8 @@ class GroupController extends Controller
         try {
             if (Auth::user()->can('tambah grup produk')) {
                 $product_group = new Group();
-                return view('include.product-group.form', compact('product_group'));
+                $types = Type::pluck('name', 'id');
+                return view('include.product-group.form', compact('product_group', 'types'));
             } else {
                 return '<div class="text-center">Anda tidak memiliki akses untuk menambah grup produk</div>';
             }
@@ -87,7 +91,8 @@ class GroupController extends Controller
     public function edit(Group $product_group)
     {
         if (Auth::user()->can('edit grup produk')) {
-            return view('include.product-group.form', compact('product_group'));
+            $types = Type::pluck('name', 'id');
+            return view('include.product-group.form', compact('product_group', 'types'));
         } else {
             return '<div class="text-center">Anda tidak memiliki akses untuk mengedit grup produk</div>';
         }

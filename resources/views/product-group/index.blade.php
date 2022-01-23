@@ -5,6 +5,7 @@
     @push('head')
         <link rel="stylesheet" href="{{ asset('plugins/jquery-toast-plugin/dist/jquery.toast.min.css')}}">
         <link rel="stylesheet" href="{{ asset('plugins/DataTables/datatables.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('plugins/select2/dist/css/select2.min.css') }}">
     @endpush
 
     
@@ -67,6 +68,7 @@
         <script src="{{ asset('plugins/DataTables/datatables.min.js') }}"></script>
         <script src="{{ asset('plugins/jquery-toast-plugin/dist/jquery.toast.min.js')}}"></script>
         <script src="{{ asset('plugins/sweetalert/dist/sweetalert.min.js') }}"></script>
+        <script src="{{ asset('plugins/select2/dist/js/select2.min.js') }}"></script>
         <!--server side roles table script-->
         <script src="{{ asset('js/masters/product-group.js') }}"></script>
 	@endpush

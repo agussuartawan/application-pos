@@ -222,15 +222,15 @@ Route::group(['middleware' => 'auth'], function () {
 	// product route
 	Route::group(['middleware' => 'can:lihat produk'], function () {
 		Route::get('product/get-list', [ProductController::class, 'getProductList']);
-		Route::get('product/warehouse', [ProductController::class, 'searchWarehouse']);
-		Route::get('product/type', [ProductController::class, 'searchType']);
-		Route::get('product/unit', [ProductController::class, 'searchUnit']);
-		Route::get('product/group', [ProductController::class, 'searchGroup']);
 		Route::get('products', [ProductController::class, 'index'])->name('products.index');
 		Route::get('products/{product}/show', [ProductController::class, 'show'])->name('products.show');
 	});
 	Route::get('products/create', [ProductController::class, 'create'])->name('products.create');
 	Route::group(['middleware' => 'can:tambah produk'], function () {
+		Route::get('product/type', [ProductController::class, 'searchType']);
+		Route::get('product/unit', [ProductController::class, 'searchUnit']);
+		Route::get('product/group/{type_id}', [ProductController::class, 'searchGroup']);
+		Route::get('product/warehouse', [ProductController::class, 'searchWarehouse']);
 		Route::post('products', [ProductController::class, 'store'])->name('products.store');
 		Route::get('product/get-slug', [ProductController::class, 'getSlug']);
 	});

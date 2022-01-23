@@ -9,7 +9,7 @@ class Group extends Model
 {
 	use LogsActivity;
 
-    protected $fillable = ['name'];
+    protected $fillable = ['name', 'type_id'];
 
     // acitivity log option
     protected static $logFillable = true;
@@ -29,5 +29,10 @@ class Group extends Model
     	}
 
         return ":causer.name {$newEventName} :subject.name pada <span class='badge badge-info'>Grup Produk</span>";
+    }
+
+    public function type()
+    {
+        return $this->belongsTo(Type::class);
     }
 }

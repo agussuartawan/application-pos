@@ -194,6 +194,11 @@
     	.then(response => response.json())
     	.then(data => slug.val(data.slug))
     });
+
+    $('body').on('change', '#type_id', function(event){
+        var type_id = $(this).val();
+        searchGroup(type_id);
+    });
 })(jQuery);
 
 showModal = function(me){
@@ -214,6 +219,10 @@ showModal = function(me){
         },
         success: function(response){
             $('.load-here').html(response);
+            searchWarehouse();
+            searchType();
+            searchUnit();
+            searchGroup(null);
         },
         error: function(xhr, status){
             alert('Terjadi kesalahan');
@@ -281,7 +290,7 @@ showDeleteAlert = function(me) {
 }
 
 searchWarehouse = function(){
-	$('#warehouse').select2({
+	$('#warehouse_id').select2({
     	ajax: {
     		url: '/product/warehouse',
     		dataType: 'json',
@@ -303,13 +312,13 @@ searchWarehouse = function(){
 		      };
 		    },
     	},
-    	placeholder: 'Filter Gudang',
+    	placeholder: 'Cari Gudang',
     	cache: true
     });
 }
 
 searchType = function(){
-	$('#type').select2({
+	$('#type_id').select2({
     	ajax: {
     		url: '/product/type',
     		dataType: 'json',
@@ -331,15 +340,15 @@ searchType = function(){
 		      };
 		    },
     	},
-    	placeholder: 'Filter Tipe',
+    	placeholder: 'Cari Tipe',
     	cache: true
     });
 }
 
-searchGroup = function(){
-	$('#group').select2({
+searchGroup = function(type_id){
+	$('#group_id').select2({
     	ajax: {
-    		url: '/product/group',
+    		url: '/product/group/' + type_id,
     		dataType: 'json',
     		data: function(params){
     			var query = {
@@ -359,7 +368,35 @@ searchGroup = function(){
 		      };
 		    },
     	},
-    	placeholder: 'Filter Grup',
+    	placeholder: 'Cari Grup',
     	cache: true
+    });
+}
+
+searchUnit = function(){
+    $('#unit_id').select2({
+        ajax: {
+            url: '/product/unit',
+            dataType: 'json',
+            data: function(params){
+                var query = {
+                    search: params.search
+                }
+
+                return query;
+            },
+            processResults: function (data){
+              return {
+                results:  $.map(data, function (item) {
+                      return {
+                          text: item.name,
+                          id: item.id
+                      }
+                  })
+              };
+            },
+        },
+        placeholder: 'Cari Unit',
+        cache: true
     });
 }

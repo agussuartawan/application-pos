@@ -72,7 +72,7 @@
         <div class="col-md-12">
             <div class="form-group">
                 <label>{{ __('Gudang')}}</label><br>
-                @foreach($warehouses as $warehouse)
+                @foreach($product->warehouse as $warehouse)
                     <div class="badge badge-secondary">{{ $warehouse->name }}</div>
                 @endforeach
             </div>

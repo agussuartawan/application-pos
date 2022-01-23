@@ -34,9 +34,9 @@ class Product extends Model
 
     protected static $logOnlyDirty = true;
 
-    public function stock()
+    public function warehouse()
     {
-        return $this->hasMany(Stock::class);
+        return $this->belongsToMany(Warehouse::class)->withPivot('in_stock');
     }
 
     public function getDescriptionForEvent(string $eventName): string

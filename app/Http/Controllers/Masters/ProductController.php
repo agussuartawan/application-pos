@@ -12,7 +12,6 @@ use App\Models\Group;
 use App\Models\Product;
 use App\Models\Type;
 use App\Models\Unit;
-use App\Models\Stock;
 use App\Models\Warehouse;
 use DataTables, Auth, DB;
 
@@ -127,11 +126,7 @@ class ProductController extends Controller
                 'unit_id' => $request->unit_id
             ]);
 
-            foreach ($request->warehouse_id as $warehouse) {
-                $warehouses[] = ['warehouse_id' => $warehouse];
-            }
-
-            $product->stock()->createMany($warehouses);
+            $product->warehouse()->attach($request->warehouse_id);
 
             return $product;
         });
@@ -149,11 +144,10 @@ class ProductController extends Controller
         $updated_at = $product->updated_at->isoFormat('LLLL');
         $purchase_price = rupiah($product->purchase_price);
         $selling_price = rupiah($product->selling_price);
-        $warehouses = Warehouse::whereIn('id', $product->stock->pluck('warehouse_id'))->get();
         $groups = Group::pluck('name', 'id');
         $types = Type::pluck('name', 'id');
         $units = Unit::pluck('name', 'id');
-        return view('include.product.show', compact('product', 'units', 'types', 'groups', 'warehouses','updated_at', 'created_at', 'purchase_price', 'selling_price'));
+        return view('include.product.show', compact('product', 'units', 'types', 'groups','updated_at', 'created_at', 'purchase_price', 'selling_price'));
     }
 
     /**
@@ -165,11 +159,13 @@ class ProductController extends Controller
     public function edit(Product $product)
     {
         if (Auth::user()->can('edit produk')) {
-            $warehouses = Warehouse::pluck('name','id');
+            $purchase_price = rupiah($product->purchase_price);
+            $selling_price = rupiah($product->selling_price);
+            $warehouses = Warehouse::pluck('name', 'id');
             $groups = Group::pluck('name', 'id');
             $types = Type::pluck('name', 'id');
             $units = Unit::pluck('name', 'id');
-            return view('include.product.form', compact('product', 'groups', 'types', 'units', 'warehouses'));
+            return view('include.product.form', compact('product','purchase_price','selling_price', 'groups', 'types', 'units', 'warehouses'));
         } else {
             return '<div class="text-center">Anda tidak memiliki akses untuk mengedit produk</div>';
         }
@@ -200,15 +196,7 @@ class ProductController extends Controller
                 'unit_id' => $request->unit_id
             ]);
 
-            // foreach ($request->warehouse_id as $warehouse_id) {
-            //     $product->stock()->update([
-            //         'warehouse_id' => $warehouse_id
-            //     ]);
-            // }
-
-            foreach ($request->warehouse_id as $warehouse) {
-                $product->stock()->updateOrCreate(['warehouse_id' => $warehouse]);
-            }
+            $product->warehouse()->sync($request->warehouse_id);
 
 
             return $model;
@@ -255,9 +243,9 @@ class ProductController extends Controller
         return Unit::where('name','LIKE', "%$search%")->select('id','name')->get();
     }
 
-    public function searchGroup(Request $request)
+    public function searchGroup(Request $request, $type_id)
     {
         $search = $request->search;
-        return Group::where('name','LIKE', "%$search%")->select('id','name')->get();
+        return Group::where('name','LIKE', "%$search%")->where('type_id', $type_id)->select('id','name')->get();
     }
 }

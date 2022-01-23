@@ -58,6 +58,9 @@ class PermissionSeeder extends Seeder
             ['name' => 'melihat log aktivitas'],
         ];
 
-        Permission::createMany($permissions);
+        foreach ($permissions as $permission) {
+            Permission::create(['name' => $permission['name']]);
+        }
+
     }
 }
