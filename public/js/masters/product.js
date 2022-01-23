@@ -35,7 +35,6 @@
 	            data: function (d) {
 	                d.type = $('#type').val(),
 	                d.group = $('#group').val(),
-	                d.warehouse = $('#warehouse').val(),
 	                d.search = $('input[type="search"]').val()
 	            }
             },

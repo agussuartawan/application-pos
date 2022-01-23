@@ -15,29 +15,6 @@
                 <div class="nav-item {{ request()->is('dashboard') ? 'active' : '' }}">
                     <a href="{{route('dashboard')}}"><i class="ik ik-bar-chart-2"></i><span>{{ __('Dashboard')}}</span></a>
                 </div>
-                @can('mengelola master')
-                <div class="nav-item {{ request()->is(['product*', 'warehouse*', 'product-type*']) ? 'active open' : '' }} has-sub">
-                    <a href="javascript:void(0)"><i class="ik ik-box"></i><span>{{ __('Master')}}</span></a>
-                    <div class="submenu-content">
-                        @can('lihat produk')
-                        <a href="{{route('products.index')}}" class="menu-item {{ request()->is('products*') ? 'active' : '' }}">{{ __('Produk')}}</a>
-                        @endcan
-                        @can('lihat gudang')
-                        <a href="{{route('warehouses.index')}}" class="menu-item {{ request()->is('warehouses*') ? 'active' : '' }}">{{ __('Gudang')}}</a>
-                        @endcan
-                        @can('lihat tipe produk')
-                        <a href="{{route('product-types.index')}}" class="menu-item {{ request()->is('product-types*') ? 'active' : '' }}">{{ __('Tipe Produk')}}</a>
-                        @endcan
-                        @can('lihat grup produk')
-                        <a href="{{route('product-groups.index')}}" class="menu-item {{ request()->is('product-groups*') ? 'active' : '' }}">{{ __('Grup Produk')}}</a>
-                        @endcan
-                        @can('lihat unit produk')
-                        <a href="{{route('product-units.index')}}" class="menu-item {{ request()->is('product-units*') ? 'active' : '' }}">{{ __('Unit Produk')}}</a>
-                        @endcan
-                    </div>
-                </div>
-                @endcan 
-
                 @can('mengelola administrator')
                 <div class="nav-item {{ request()->is('user*') || request()->is('role*') || request()->is('permission*') || request()->is('activity-logs') ? 'active open' : '' }} has-sub">
                     <a href="javascript:void(0)"><i class="ik ik-user"></i><span>{{ __('Adminstrator')}}</span></a>
@@ -59,7 +36,36 @@
                         @endcan
                     </div>
                 </div>
-                @endcan    
+                @endcan   
+
+                @can('mengelola master')
+                <div class="nav-item {{ request()->is(['product*', 'warehouse*', 'product-type*']) ? 'active open' : '' }} has-sub">
+                    <a href="javascript:void(0)"><i class="ik ik-box"></i><span>{{ __('Master')}}</span></a>
+                    <div class="submenu-content">
+                        @can('lihat produk')
+                        <a href="{{route('products.index')}}" class="menu-item {{ request()->is('products*') ? 'active' : '' }}">{{ __('Produk')}}</a>
+                        @endcan
+                        @can('lihat gudang')
+                        <a href="{{route('warehouses.index')}}" class="menu-item {{ request()->is('warehouses*') ? 'active' : '' }}">{{ __('Gudang')}}</a>
+                        @endcan
+                        @can('lihat tipe produk')
+                        <a href="{{route('product-types.index')}}" class="menu-item {{ request()->is('product-types*') ? 'active' : '' }}">{{ __('Tipe Produk')}}</a>
+                        @endcan
+                        @can('lihat grup produk')
+                        <a href="{{route('product-groups.index')}}" class="menu-item {{ request()->is('product-groups*') ? 'active' : '' }}">{{ __('Grup Produk')}}</a>
+                        @endcan
+                        @can('lihat unit produk')
+                        <a href="{{route('product-units.index')}}" class="menu-item {{ request()->is('product-units*') ? 'active' : '' }}">{{ __('Unit Produk')}}</a>
+                        @endcan
+                    </div>
+                </div>
+                @endcan  
+
+                @can('lihat persediaan')
+                <div class="nav-item {{ request()->is('stocks') ? 'active' : '' }}">
+                    <a href="{{route('stocks')}}"><i class="ik ik-folder"></i><span>{{ __('Persediaan')}}</span></a>
+                </div>
+                @endcan
             </nav>          
         </div>
     </div>

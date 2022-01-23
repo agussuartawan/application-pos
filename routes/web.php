@@ -14,6 +14,7 @@ use App\Http\Controllers\Masters\WarehouseController;
 use App\Http\Controllers\Masters\TypeController;
 use App\Http\Controllers\Masters\GroupController;
 use App\Http\Controllers\Masters\UnitController;
+use App\Http\Controllers\StockController;
 use App\Http\Controllers\ActivityLogController;
 use App\Models\Product;
 
@@ -283,5 +284,11 @@ Route::group(['middleware' => 'auth'], function () {
 		Route::get('activity-log/get-list', [ActivityLogController::class, 'getActivityLogList']);
 		Route::get('activity-log/{activity}/show', [ActivityLogController::class, 'show']);
 		Route::get('activity-logs', [ActivityLogController::class, 'index'])->name('activity.log');
+	});
+
+	#stocks route
+	Route::group(['middleware' => 'can:lihat persediaan'], function(){
+		Route::get('stocks', [StockController::class, 'index'])->name('stocks');
+		Route::get('stock/get-list', [StockController::class, 'getStockList']);
 	});
 });

@@ -54,7 +54,7 @@
 
             <div class="form-group">
                 <label for="unit">{{ __('Unit Produk')}}</label>
-                {!! Form::select('unit_id', $units, null,[ 'class'=>'form-control select2','id'=> 'unit', 'disabled' => 'disabled']) !!}
+                {!! Form::select('unit_id', $units, null,[ 'class'=>'form-control select2','id'=> 'unit_id', 'disabled' => 'disabled']) !!}
             </div>
 
             <div class="form-group">

@@ -13,7 +13,7 @@
             <div class="row align-items-end">
                 <div class="col-lg-8">
                     <div class="page-header-title">
-                        <i class="ik ik-award bg-blue"></i>
+                        <i class="ik ik-type bg-blue"></i>
                         <div class="d-inline">
                             <h5>{{ __('Tipe Produk')}}</h5>
                             <span>{{ __('Mengelola data tipe produk')}}</span>
