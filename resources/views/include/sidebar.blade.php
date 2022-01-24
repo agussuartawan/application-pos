@@ -39,12 +39,9 @@
                 @endcan   
 
                 @can('mengelola master')
-                <div class="nav-item {{ request()->is(['product*', 'warehouse*', 'product-type*']) ? 'active open' : '' }} has-sub">
+                <div class="nav-item {{ request()->is(['product*', 'warehouse*', 'product-type*', 'suppliers*']) ? 'active open' : '' }} has-sub">
                     <a href="javascript:void(0)"><i class="ik ik-box"></i><span>{{ __('Master')}}</span></a>
                     <div class="submenu-content">
-                        @can('lihat produk')
-                        <a href="{{route('products.index')}}" class="menu-item {{ request()->is('products*') ? 'active' : '' }}">{{ __('Produk')}}</a>
-                        @endcan
                         @can('lihat gudang')
                         <a href="{{route('warehouses.index')}}" class="menu-item {{ request()->is('warehouses*') ? 'active' : '' }}">{{ __('Gudang')}}</a>
                         @endcan
@@ -56,6 +53,12 @@
                         @endcan
                         @can('lihat unit produk')
                         <a href="{{route('product-units.index')}}" class="menu-item {{ request()->is('product-units*') ? 'active' : '' }}">{{ __('Unit Produk')}}</a>
+                        @endcan
+                        @can('lihat produk')
+                        <a href="{{route('products.index')}}" class="menu-item {{ request()->is('products*') ? 'active' : '' }}">{{ __('Produk')}}</a>
+                        @endcan
+                        @can('lihat supplier')
+                        <a href="{{route('suppliers.index')}}" class="menu-item {{ request()->is('suppliers*') ? 'active' : '' }}">{{ __('Supplier')}}</a>
                         @endcan
                     </div>
                 </div>

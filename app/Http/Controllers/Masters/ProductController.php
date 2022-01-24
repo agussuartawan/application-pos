@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use \Cviebrock\EloquentSluggable\Services\SlugService;
-use Illuminate\Support\Facades\Crypt;
 use Illuminate\Http\Request;
 use App\Models\Group;
 use App\Models\Product;
@@ -35,7 +34,7 @@ class ProductController extends Controller
         $data  = Product::query();
 
         return Datatables::of($data)
-            ->addColumn('selling_price', function($data){
+            ->addColumn('selling_price', function ($data) {
                 return 'Rp. ' . rupiah($data->selling_price);
             })
             ->addColumn('action', function ($data) {
@@ -56,20 +55,19 @@ class ProductController extends Controller
                 if ($request->type != NULL) {
                     $instance->where('type_id', $request->type);
                 }
-                if($request->group != NULL){
+                if ($request->group != NULL) {
                     $instance->where('group_id', $request->group);
                 }
-                if($request->warehouse != NULL){
+                if ($request->warehouse != NULL) {
                     $instance->where('warehouse_id', $request->warehouse);
                 }
                 if (!empty($request->search)) {
-                     $instance->where(function($w) use($request){
+                    $instance->where(function ($w) use ($request) {
                         $search = $request->search;
                         $w->orWhere('code', 'LIKE', "%$search%")
-                        ->orWhere('name', 'LIKE', "%$search%")
-                        ->orWhere('size', 'LIKE', "%$search%");
+                            ->orWhere('name', 'LIKE', "%$search%")
+                            ->orWhere('size', 'LIKE', "%$search%");
                     });
-
                 }
 
                 return $instance;
@@ -93,7 +91,7 @@ class ProductController extends Controller
                 $types = Type::pluck('name', 'id');
                 $units = Unit::pluck('name', 'id');
 
-                return view('include.product.form', compact('product','groups', 'types', 'units', 'warehouses'));
+                return view('include.product.form', compact('product', 'groups', 'types', 'units', 'warehouses'));
             } else {
                 return '<div class="text-center">Anda tidak memiliki akses untuk menambah produk</div>';
             }
@@ -147,7 +145,7 @@ class ProductController extends Controller
         $groups = Group::pluck('name', 'id');
         $types = Type::pluck('name', 'id');
         $units = Unit::pluck('name', 'id');
-        return view('include.product.show', compact('product', 'units', 'types', 'groups','updated_at', 'created_at', 'purchase_price', 'selling_price'));
+        return view('include.product.show', compact('product', 'units', 'types', 'groups', 'updated_at', 'created_at', 'purchase_price', 'selling_price'));
     }
 
     /**
@@ -165,7 +163,7 @@ class ProductController extends Controller
             $groups = Group::pluck('name', 'id');
             $types = Type::pluck('name', 'id');
             $units = Unit::pluck('name', 'id');
-            return view('include.product.form', compact('product','purchase_price','selling_price', 'groups', 'types', 'units', 'warehouses'));
+            return view('include.product.form', compact('product', 'purchase_price', 'selling_price', 'groups', 'types', 'units', 'warehouses'));
         } else {
             return '<div class="text-center">Anda tidak memiliki akses untuk mengedit produk</div>';
         }
@@ -180,7 +178,7 @@ class ProductController extends Controller
      */
     public function update(UpdateProductRequest $request, Product $product)
     {
-        DB::transaction(function () use ($product,$request) {
+        DB::transaction(function () use ($product, $request) {
             $purchase_price = str_replace(".", "", $request->purchase_price);
             $selling_price = str_replace(".", "", $request->selling_price);
             $model = $product->update([
@@ -228,24 +226,24 @@ class ProductController extends Controller
     public function searchWarehouse(Request $request)
     {
         $search = $request->search;
-        return Warehouse::where('name','LIKE', "%$search%")->select('id','name')->get();
+        return Warehouse::where('name', 'LIKE', "%$search%")->select('id', 'name')->get();
     }
 
     public function searchType(Request $request)
     {
         $search = $request->search;
-        return Type::where('name','LIKE', "%$search%")->select('id','name')->get();
+        return Type::where('name', 'LIKE', "%$search%")->select('id', 'name')->get();
     }
 
     public function searchUnit(Request $request)
     {
         $search = $request->search;
-        return Unit::where('name','LIKE', "%$search%")->select('id','name')->get();
+        return Unit::where('name', 'LIKE', "%$search%")->select('id', 'name')->get();
     }
 
     public function searchGroup(Request $request, $type_id)
     {
         $search = $request->search;
-        return Group::where('name','LIKE', "%$search%")->where('type_id', $type_id)->select('id','name')->get();
+        return Group::where('name', 'LIKE', "%$search%")->where('type_id', $type_id)->select('id', 'name')->get();
     }
 }

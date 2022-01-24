@@ -16,6 +16,7 @@ use App\Http\Controllers\Masters\GroupController;
 use App\Http\Controllers\Masters\UnitController;
 use App\Http\Controllers\StockController;
 use App\Http\Controllers\ActivityLogController;
+use App\Http\Controllers\Masters\SupplierController;
 use App\Models\Product;
 
 Route::get('/', function () {
@@ -287,8 +288,24 @@ Route::group(['middleware' => 'auth'], function () {
 	});
 
 	#stocks route
-	Route::group(['middleware' => 'can:lihat persediaan'], function(){
+	Route::group(['middleware' => 'can:lihat persediaan'], function () {
 		Route::get('stocks', [StockController::class, 'index'])->name('stocks');
 		Route::get('stock/get-list', [StockController::class, 'getStockList']);
 	});
+
+	#supplier route
+	Route::group(['middleware' => 'can:lihat supplier'], function () {
+		Route::get('suppliers', [SupplierController::class, 'index'])->name('suppliers.index');
+		Route::get('supplier/get-list', [SupplierController::class, 'getSupplierList']);
+		Route::get('suppliers/{supplier}/show', [SupplierController::class, 'show'])->name('suppliers.show');
+	});
+	Route::get('suppliers/create', [SupplierController::class, 'create'])->name('suppliers.create');
+	Route::group(['middleware' => 'can:tambah supplier'], function () {
+		Route::post('suppliers', [SupplierController::class, 'store'])->name('suppliers.store');
+	});
+	Route::group(['middleware' => 'can:edit supplier'], function () {
+		Route::get('suppliers/{supplier}/edit', [SupplierController::class, 'edit'])->name('suppliers.edit');
+		Route::put('suppliers/{supplier}', [SupplierController::class, 'update'])->name('suppliers.update');
+	});
+	Route::delete('suppliers/{supplier}', [SupplierController::class, 'destroy'])->middleware('can:hapus supplier')->name('suppliers.destroy');
 });

@@ -6,36 +6,36 @@
         <div class="col-sm-6">
             <div class="form-group">
                 <label for="code">{{ __('Kode')}}</label>
-                {!! Form::text('code', null,['class'=>'form-control', 'placeholder' => 'Kode produk','id'=> 'code', 'disabled' => 'disabled']) !!}
+                {!! Form::text('code', null,['class'=>'form-control', 'placeholder' => 'Kode produk','id'=> 'code', 'readonly' => true]) !!}
             </div>
 
             <div class="form-group">
                 <label for="name">{{ __('Nama Produk')}}</label>
-                {!! Form::text('name', null,[ 'class'=>'form-control', 'placeholder' => 'Nama produk','id'=> 'name', 'disabled' => 'disabled']) !!}
+                {!! Form::text('name', null,[ 'class'=>'form-control', 'placeholder' => 'Nama produk','id'=> 'name', 'readonly' => true]) !!}
             </div>
 
             <div class="form-group">
                 <label for="slug">{{ __('Slug')}}</label>
-                {!! Form::text('slug', null,[ 'class'=>'form-control', 'id'=> 'slug','disabled' => 'disabled']) !!}
+                {!! Form::text('slug', null,[ 'class'=>'form-control', 'id'=> 'slug','readonly' => true]) !!}
             </div>
 
             <div class="form-group">
                 <label for="size">{{ __('Ukuran Produk')}}</label>
-                {!! Form::number('size', null,[ 'class'=>'form-control', 'placeholder' => 'Ukuran produk', 'id'=> 'size', 'disabled' => 'disabled']) !!}
+                {!! Form::number('size', null,[ 'class'=>'form-control', 'placeholder' => 'Ukuran produk', 'id'=> 'size', 'readonly' => true]) !!}
             </div>
 
             <div class="row">
                 <div class="col-sm-6">
                     <div class="form-group">
                         <label for="purchase_price">{{ __('Harga Beli')}}</label>
-                        {!! Form::text('purchase_price', $purchase_price,[ 'class'=>'form-control', 'placeholder' => 'Harga beli produk', 'id'=> 'purchase_price', 'disabled' => 'disabled']) !!}
+                        {!! Form::text('purchase_price', $purchase_price,[ 'class'=>'form-control', 'placeholder' => 'Harga beli produk', 'id'=> 'purchase_price', 'readonly' => true]) !!}
                     </div> 
                 </div>   
 
                 <div class="col-sm-6">
                     <div class="form-group">
                         <label for="selling_price">{{ __('Harga Jual')}}</label>
-                        {!! Form::text('selling_price', $selling_price,[ 'class'=>'form-control', 'placeholder' => 'Harga jual produk', 'id'=> 'selling_price', 'disabled' => 'disabled']) !!}
+                        {!! Form::text('selling_price', $selling_price,[ 'class'=>'form-control', 'placeholder' => 'Harga jual produk', 'id'=> 'selling_price', 'readonly' => true]) !!}
                     </div>
                 </div>
             </div>
@@ -59,12 +59,12 @@
 
             <div class="form-group">
                 <label for="created">{{ __('Ditambahkan Pada')}}</label>
-                {!! Form::text('created', $created_at,[ 'class'=>'form-control', 'id'=> 'created', 'disabled' => 'disabled']) !!}
+                {!! Form::text('created', $created_at,[ 'class'=>'form-control', 'id'=> 'created', 'readonly' => true]) !!}
             </div>
 
             <div class="form-group">
                 <label for="updated">{{ __('Terakhir Diubah Pada')}}</label>
-                {!! Form::text('updated', $updated_at,[ 'class'=>'form-control', 'id'=> 'updated', 'disabled' => 'disabled']) !!}
+                {!! Form::text('updated', $updated_at,[ 'class'=>'form-control', 'id'=> 'updated', 'readonly' => 'true']) !!}
             </div>
 
         </div>
