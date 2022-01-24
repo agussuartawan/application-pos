@@ -2,7 +2,8 @@
     <div class="sidebar-header">
         <a class="header-brand" href="{{route('dashboard')}}">
             <div class="logo-img">
-               <img height="30" src="{{ asset('img/logo_white.png')}}" class="header-brand-img" title="RADMIN"> 
+                {{-- <img class="header-brand-img" src="{{ asset('img/logo-tmb.png') }}" alt=""> --}}
+               {{-- <img height="30" src="{{ asset('img/logo_white.png')}}" class="header-brand-img" title="RADMIN">  --}}
             </div>
         </a>
         <div class="sidebar-action"><i class="ik ik-arrow-left-circle"></i></div>
@@ -69,6 +70,20 @@
                     <a href="{{route('stocks')}}"><i class="ik ik-folder"></i><span>{{ __('Persediaan')}}</span></a>
                 </div>
                 @endcan
+
+                @can('mengelola pembelian')
+                <div class="nav-item {{ request()->is(['purchases*', 'purchase_payments*']) ? 'active open' : '' }} has-sub">
+                    <a href="javascript:void(0)"><i class="ik ik-shopping-cart"></i><span>{{ __('Pembelian')}}</span></a>
+                    <div class="submenu-content">
+                        @can('lihat pembelian')
+                        <a href="{{route('purchases.index')}}" class="menu-item {{ request()->is('purchases*') ? 'active' : '' }}">{{ __('Data Pembelian')}}</a>
+                        @endcan
+                        @can('tambah pelunasan pembelian')
+                        <a href="{{route('purchase_payments.index')}}" class="menu-item {{ request()->is('purchase_payments*') ? 'active' : '' }}">{{ __('Pelunasan')}}</a>
+                        @endcan
+                    </div>
+                </div>
+                @endcan 
             </nav>          
         </div>
     </div>
