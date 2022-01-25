@@ -4,10 +4,8 @@
     <!-- push external head elements to head -->
     @push('head')
         <link rel="stylesheet" href="{{ asset('plugins/select2/dist/css/select2.min.css') }}">
-        <style>
-            .select2-selection { overflow: hidden; }
-            .select2-selection__rendered { white-space: normal; word-break: break-all; }
-        </style>
+        <link rel="stylesheet" href="{{ asset('css/select-2-responsive.css') }}">
+        <link rel="stylesheet" href="{{ asset('plugins/jquery-toast-plugin/dist/jquery.toast.min.css')}}">
     @endpush
 
     
@@ -47,19 +45,23 @@
             <div class="col-md-12">
                 <div class="card ">
                     <div class="card-body">
-                        <form action="#" id="create-purchase-form">
+                        {!! Form::open([
+                            'route' => 'purchases.store',
+                            'method' => 'POST',
+                            'id' => 'create-purchase-form'
+                        ]) !!}
                             <div class="row">
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <label for="supplier_id">{{ __('Supplier') }}<span class="text-red">*</span></label>
-                                        {!! Form::select('supplier_id', $suppliers, null, ['class' => 'form-control purchase-select', 'id' => 'supplier_id']) !!}
+                                        {!! Form::select('supplier_id', [], null, ['class' => 'form-control', 'id' => 'supplier_id']) !!}
                                     </div>
                                 </div>
 
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <label for="email">{{ __('E-mail') }}</label>
-                                        {!! Form::text('email', null, ['class' => 'form-control', 'id' => 'email']) !!}
+                                        {!! Form::text('supplier_email', null, ['class' => 'form-control', 'id' => 'supplier_email']) !!}
                                     </div>
                                 </div>
 
@@ -81,7 +83,7 @@
                             <div class="row">
                                 <div class="col-md-3">
                                     <label for="address">{{ __('Alamat') }}</label>
-                                    {!! Form::textarea('address', null, ['class' => 'form-control', 'id' => 'address', 'rows' => 1]) !!}
+                                    {!! Form::textarea('supplier_address', null, ['class' => 'form-control', 'id' => 'supplier_address', 'rows' => 1]) !!}
                                 </div>
 
                                 <div class="col-md-3">
@@ -101,7 +103,7 @@
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <label for="warehouse_id">{{ __('Gudang') }}<span class="text-red">*</span></label>
-                                        {!! Form::select('warehouse_id', $warehouses, null, ['class' => 'form-control purchase-select', 'id' => 'warehouse_id']) !!}
+                                        {!! Form::select('warehouse_id', [], null, ['class' => 'form-control', 'id' => 'warehouse_id']) !!}
                                     </div>
                                 </div>
                             </div>
@@ -112,9 +114,10 @@
                                         <table class="table" id="purchase-create-table" style="min-width: 50rem">
                                             <thead>
                                                 <tr>
-                                                    <th width="30%">Produk<span class="text-red">*</span></th>
-                                                    <th width="20%">Qty</th>
-                                                    <th width="20%">Harga</th>
+                                                    <th width="25%">Produk<span class="text-red">*</span></th>
+                                                    <th width="15%">Qty</th>
+                                                    <th width="15%">Harga</th>
+                                                    <th width="15%">Diskon (%)</th>
                                                     <th width="20%">Subtotal</th>
                                                     <th width="10%"></th>
                                                 </tr>
@@ -126,7 +129,9 @@
                                     </div>
                                 </div>
                             </div>
-                        </form>
+
+
+                        {!! Form::close() !!}
                     </div>
                 </div>
             </div>
@@ -135,8 +140,8 @@
     <!-- push external js -->
     @push('script') 
         <script src="{{ asset('plugins/select2/dist/js/select2.min.js') }}"></script>
-         <!--get role wise permissiom ajax script-->
-        <script src="{{ asset('js/get-role.js') }}"></script>
+        <script src="{{ asset('plugins/mask-money/jquery.mask.min.js') }}"></script>
+        <script src="{{ asset('plugins/jquery-toast-plugin/dist/jquery.toast.min.js')}}"></script>
         <script src="{{ asset('js/transactions/create-purchase.js') }}"></script>
     @endpush
 @endsection

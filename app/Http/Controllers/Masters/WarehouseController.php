@@ -128,4 +128,10 @@ class WarehouseController extends Controller
             return $bug;
         }
     }
+
+    public function searchWarehouse(Request $request)
+    {
+        $search = $request->search;
+        return Warehouse::where('name', 'LIKE', "%$search%")->select('id', 'name')->get();
+    }
 }

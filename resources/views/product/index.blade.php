@@ -4,7 +4,7 @@
     <!-- push external head elements to head -->
     @push('head')
         <link rel="stylesheet" href="{{ asset('plugins/DataTables/datatables.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('plugins/jquery-toast-plugin/dist/jquery.toast.min.css')}}">
+        <link rel="stylesheet" href="{{ asset('plugins/jquery-toast-plugin/dist/jquery.toast.min.css')}}">
         <link rel="stylesheet" href="{{ asset('plugins/select2/dist/css/select2.min.css') }}">
     @endpush
     <div class="container-fluid">

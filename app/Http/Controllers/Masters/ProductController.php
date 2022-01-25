@@ -223,12 +223,6 @@ class ProductController extends Controller
         return response()->json(['slug' => $slug]);
     }
 
-    public function searchWarehouse(Request $request)
-    {
-        $search = $request->search;
-        return Warehouse::where('name', 'LIKE', "%$search%")->select('id', 'name')->get();
-    }
-
     public function searchType(Request $request)
     {
         $search = $request->search;
@@ -245,5 +239,16 @@ class ProductController extends Controller
     {
         $search = $request->search;
         return Group::where('name', 'LIKE', "%$search%")->where('type_id', $type_id)->select('id', 'name')->get();
+    }
+
+    public function searchProduct(Request $request)
+    {
+        $search = $request->search;
+        $products = Product::where('name', 'LIKE', "%$search%")->select('id', 'name', 'purchase_price')->get()->map(function($p){
+            $p->purchase_price = rupiah($p->purchase_price);
+            return $p;
+        });
+        
+        return $products;
     }
 }

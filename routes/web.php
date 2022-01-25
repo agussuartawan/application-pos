@@ -222,6 +222,7 @@ Route::group(['middleware' => 'auth'], function () {
 	});
 
 	// product route
+	Route::get('product-search', [ProductController::class, 'searchProduct']);
 	Route::group(['middleware' => 'can:lihat produk'], function () {
 		Route::get('product/get-list', [ProductController::class, 'getProductList']);
 		Route::get('products', [ProductController::class, 'index'])->name('products.index');
@@ -232,7 +233,6 @@ Route::group(['middleware' => 'auth'], function () {
 		Route::get('product/type', [ProductController::class, 'searchType']);
 		Route::get('product/unit', [ProductController::class, 'searchUnit']);
 		Route::get('product/group/{type_id}', [ProductController::class, 'searchGroup']);
-		Route::get('product/warehouse', [ProductController::class, 'searchWarehouse']);
 		Route::post('products', [ProductController::class, 'store'])->name('products.store');
 		Route::get('product/get-slug', [ProductController::class, 'getSlug']);
 	});
@@ -245,6 +245,7 @@ Route::group(['middleware' => 'auth'], function () {
 
 	// warehouse route
 	Route::get('warehouse/show-form', [WarehouseController::class, 'showForm']);
+	Route::get('product/warehouse', [WarehouseController::class, 'searchWarehouse']);
 	Route::get('warehouse/get-list', [WarehouseController::class, 'getWarehouseList']);
 	Route::get('warehouses', [WarehouseController::class, 'index'])->middleware('can:lihat gudang')->name('warehouses.index');
 	Route::post('warehouses', [WarehouseController::class, 'store'])->middleware('can:tambah gudang')->name('warehouses.store');
@@ -294,6 +295,7 @@ Route::group(['middleware' => 'auth'], function () {
 	});
 
 	#supplier route
+	Route::get('supplier-search', [SupplierController::class, 'searchSupplier']);
 	Route::group(['middleware' => 'can:lihat supplier'], function () {
 		Route::get('suppliers', [SupplierController::class, 'index'])->name('suppliers.index');
 		Route::get('supplier/get-list', [SupplierController::class, 'getSupplierList']);
@@ -310,12 +312,14 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::delete('suppliers/{supplier}', [SupplierController::class, 'destroy'])->middleware('can:hapus supplier')->name('suppliers.destroy');
 
 	#purchases route
+	// Route::get('purchase/count-subtotal', [PurchaseController::class, 'countSubtotal']);
 	Route::group(['middleware' => 'can:lihat pembelian'], function () {
 		Route::get('purchases', [PurchaseController::class, 'index'])->name('purchases.index');
 		Route::get('purchase/get-list', [PurchaseController::class, 'getPurchaseList']);
 	});
 	Route::group(['middleware' => 'can:tambah pembelian'], function () {
 		Route::get('purchases/create', [PurchaseController::class, 'create'])->name('purchases.create');
+		Route::post('purchases', [PurchaseController::class, 'store'])->name('purchases.store');
 		Route::get('purchase/showFormCreate', [PurchaseController::class, 'showFromCreate']);
 	});
 

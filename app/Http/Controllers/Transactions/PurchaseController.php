@@ -61,16 +61,29 @@ class PurchaseController extends Controller
 
     public function create()
     {
-        $suppliers = Supplier::pluck('name', 'id');
-        $warehouses = Warehouse::pluck('name', 'id');
-        return view('purchase.create', compact('suppliers', 'warehouses'));
+        return view('purchase.create');
     }
 
 
     public function showFromCreate(Request $request)
     {
-        $products = Product::pluck('name', 'id');
         $row = $request->row;
-        return view('include.transaction.form-create', compact('products', 'row'));
+        return view('include.transaction.purchase.form-create', compact('row'));
     }
+
+    // public function countSubtotal(Request $request)
+    // {
+    // 	$new_price = str_replace(".", "", $request->price);
+    // 	$qty = $request->qty;
+    // 	$discount = $request->discount / 100;
+
+    // 	if($request->price){
+    // 		$discount_rp = $new_price * $discount;
+	   //  	$subtotal = ($new_price - $discount_rp) * $qty;
+    // 	} else {
+    // 		$subtotal = 0;
+    // 	}
+
+    // 	return rupiah($subtotal);
+    // }
 }
