@@ -310,16 +310,17 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::delete('suppliers/{supplier}', [SupplierController::class, 'destroy'])->middleware('can:hapus supplier')->name('suppliers.destroy');
 
 	#purchases route
-	Route::group(['middleware' => 'can:lihat pembelian'], function(){
+	Route::group(['middleware' => 'can:lihat pembelian'], function () {
 		Route::get('purchases', [PurchaseController::class, 'index'])->name('purchases.index');
 		Route::get('purchase/get-list', [PurchaseController::class, 'getPurchaseList']);
 	});
-	Route::group(['middleware' => 'can:tambah pembelian'], function(){
+	Route::group(['middleware' => 'can:tambah pembelian'], function () {
 		Route::get('purchases/create', [PurchaseController::class, 'create'])->name('purchases.create');
+		Route::get('purchase/showFormCreate', [PurchaseController::class, 'showFromCreate']);
 	});
 
 	#purchase payment route
-	Route::group(['middleware' => 'can:tambah pelunasan pembelian'], function(){
+	Route::group(['middleware' => 'can:tambah pelunasan pembelian'], function () {
 		Route::get('purchase_payments', [PurchasePaymentController::class, 'index'])->name('purchase_payments.index');
 	});
 });

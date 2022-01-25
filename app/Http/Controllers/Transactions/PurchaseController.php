@@ -3,20 +3,23 @@
 namespace App\Http\Controllers\Transactions;
 
 use App\Http\Controllers\Controller;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Models\Purchase;
+use App\Models\Supplier;
+use App\Models\Warehouse;
 use DataTables, Auth;
 
 class PurchaseController extends Controller
 {
     public function index()
     {
-    	return view('purchase.index');
+        return view('purchase.index');
     }
 
     public function getPurchaseList(Request $request)
     {
-    	$data  = Purchase::with('supplier');
+        $data  = Purchase::with('supplier');
 
         return Datatables::of($data)
             ->addColumn('supplier_name', function ($data) {
@@ -44,7 +47,7 @@ class PurchaseController extends Controller
                 //     $instance->where('warehouse_id', $request->warehouse);
                 // }
                 if (!empty($request->search)) {
-                    $instance->join('supplier', 'supplier.id', '=','purchase.supplier_id')->where(function ($w) use ($request) {
+                    $instance->join('supplier', 'supplier.id', '=', 'purchase.supplier_id')->where(function ($w) use ($request) {
                         $search = $request->search;
                         $w->orWhere('name', 'LIKE', "%$search%");
                     });
@@ -54,5 +57,20 @@ class PurchaseController extends Controller
             })
             ->rawColumns(['action'])
             ->make(true);
+    }
+
+    public function create()
+    {
+        $suppliers = Supplier::pluck('name', 'id');
+        $warehouses = Warehouse::pluck('name', 'id');
+        return view('purchase.create', compact('suppliers', 'warehouses'));
+    }
+
+
+    public function showFromCreate(Request $request)
+    {
+        $products = Product::pluck('name', 'id');
+        $row = $request->row;
+        return view('include.transaction.form-create', compact('products', 'row'));
     }
 }

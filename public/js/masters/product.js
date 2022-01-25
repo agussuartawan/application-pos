@@ -19,10 +19,10 @@
                 infoFiltered: '(Difilter dari _MAX_ total data)',
                 search: 'Cari:',
                 paginate: {
-                    first: 'Awal',
-                    last: 'Akhir',
-                    next: 'Selanjutnya',
-                    previous: 'Sebelumnya'
+                    first: '<i class="ik ik-chevrons-left"></i>',
+                    last: '<i class="ik ik-chevrons-right"></i>',
+                    next: '<i class="ik ik-chevron-right"></i>',
+                    previous: '<i class="ik ik-chevron-left"></i>'
                 }
             },
             scroller: {
@@ -156,10 +156,10 @@
             method: method,
             data: form.serialize(),
             beforeSend: function() {
-                $('.preloader').fadeIn();
+                $('.modal-save').attr('disabled', 'disabled');
             },
             complete: function(){
-                $('.preloader').fadeOut();
+                $('.modal-save').removeAttr('disabled');
             },
             success: function(response){
                 showSuccessToast(message);
