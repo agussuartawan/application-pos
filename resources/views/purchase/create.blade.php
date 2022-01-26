@@ -131,13 +131,12 @@
                             </div>
 
                             <div class="row">
-                                <div class="col-md-8"></div>
-                                <div class="col-md-2 text-right">
+                                <div class="col text-right">
                                     <h6>Diskon (Rp)</h6>
                                     <h6>PPN (Rp)</h6>
                                     <h5>Total (Rp)</h5>
                                 </div>
-                                <div class="col-md-2 text-right">
+                                <div class="d-flex flex-column text-right pr-3">
                                     <h6 id="discount_total">0</h6>
                                     <h6 id="ppn">0</h6>
                                     <h5 id="grand_total">0</h5>
@@ -146,6 +145,12 @@
 
 
                         {!! Form::close() !!}
+                    </div>
+
+                    <div class="card-footer d-flex justify-content-center">
+                        <button type="button" class="btn btn-danger mr-2">{{ __('Batal')}}</button>
+                        <button type="button" class="btn btn-primary mr-2">{{ __('Simpan')}}</button>
+                        <button type="button" class="btn btn-warning">{{ __('Simpan & Cetak')}}</button>
                     </div>
                 </div>
             </div>

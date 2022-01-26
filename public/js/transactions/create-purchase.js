@@ -8,15 +8,11 @@
         showCreateForm(row++);
         searchSupplier();
         searchWarehouse();
-
-	    $('.custom-filter').change(function(){
-	        dTable.draw();
-	    });
     });
 
     $('body').on('change', '.qty', function(){
         const me = $(this);
-        const id = $(this).attr('id');
+        const id = me.attr('id');
         const row_number = id.slice(-1);
         const discount = $(`#discount_${row_number}`).val();
         const qty = me.val();
@@ -27,7 +23,7 @@
 
     $('body').on('change', '.single-price', function(){
         const me = $(this);
-        const id = $(this).attr('id');
+        const id = me.attr('id');
         const row_number = id.slice(-1);
         const discount = $(`#discount_${row_number}`).val();
         const price = me.val();
@@ -62,6 +58,7 @@
             $(this).closest('tr').prev('tr').children('td:first').find('.product-select').attr('data-last-select', 'true');
         }
         $(this).parents('tr').remove();
+        countGrandTotal();
     });
 
     $('.modal-save').on('click', function(event) {
@@ -103,15 +100,6 @@
                 }
             }
         });
-    });
-
-    $('#modal').on('hidden.bs.modal', function(){
-        $('.load-here').empty();
-    });
-
-    $('body').on('change', '#type_id', function(event){
-        var type_id = $(this).val();
-        searchGroup(type_id);
     });
 })(jQuery);
 
@@ -256,18 +244,34 @@ select_2_product = function(){
         var data = event.params.data;
         var id = $(this).attr('id');
         var id_number = id.slice(-1);
-        var price = $(`#price_${id_number}`).val(data.purchase_price);
+
+        $(`#price_${id_number}`).val(data.purchase_price);
+        var price = $(`#price_${id_number}`).val();
+
+        if(!$(`#qty_${id_number}`).val()){
+            $(`#qty_${id_number}`).val(1);
+        }
         var qty = $(`#qty_${id_number}`).val();
+
+        if(!$(`#discount_${id_number}`).val()){
+            $(`#discount_${id_number}`).val(0);
+        }
         var discount = $(`#discount_${id_number}`).val();
+
         countSubtotal(qty, price, discount, id_number);
         countGrandTotal();
     })
     .on('select2:clear', function(event) {
         var id = $(this).attr('id');
         var id_number = id.slice(-1);
-        var price = $(`#price_${id_number}`).val(0);
+
+        $(`#price_${id_number}`).val(0);
+        var price = $(`#price_${id_number}`).val();
+
         var qty = $(`#qty_${id_number}`).val();
+
         var discount = $(`#discount_${id_number}`).val();
+
         countSubtotal(qty, price, discount, id_number);
         countGrandTotal();
     });
@@ -294,20 +298,43 @@ countSubtotal = function(qty, price, discount, row_id){
         subtotal = (price - discount_rp) * qty;
     }
 
-    $(`#subtotal_${row_id}`).val(subtotal);
+    $(`#subtotal_${row_id}`).val(Math.round(subtotal));
 }
 
 countGrandTotal = function(){
-    var subtotal_row = $('.sub-total').length,
-        subtotal = 0;
-    for (let index = 0; index < subtotal_row; index++) {
+    var last_subtotal_id = $('.sub-total').last().attr('id'),
+        subtotal_row = last_subtotal_id.slice(-1),
+        subtotal = 0,
+        discount_total = 0;
+
+    for (let index = 1; index <= subtotal_row; index++) {
         var this_value = $(`#subtotal_${index}`).val();
-        if(this_value != undefined){
+        if(this_value && this_value != undefined){
             var this_subtotal = this_value.replaceAll('.', '');
             subtotal = parseInt(subtotal) + parseInt(this_subtotal);
         }
+
+        //Hitung diskon
+        var this_price = $(`#price_${index}`).val(),
+            this_discount = $(`#discount_${index}`).val(),
+            this_qty = $(`#qty_${index}`).val();
+
+        if (this_price && this_price != undefined) {
+            if (this_discount && this_discount != undefined) {
+                this_discount = this_discount / 100;
+                this_price = this_price.replaceAll('.', '');
+                var this_discount_total = (this_price * this_qty) * this_discount;
+                discount_total = discount_total + this_discount_total;
+            }   
+        }
     }
-    $('#grand_total').text(subtotal);
+    $('#ppn').text(rupiah(countPPN(subtotal)));
+    $('#grand_total').text(rupiah(subtotal));
+    $('#discount_total').text(rupiah(Math.round(discount_total)));
+}
+
+countPPN = function(value){
+    return Math.round(value * 0.1);
 }
 
 var originalVal = $.fn.val;
@@ -321,3 +348,18 @@ $.fn.val = function(value) {
         return originalVal.call(this, value);
     }
 };
+
+rupiah = function(bilangan){
+    var number_string = bilangan.toString(),
+        sisa    = number_string.length % 3,
+        rupiah  = number_string.substr(0, sisa),
+        ribuan  = number_string.substr(sisa).match(/\d{3}/g);
+        
+    if (ribuan) {
+        separator = sisa ? '.' : '';
+        rupiah += separator + ribuan.join('.');
+    }
+
+    // Cetak hasil
+    return rupiah;
+}
