@@ -22,6 +22,7 @@
         const qty = me.val();
         const price = $(`#price_${row_number}`).val();
         countSubtotal(qty, price,discount, row_number);
+        countGrandTotal();
     });
 
     $('body').on('change', '.single-price', function(){
@@ -32,6 +33,7 @@
         const price = me.val();
         const qty = $(`#qty_${row_number}`).val();
         countSubtotal(qty, price, discount, row_number);
+        countGrandTotal();
     });
 
     $('body').on('change', '.discount', function(){
@@ -42,6 +44,7 @@
         const discount = me.val();
         const qty = $(`#qty_${row_number}`).val();
         countSubtotal(qty, price, discount, row_number);
+        countGrandTotal();
     });
 
     $('body').on('change', '.product-select', function(){
@@ -213,6 +216,7 @@ showCreateForm = function(row){
             $('#purchase-create-table tbody').append(response);
             select_2_product();
             maskMoney();
+            countGrandTotal();
         },
         error: function(xhr, status){
             alert('Terjadi kesalahan');
@@ -252,19 +256,20 @@ select_2_product = function(){
         var data = event.params.data;
         var id = $(this).attr('id');
         var id_number = id.slice(-1);
-        $(`#price_${id_number}`).val(data.purchase_price);
-        $(`#qty_${id_number}`).val(1);
-        $(`#discount_${id_number}`).val(0);
-        countSubtotal(1, data.purchase_price, 0, id_number);
+        var price = $(`#price_${id_number}`).val(data.purchase_price);
+        var qty = $(`#qty_${id_number}`).val();
+        var discount = $(`#discount_${id_number}`).val();
+        countSubtotal(qty, price, discount, id_number);
+        countGrandTotal();
     })
     .on('select2:clear', function(event) {
-        var data = event.params.data;
         var id = $(this).attr('id');
         var id_number = id.slice(-1);
-        $(`#price_${id_number}`).val('');
-        $(`#qty_${id_number}`).val(1);
-        $(`#discount_${id_number}`).val(0);
-        countSubtotal(1, 0, 0, id_number);
+        var price = $(`#price_${id_number}`).val(0);
+        var qty = $(`#qty_${id_number}`).val();
+        var discount = $(`#discount_${id_number}`).val();
+        countSubtotal(qty, price, discount, id_number);
+        countGrandTotal();
     });
 }
 
@@ -278,7 +283,8 @@ maskMoney = function(){
 }
 
 countSubtotal = function(qty, price, discount, row_id){
-    var discount = discount / 100,
+    var qty = parseInt(qty),
+        discount = parseInt(discount) / 100,
         subtotal = 0,
         discount_rp;
 
@@ -289,6 +295,19 @@ countSubtotal = function(qty, price, discount, row_id){
     }
 
     $(`#subtotal_${row_id}`).val(subtotal);
+}
+
+countGrandTotal = function(){
+    var subtotal_row = $('.sub-total').length,
+        subtotal = 0;
+    for (let index = 0; index < subtotal_row; index++) {
+        var this_value = $(`#subtotal_${index}`).val();
+        if(this_value != undefined){
+            var this_subtotal = this_value.replaceAll('.', '');
+            subtotal = parseInt(subtotal) + parseInt(this_subtotal);
+        }
+    }
+    $('#grand_total').text(subtotal);
 }
 
 var originalVal = $.fn.val;

@@ -130,6 +130,20 @@
                                 </div>
                             </div>
 
+                            <div class="row">
+                                <div class="col-md-8"></div>
+                                <div class="col-md-2 text-right">
+                                    <h6>Diskon (Rp)</h6>
+                                    <h6>PPN (Rp)</h6>
+                                    <h5>Total (Rp)</h5>
+                                </div>
+                                <div class="col-md-2 text-right">
+                                    <h6 id="discount_total">0</h6>
+                                    <h6 id="ppn">0</h6>
+                                    <h5 id="grand_total">0</h5>
+                                </div>
+                            </div>
+
 
                         {!! Form::close() !!}
                     </div>

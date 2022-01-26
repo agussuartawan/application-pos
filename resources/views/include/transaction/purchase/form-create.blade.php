@@ -12,7 +12,7 @@
         {!! Form::number('discount', null, ['class' => 'form-control discount', 'id' => 'discount_'.$row]) !!}
     </td>
     <td>
-        {!! Form::text('', null, ['class' => 'form-control money', 'id' => 'subtotal_'.$row, 'readonly' => 'readonly']) !!}
+        {!! Form::text('', null, ['class' => 'form-control money sub-total', 'id' => 'subtotal_'.$row, 'readonly' => 'readonly']) !!}
     </td>
     <td>
         @if($row != 1)
