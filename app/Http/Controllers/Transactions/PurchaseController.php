@@ -7,6 +7,7 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Models\Purchase;
 use App\Models\Supplier;
+use App\Models\Term;
 use App\Models\Warehouse;
 use DataTables, Auth;
 
@@ -71,6 +72,23 @@ class PurchaseController extends Controller
         return view('include.transaction.purchase.form-create', compact('row'));
     }
 
+    public function store(Request $request)
+    {
+        // hapus nilai product_id yang kosong pada form
+        $product['product_id'] = $request->product_id;
+        $product['qty'] = $request->qty;
+        $product['price'] = $request->price;
+        $product['discount'] = $request->discount;
+        foreach ($product['product_id'] as $key => $value) {
+            if ($value == null) {
+                unset($product['product_id'][$key]);
+                unset($product['qty'][$key]);
+                unset($product['price'][$key]);
+                unset($product['discount'][$key]);
+            }
+        }
+    }
+
     // public function countSubtotal(Request $request)
     // {
     // 	$new_price = str_replace(".", "", $request->price);
@@ -79,7 +97,7 @@ class PurchaseController extends Controller
 
     // 	if($request->price){
     // 		$discount_rp = $new_price * $discount;
-	   //  	$subtotal = ($new_price - $discount_rp) * $qty;
+    //  	$subtotal = ($new_price - $discount_rp) * $qty;
     // 	} else {
     // 		$subtotal = 0;
     // 	}

@@ -17,6 +17,7 @@ use App\Http\Controllers\Masters\UnitController;
 use App\Http\Controllers\StockController;
 use App\Http\Controllers\ActivityLogController;
 use App\Http\Controllers\Masters\SupplierController;
+use App\Http\Controllers\Masters\TermController;
 use App\Http\Controllers\Transactions\PurchaseController;
 
 Route::get('/', function () {
@@ -327,4 +328,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::group(['middleware' => 'can:tambah pelunasan pembelian'], function () {
 		Route::get('purchase_payments', [PurchasePaymentController::class, 'index'])->name('purchase_payments.index');
 	});
+
+	#Terms Route
+	Route::get('term-search', [TermController::class, 'searchTerm']);
 });

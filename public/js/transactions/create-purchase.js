@@ -8,6 +8,8 @@
         showCreateForm(row++);
         searchSupplier();
         searchWarehouse();
+        searchTerm();
+        $(".date").datepicker();
     });
 
     $('body').on('change', '.qty', function(){
@@ -103,7 +105,7 @@
     });
 })(jQuery);
 
-showSuccessToast = function(message) {
+showSuccessToast = (message) => {
     'use strict';
     $.toast({
         heading: 'Sukses',
@@ -112,10 +114,10 @@ showSuccessToast = function(message) {
         icon: 'success',
         loaderBg: '#f96868',
         position: 'top-right'
-    })
+    });
 };
 
-showErrorToast = function() {
+showErrorToast = () => {
     'use strict';
     $.toast({
         heading: 'Error',
@@ -124,123 +126,153 @@ showErrorToast = function() {
         icon: 'error',
         loaderBg: '#f2a654',
         position: 'top-right'
-    })
+    });
 };
 
-searchWarehouse = function(){
-	$('#warehouse_id').select2({
-    	ajax: {
-    		url: '/product/warehouse',
-    		dataType: 'json',
-    		data: function(params){
-    			var query = {
-    				search: params.search
-    			}
+searchWarehouse = () => {
+    $('#warehouse_id').select2({
+        ajax: {
+            url: '/product/warehouse',
+            dataType: 'json',
+            data: function (params) {
+                var query = {
+                    search: params.search
+                };
 
-    			return query;
-    		},
-		    processResults: function (data){
-		      return {
-		        results:  $.map(data, function (item) {
-		              return {
-		                  text: item.name,
-		                  id: item.id
-		              }
-		          })
-		      };
-		    },
-    	},
-    	placeholder: 'Cari Gudang',
-    	cache: true,
+                return query;
+            },
+            processResults: function (data) {
+                return {
+                    results: $.map(data, function (item) {
+                        return {
+                            text: item.name,
+                            id: item.id
+                        };
+                    })
+                };
+            },
+        },
+        placeholder: 'Cari Gudang',
+        cache: true,
         allowClear: true,
     });
 }
 
-searchSupplier = function(){
+searchSupplier = () => {
     $('#supplier_id').select2({
         ajax: {
             url: '/supplier-search',
             dataType: 'json',
-            data: function(params){
+            data: function (params) {
                 var query = {
                     search: params.search
-                }
+                };
 
                 return query;
             },
-            processResults: function (data){
-              return {
-                results:  $.map(data, function (item) {
-                      return {
-                          text: item.name,
-                          id: item.id,
-                          email: item.email,
-                          address: item.address
-                      }
-                  })
-              };
+            processResults: function (data) {
+                return {
+                    results: $.map(data, function (item) {
+                        return {
+                            text: item.name,
+                            id: item.id,
+                            email: item.email,
+                            address: item.address
+                        };
+                    })
+                };
             },
         },
         placeholder: 'Cari Supplier',
         cache: true,
         allowClear: true,
     })
-    .on('select2:select', function(event) {
+    .on('select2:select', function (event) {
         var data = event.params.data;
         $('#supplier_email').val(data.email);
         $('#supplier_address').val(data.address);
     });
 }
 
-showCreateForm = function(row){
+searchTerm = () => {
+    $('#terms').select2({
+        ajax: {
+            url: '/term-search',
+            dataType: 'json',
+            data: function (params) {
+                var query = {
+                    search: params.search
+                };
+
+                return query;
+            },
+            processResults: function (data) {
+                return {
+                    results: $.map(data, function (item) {
+                        return {
+                            text: item.description,
+                            id: item.description,
+                            term_day: item.term_day
+                        };
+                    })
+                };
+            },
+        },
+        placeholder: 'Pilih batas kredit',
+        cache: true,
+        allowClear: true,
+    });
+}
+
+showCreateForm = (row) => {
     $.ajax({
         url: '/purchase/showFormCreate',
         type: 'GET',
         data: {
             row: row
-        },  
+        },
         dataType: 'html',
-        success: function(response){
+        success: function (response) {
             $('#purchase-create-table tbody').append(response);
             select_2_product();
             maskMoney();
             countGrandTotal();
         },
-        error: function(xhr, status){
+        error: function (xhr, status) {
             alert('Terjadi kesalahan');
         }
-    })
+    });
 }
 
-select_2_product = function(){
+select_2_product = () => {
     $('.product-select').select2({
         ajax: {
             url: '/product-search',
             dataType: 'json',
-            data: function(params){
+            data: function (params) {
                 var query = {
                     search: params.search
-                }
+                };
 
                 return query;
             },
-            processResults: function (data){
-              return {
-                results:  $.map(data, function (item) {
-                      return {
-                          text: item.name,
-                          id: item.id,
-                          purchase_price: item.purchase_price
-                      }
-                  })
-              };
+            processResults: function (data) {
+                return {
+                    results: $.map(data, function (item) {
+                        return {
+                            text: item.name,
+                            id: item.id,
+                            purchase_price: item.purchase_price
+                        };
+                    })
+                };
             },
         },
         placeholder: 'Cari Produk',
         cache: true,
         allowClear: true,
     })
-    .on('select2:select', function(event) {
+    .on('select2:select', function (event) {
         var data = event.params.data;
         var id = $(this).attr('id');
         var id_number = id.slice(-1);
@@ -248,20 +280,25 @@ select_2_product = function(){
         $(`#price_${id_number}`).val(data.purchase_price);
         var price = $(`#price_${id_number}`).val();
 
-        if(!$(`#qty_${id_number}`).val()){
+        if (!$(`#qty_${id_number}`).val()) {
             $(`#qty_${id_number}`).val(1);
         }
         var qty = $(`#qty_${id_number}`).val();
 
-        if(!$(`#discount_${id_number}`).val()){
+        if (!$(`#discount_${id_number}`).val()) {
             $(`#discount_${id_number}`).val(0);
         }
         var discount = $(`#discount_${id_number}`).val();
 
         countSubtotal(qty, price, discount, id_number);
         countGrandTotal();
+
+        var this_value = $(this).val();
+        var id = $(this).attr('id');
+        var row_id = id.slice(-1);
+        $(`#hidden_${row_id}`).val(this_value);
     })
-    .on('select2:clear', function(event) {
+    .on('select2:clear', function (event) {
         var id = $(this).attr('id');
         var id_number = id.slice(-1);
 
@@ -274,25 +311,24 @@ select_2_product = function(){
 
         countSubtotal(qty, price, discount, id_number);
         countGrandTotal();
+
+        $(`#hidden_${id_number}`).val('');
     });
 }
 
-maskMoney = function(){
+maskMoney = () => {
     $('.money').maskMoney({
-        thousands:'.', 
-        decimal:',',
-        affixesStay: false, 
+        thousands: '.',
+        decimal: ',',
+        affixesStay: false,
         precision: 0
     });
 }
 
-countSubtotal = function(qty, price, discount, row_id){
-    var qty = parseInt(qty),
-        discount = parseInt(discount) / 100,
-        subtotal = 0,
-        discount_rp;
+countSubtotal = (qty, price, discount, row_id) => {
+    var qty = parseInt(qty), discount = parseInt(discount) / 100, subtotal = 0, discount_rp;
 
-    if(price){
+    if (price) {
         var price = price.replaceAll('.', '');
         discount_rp = price * discount;
         subtotal = (price - discount_rp) * qty;
@@ -301,23 +337,18 @@ countSubtotal = function(qty, price, discount, row_id){
     $(`#subtotal_${row_id}`).val(Math.round(subtotal));
 }
 
-countGrandTotal = function(){
-    var last_subtotal_id = $('.sub-total').last().attr('id'),
-        subtotal_row = last_subtotal_id.slice(-1),
-        subtotal = 0,
-        discount_total = 0;
+countGrandTotal = () => {
+    var last_subtotal_id = $('.sub-total').last().attr('id'), subtotal_row = last_subtotal_id.slice(-1), subtotal = 0, discount_total = 0;
 
     for (let index = 1; index <= subtotal_row; index++) {
         var this_value = $(`#subtotal_${index}`).val();
-        if(this_value && this_value != undefined){
+        if (this_value && this_value != undefined) {
             var this_subtotal = this_value.replaceAll('.', '');
             subtotal = parseInt(subtotal) + parseInt(this_subtotal);
         }
 
         //Hitung diskon
-        var this_price = $(`#price_${index}`).val(),
-            this_discount = $(`#discount_${index}`).val(),
-            this_qty = $(`#qty_${index}`).val();
+        var this_price = $(`#price_${index}`).val(), this_discount = $(`#discount_${index}`).val(), this_qty = $(`#qty_${index}`).val();
 
         if (this_price && this_price != undefined) {
             if (this_discount && this_discount != undefined) {
@@ -325,7 +356,7 @@ countGrandTotal = function(){
                 this_price = this_price.replaceAll('.', '');
                 var this_discount_total = (this_price * this_qty) * this_discount;
                 discount_total = discount_total + this_discount_total;
-            }   
+            }
         }
     }
     $('#ppn').text(rupiah(countPPN(subtotal)));
@@ -333,9 +364,7 @@ countGrandTotal = function(){
     $('#discount_total').text(rupiah(Math.round(discount_total)));
 }
 
-countPPN = function(value){
-    return Math.round(value * 0.1);
-}
+countPPN = (value) => Math.round(value * 0.1)
 
 var originalVal = $.fn.val;
 $.fn.val = function(value) {
@@ -349,12 +378,9 @@ $.fn.val = function(value) {
     }
 };
 
-rupiah = function(bilangan){
-    var number_string = bilangan.toString(),
-        sisa    = number_string.length % 3,
-        rupiah  = number_string.substr(0, sisa),
-        ribuan  = number_string.substr(sisa).match(/\d{3}/g);
-        
+rupiah = (bilangan) => {
+    var number_string = bilangan.toString(), sisa = number_string.length % 3, rupiah = number_string.substr(0, sisa), ribuan = number_string.substr(sisa).match(/\d{3}/g);
+
     if (ribuan) {
         separator = sisa ? '.' : '';
         rupiah += separator + ribuan.join('.');

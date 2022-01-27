@@ -4,6 +4,7 @@
     <!-- push external head elements to head -->
     @push('head')
         <link rel="stylesheet" href="{{ asset('plugins/select2/dist/css/select2.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('plugins/jquery-ui/jquery-ui.css') }}">
         <link rel="stylesheet" href="{{ asset('css/select-2-responsive.css') }}">
         <link rel="stylesheet" href="{{ asset('plugins/jquery-toast-plugin/dist/jquery.toast.min.css')}}">
     @endpush
@@ -68,7 +69,7 @@
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <label for="date">Tanggal</label>      
-                                        {!! Form::date('date', null, ['class' => 'form-control date', 'id' => 'date']) !!}
+                                        {!! Form::text('date', null, ['class' => 'form-control date', 'id' => 'date', 'data-role' => 'datepicker']) !!}
                                     </div>
                                 </div>
 
@@ -89,14 +90,14 @@
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <label for="terms_id">{{ __('Batas Kredit') }}<span class="text-red">*</span></label>
-                                        {!! Form::select('terms_id', ['name' => 'COD'], null, ['class' => 'form-control purchase-select','placeholder' => 'Pilih Kredit', 'id' => 'terms_id']) !!}
+                                        {!! Form::select('terms', [], null, ['class' => 'form-control', 'id' => 'terms']) !!}
                                     </div>
                                 </div>
 
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <label for="due_date">Tanggal Jatuh Tempo</label>      
-                                        {!! Form::date('due_date', null, ['class' => 'form-control date', 'id' => 'due_date']) !!}
+                                        {!! Form::text('due_date', null, ['class' => 'form-control date', 'id' => 'due_date', 'data-role' => 'datepicker']) !!}
                                     </div>
                                 </div>
 
@@ -144,14 +145,14 @@
                             </div>
 
 
+                        </div>
+                        
+                        <div class="card-footer d-flex justify-content-center">
+                            <button type="button" class="btn btn-danger mr-2">{{ __('Batal')}}</button>
+                            <button type="submit" class="btn btn-primary mr-2">{{ __('Simpan')}}</button>
+                            <button type="button" class="btn btn-warning">{{ __('Simpan & Cetak')}}</button>
+                        </div>
                         {!! Form::close() !!}
-                    </div>
-
-                    <div class="card-footer d-flex justify-content-center">
-                        <button type="button" class="btn btn-danger mr-2">{{ __('Batal')}}</button>
-                        <button type="button" class="btn btn-primary mr-2">{{ __('Simpan')}}</button>
-                        <button type="button" class="btn btn-warning">{{ __('Simpan & Cetak')}}</button>
-                    </div>
                 </div>
             </div>
         </div>
@@ -160,6 +161,7 @@
     @push('script') 
         <script src="{{ asset('plugins/select2/dist/js/select2.min.js') }}"></script>
         <script src="{{ asset('plugins/mask-money/jquery.mask.min.js') }}"></script>
+        <script src="{{ asset('plugins/jquery-ui/jquery-ui.min.js') }}"></script>
         <script src="{{ asset('plugins/jquery-toast-plugin/dist/jquery.toast.min.js')}}"></script>
         <script src="{{ asset('js/transactions/create-purchase.js') }}"></script>
     @endpush

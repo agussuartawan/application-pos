@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\Model;
 
 class Purchase extends Model
 {
+	use LogsActivity;
+
 	protected $fillable = [
 		'user_id',
 		'supplier_id',
@@ -28,5 +30,25 @@ class Purchase extends Model
 	public function supplier()
 	{
 		return $this->belongsTo(Supplier::class);
+	}
+
+	// acitivity log option
+	protected static $logFillable = true;
+
+	protected static $logName = 'Pembelian';
+
+	protected static $logOnlyDirty = true;
+
+	public function getDescriptionForEvent(string $eventName): string
+	{
+		if ($eventName == 'created') {
+			$newEventName = 'menambahkan';
+		} else if ($eventName == 'updated') {
+			$newEventName = 'mengubah';
+		} else if ($eventName == 'deleted') {
+			$newEventName = 'menghapus';
+		}
+
+		return ":causer.name {$newEventName} :subject.name pada <span class='badge badge-info'>Pembelian</span>";
 	}
 }
