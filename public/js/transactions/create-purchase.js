@@ -9,7 +9,15 @@
         searchSupplier();
         searchWarehouse();
         searchTerm();
-        $(".date").datepicker();
+
+        //get current date
+        var today = new Date().toISOString().slice(0, 10);
+        $('.date').val(today);
+    });
+
+    $('body').on('change', '#warehouse_id', function(event){
+        var warehouse_id = $(this).val();
+        select_2_product(warehouse_id);
     });
 
     $('body').on('change', '.qty', function(){
@@ -211,7 +219,7 @@ searchTerm = () => {
                     results: $.map(data, function (item) {
                         return {
                             text: item.description,
-                            id: item.description,
+                            id: item.id,
                             term_day: item.term_day
                         };
                     })
@@ -221,10 +229,21 @@ searchTerm = () => {
         placeholder: 'Pilih batas kredit',
         cache: true,
         allowClear: true,
+    })
+    .on('select2:select', function(event){
+        var data = event.params.data,
+            date = $('#date').val(),
+            days = data.term_day;
+
+        if(days){
+            var due_date = addDays(date, days);
+            $('#due_date').val(due_date);
+        }
     });
 }
 
 showCreateForm = (row) => {
+    var warehouse_id = $('#warehouse_id').val();
     $.ajax({
         url: '/purchase/showFormCreate',
         type: 'GET',
@@ -234,7 +253,7 @@ showCreateForm = (row) => {
         dataType: 'html',
         success: function (response) {
             $('#purchase-create-table tbody').append(response);
-            select_2_product();
+            select_2_product(warehouse_id);
             maskMoney();
             countGrandTotal();
         },
@@ -244,10 +263,10 @@ showCreateForm = (row) => {
     });
 }
 
-select_2_product = () => {
+select_2_product = (warehouse_id) => {
     $('.product-select').select2({
         ajax: {
-            url: '/product-search',
+            url: '/product-search/' + warehouse_id,
             dataType: 'json',
             data: function (params) {
                 var query = {
@@ -261,7 +280,7 @@ select_2_product = () => {
                     results: $.map(data, function (item) {
                         return {
                             text: item.name,
-                            id: item.id,
+                            id: item.product_id,
                             purchase_price: item.purchase_price
                         };
                     })
@@ -388,4 +407,15 @@ rupiah = (bilangan) => {
 
     // Cetak hasil
     return rupiah;
+}
+
+addDays = (date, days) => {
+    var result = new Date(date);
+    result.setDate(result.getDate() + days);
+
+    var day = result.getDate().toString().padStart(2, "0"),
+        month = (result.getMonth() + 1).toString().padStart(2, "0"),
+        year = result.getFullYear();
+
+    return year +'-'+ month +'-'+ day;
 }

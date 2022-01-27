@@ -223,7 +223,7 @@ Route::group(['middleware' => 'auth'], function () {
 	});
 
 	// product route
-	Route::get('product-search', [ProductController::class, 'searchProduct']);
+	Route::get('product-search/{warehouse_id}', [ProductController::class, 'searchProduct']);
 	Route::group(['middleware' => 'can:lihat produk'], function () {
 		Route::get('product/get-list', [ProductController::class, 'getProductList']);
 		Route::get('products', [ProductController::class, 'index'])->name('products.index');

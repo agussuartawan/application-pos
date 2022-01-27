@@ -4,10 +4,11 @@ namespace App\Models;
 
 use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\Model;
+use Wuwx\LaravelAutoNumber\AutoNumberTrait;
 
 class Purchase extends Model
 {
-	use LogsActivity;
+	use LogsActivity, AutoNumberTrait;
 
 	protected $fillable = [
 		'user_id',
@@ -32,6 +33,11 @@ class Purchase extends Model
 		return $this->belongsTo(Supplier::class);
 	}
 
+	public function purchaseOnCredit()
+	{
+		return $this->belongsTo(purchaseOnCredit::class);
+	}
+
 	// acitivity log option
 	protected static $logFillable = true;
 
@@ -51,4 +57,14 @@ class Purchase extends Model
 
 		return ":causer.name {$newEventName} :subject.name pada <span class='badge badge-info'>Pembelian</span>";
 	}
+
+	public function getAutoNumberOptions()
+    {
+        return [
+            'purchase_number' => [
+                'format' => 'PRC/' . date('Y') .'/'. date('m') .'/'.date('d'). '-?', // autonumber format. '?' will be replaced with the generated number.
+                'length' => 5, // The number of digits in an autonumber
+            ],
+        ];
+    }
 }

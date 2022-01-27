@@ -11,6 +11,7 @@ use App\Models\Group;
 use App\Models\Product;
 use App\Models\Type;
 use App\Models\Unit;
+use App\Models\Stock;
 use App\Models\Warehouse;
 use DataTables, Auth, DB;
 
@@ -241,13 +242,18 @@ class ProductController extends Controller
         return Group::where('name', 'LIKE', "%$search%")->where('type_id', $type_id)->select('id', 'name')->get();
     }
 
-    public function searchProduct(Request $request)
+    public function searchProduct(Request $request, $warehouse_id)
     {
         $search = $request->search;
-        $products = Product::where('name', 'LIKE', "%$search%")->select('id', 'name', 'purchase_price')->get()->map(function($p){
-            $p->purchase_price = rupiah($p->purchase_price);
-            return $p;
-        });
+        $products = Stock::join('products', 'products.id', '=','product_warehouse.product_id')
+                    ->where('warehouse_id', $request->warehouse_id)
+                    ->where('name', 'LIKE', "%$search%")
+                    ->select('product_id', 'products.name', 'products.purchase_price')
+                    ->get()
+                    ->map(function($p){
+                        $p->purchase_price = rupiah($p->purchase_price);
+                        return $p;
+                    });
         
         return $products;
     }

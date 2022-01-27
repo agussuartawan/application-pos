@@ -4,7 +4,6 @@
     <!-- push external head elements to head -->
     @push('head')
         <link rel="stylesheet" href="{{ asset('plugins/select2/dist/css/select2.min.css') }}">
-        <link rel="stylesheet" href="{{ asset('plugins/jquery-ui/jquery-ui.css') }}">
         <link rel="stylesheet" href="{{ asset('css/select-2-responsive.css') }}">
         <link rel="stylesheet" href="{{ asset('plugins/jquery-toast-plugin/dist/jquery.toast.min.css')}}">
     @endpush
@@ -69,7 +68,7 @@
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <label for="date">Tanggal</label>      
-                                        {!! Form::text('date', null, ['class' => 'form-control date', 'id' => 'date', 'data-role' => 'datepicker']) !!}
+                                        {!! Form::date('date', null, ['class' => 'form-control date', 'id' => 'date', 'data-role' => 'datepicker']) !!}
                                     </div>
                                 </div>
 
@@ -97,7 +96,7 @@
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <label for="due_date">Tanggal Jatuh Tempo</label>      
-                                        {!! Form::text('due_date', null, ['class' => 'form-control date', 'id' => 'due_date', 'data-role' => 'datepicker']) !!}
+                                        {!! Form::date('due_date', null, ['class' => 'form-control date', 'id' => 'due_date', 'data-role' => 'datepicker']) !!}
                                     </div>
                                 </div>
 
@@ -161,7 +160,6 @@
     @push('script') 
         <script src="{{ asset('plugins/select2/dist/js/select2.min.js') }}"></script>
         <script src="{{ asset('plugins/mask-money/jquery.mask.min.js') }}"></script>
-        <script src="{{ asset('plugins/jquery-ui/jquery-ui.min.js') }}"></script>
         <script src="{{ asset('plugins/jquery-toast-plugin/dist/jquery.toast.min.js')}}"></script>
         <script src="{{ asset('js/transactions/create-purchase.js') }}"></script>
     @endpush
