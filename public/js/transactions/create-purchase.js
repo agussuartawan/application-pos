@@ -234,10 +234,12 @@ searchTerm = () => {
         var data = event.params.data,
             date = $('#date').val(),
             days = data.term_day;
-
         if(days){
             var due_date = addDays(date, days);
             $('#due_date').val(due_date);
+        } else {
+            var today = new Date().toISOString().slice(0, 10);
+            $('#due_date').val(today);   
         }
     });
 }

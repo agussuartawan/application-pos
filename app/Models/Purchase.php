@@ -25,7 +25,7 @@ class Purchase extends Model
 
 	public function product()
 	{
-		return $this->belongsToMany(Product::class)->withPivot('price', 'qty', 'discount', 'subtotal');
+		return $this->belongsToMany(Product::class, 'purchase_products')->withPivot('price', 'qty', 'discount', 'subtotal');
 	}
 
 	public function supplier()
@@ -59,12 +59,12 @@ class Purchase extends Model
 	}
 
 	public function getAutoNumberOptions()
-    {
-        return [
-            'purchase_number' => [
-                'format' => 'PRC/' . date('Y') .'/'. date('m') .'/'.date('d'). '-?', // autonumber format. '?' will be replaced with the generated number.
-                'length' => 5, // The number of digits in an autonumber
-            ],
-        ];
-    }
+	{
+		return [
+			'purchase_number' => [
+				'format' => 'PRC/' . date('Y') . '/' . date('m') . '/' . date('d') . '-?', // autonumber format. '?' will be replaced with the generated number.
+				'length' => 5, // The number of digits in an autonumber
+			],
+		];
+	}
 }

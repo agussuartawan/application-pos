@@ -62,10 +62,10 @@
                         <table id="purchase_table" class="table table-bordered">
                             <thead class="text-center">
                                 <tr>
-                                    <th width="15%">{{ __('No Pembelian')}}</th>
+                                    <th width="20%">{{ __('No Pembelian')}}</th>
                                     <th width="35%">{{ __('Supplier')}}</th>
                                     <th width="15%">{{ __('Tanggal')}}</th>
-                                    <th width="20%">{{ __('Total')}}</th>
+                                    <th width="15%">{{ __('Total')}}</th>
                                     <th width="20%">{{ __('Aksi')}}</th>
                                 </tr>
                             </thead>
