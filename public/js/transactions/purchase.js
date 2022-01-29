@@ -33,8 +33,10 @@
             ajax: {
                 url: "purchase/get-list",
 	            data: function (d) {
-	                // d.type = $('#type').val(),
-	                // d.group = $('#group').val(),
+	                d.status = $('#status').val(),
+                    d.warehouse_id = $('#warehouse_id').val(),
+                    d.from = $('#from').val(),
+	                d.to = $('#to').val(),
 	                d.search = $('input[type="search"]').val()
 	            }
             },
@@ -43,6 +45,7 @@
                 {data:'supplier_name', name: 'supplier.name'},
                 {data:'date', name: 'date'},
                 {data:'total', name: 'total'},
+                {data:'warehouse', name: 'warehouse'},
                 {data:'action', name: 'action', orderable: false}
             ],
             buttons: [

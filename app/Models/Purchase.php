@@ -14,6 +14,7 @@ class Purchase extends Model
 		'user_id',
 		'supplier_id',
 		'warehouse_id',
+		'term_id',
 		'purchase_number',
 		'purchase_invoice_number',
 		'date',
@@ -60,7 +61,7 @@ class Purchase extends Model
 			$newEventName = 'menghapus';
 		}
 
-		return ":causer.name {$newEventName} :subject.name pada <span class='badge badge-info'>Pembelian</span>";
+		return ":causer.name {$newEventName} :subject.purchase_number pada <span class='badge badge-info'>Pembelian</span>";
 	}
 
 	public function getAutoNumberOptions()

@@ -17,7 +17,8 @@ class PurchaseController extends Controller
 {
     public function index()
     {
-        return view('purchase.index');
+    	$warehouses = Warehouse::pluck('name', 'id');
+        return view('purchase.index', compact('warehouses'));
     }
 
     public function getPurchaseList(Request $request)
@@ -26,7 +27,14 @@ class PurchaseController extends Controller
 
         return Datatables::of($data)
             ->addColumn('supplier_name', function ($data) {
-                return $data->supplier->name;
+            	if($data->status == 'Lunas'){
+            		$cls = 'badge-success';
+            	} elseif ($data->status == 'Partial') {
+            		$cls = 'badge-warning';
+            	} else {
+            		$cls = 'badge-secondary';
+            	}
+                return $data->supplier->name.' <span class="badge badge-pill '.$cls.'">'.$data->status.'<span>';
             })
             ->addColumn('total', function ($data) {
                 return rupiah($data->total);
@@ -34,34 +42,39 @@ class PurchaseController extends Controller
             ->addColumn('date', function ($data) {
                 return Carbon::parse($data->date)->isoFormat('DD MMMM Y');
             })
+            ->addColumn('warehouse', function($data){
+            	return '<span class="badge badge-secondary">'.$data->warehouse->name.'</span>';
+            })
             ->addColumn('action', function ($data) {
                 $buttons = '';
                 if (Auth::user()->can('lihat pembelian')) {
-                    $buttons .= '<a class="modal-show btn-show" href="' . url('purchases/' . $data->id) . '/show" title="Detail ' . $data->purchase_number . '" data-name="' . $data->name . '"><i class="ik ik-eye f-16 mr-15 text-info"></i></a>';
+                    $buttons .= '<a class="modal-show btn-show" href="' . url('purchases/' . $data->id) . '/show" title="Detail Pembelian" data-name="' . $data->name . '"><i class="ik ik-eye f-16 mr-15 text-info"></i></a>';
                 }
 
                 return '<div class="table-actions text-center">' . $buttons . '</div>';
             })
             ->filter(function ($instance) use ($request) {
-                // if ($request->type != NULL) {
-                //     $instance->where('type_id', $request->type);
-                // }
-                // if ($request->group != NULL) {
-                //     $instance->where('group_id', $request->group);
-                // }
-                // if ($request->warehouse != NULL) {
-                //     $instance->where('warehouse_id', $request->warehouse);
-                // }
+                if ($request->status) {
+                    $instance->where('status', $request->status);
+                }
+                if ($request->warehouse_id) {
+                    $instance->where('warehouse_id', $request->warehouse_id);
+                }
+                if ($request->from && $request->to) {
+                    $instance->whereBetween('date', [$request->from, $request->to]);
+                }
                 if (!empty($request->search)) {
-                    $instance->join('supplier', 'supplier.id', '=', 'purchase.supplier_id')->where(function ($w) use ($request) {
+                    $instance->join('suppliers', 'suppliers.id', '=', 'purchases.supplier_id')->where(function ($w) use ($request) {
                         $search = $request->search;
-                        $w->orWhere('name', 'LIKE', "%$search%");
+                        $w->orWhere('name', 'LIKE', "%$search%")
+                        	->orWhere('purchases.purchase_number', 'LIKE', "%$search%")
+                        	->orWhere('purchases.total', 'LIKE', "%$search%");
                     });
                 }
 
                 return $instance;
             })
-            ->rawColumns(['supplier_name', 'total', 'date', 'action'])
+            ->rawColumns(['supplier_name', 'total', 'date', 'warehouse', 'action'])
             ->make(true);
     }
 
@@ -107,8 +120,8 @@ class PurchaseController extends Controller
             }
 
             // insert ke table purchase
-            $terms = Term::where('id', $request->terms)->pluck('is_cash')->first();
-            $status = ($terms == '1') ? 'Lunas' : 'Belum Lunas';
+            $terms = Term::where('id', $request->terms)->select('description','is_cash')->first();
+            $status = ($terms->is_cash == 1) ? 'Lunas' : 'Belum Lunas';
 
             $purchase = Purchase::create([
                 'user_id' => Auth::user()->id,
@@ -117,9 +130,10 @@ class PurchaseController extends Controller
                 'date' => $request->date,
                 'due_date' => $request->due_date,
                 'purchase_invoice_number' => $request->purchase_invoice_number,
-                'terms' => $terms,
+                'terms' => $terms->description,
                 'status' => $status,
-                'total' => $total
+                'total' => $total,
+                'term_id' => $request->terms
             ]);
 
             // insert to product_purchase
@@ -133,14 +147,13 @@ class PurchaseController extends Controller
             }
 
             // insert to purchase on credit table
+            $total_credit = ($terms->is_cash == 1) ? 0 : $purchase->total;
             $purchase->purchaseOnCredit()->create([
                 'purchase_id' => $purchase->id,
-                'total_credit' => $purchase->total
+                'total_credit' => $total_credit
             ]);
 
             // update in_stock di tabel product warehouse
-            // $stocks = Stock::where('warehouse_id', $request->warehouse_id)
-            //     ->whereIn('product_id', $product['product_id'])->get();
             $stocks = Product::with('warehouse')->whereIn('id', $product['product_id'])->get();
             foreach ($stocks as $key => $stock) {
                 foreach ($stock->warehouse as $warehouse) {
@@ -152,6 +165,8 @@ class PurchaseController extends Controller
                 }
             }
         });
+
+        return redirect()->route('purchases.index');
     }
 
     public function show(Purchase $purchase)

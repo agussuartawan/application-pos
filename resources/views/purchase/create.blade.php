@@ -147,7 +147,7 @@
                         </div>
                         
                         <div class="card-footer d-flex justify-content-center">
-                            <button type="button" class="btn btn-danger mr-2">{{ __('Batal')}}</button>
+                            <a href="{{ route('purchases.index') }}" class="btn btn-danger mr-2">{{ __('Batal') }}</a>
                             <button type="submit" class="btn btn-primary mr-2">{{ __('Simpan')}}</button>
                             <button type="button" class="btn btn-warning">{{ __('Simpan & Cetak')}}</button>
                         </div>

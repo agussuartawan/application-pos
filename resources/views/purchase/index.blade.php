@@ -4,7 +4,7 @@
     <!-- push external head elements to head -->
     @push('head')
         <link rel="stylesheet" href="{{ asset('plugins/DataTables/datatables.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('plugins/jquery-toast-plugin/dist/jquery.toast.min.css')}}">
+        <link rel="stylesheet" href="{{ asset('plugins/jquery-toast-plugin/dist/jquery.toast.min.css')}}">
         <link rel="stylesheet" href="{{ asset('plugins/select2/dist/css/select2.min.css') }}">
     @endpush
     <div class="container-fluid">
@@ -42,12 +42,22 @@
                                 </div>
                                 <div class="col-md-8">
                                     <div class="d-flex justify-content-center">
-                                        {{-- <div class="col-md-6">
-                                            {!! Form::select('type', $type, null,[ 'class'=>'form-control custom-filter', 'placeholder' => 'Filter tipe','id'=> 'type']) !!}
+                                        <div class="col-sm-3">
+                                            {!! Form::select('status', ['Belum Lunas' => 'Belum Lunas', 'Lunas' => 'Lunas', 'Partial' => 'Partial'],
+                                                null,
+                                                [ 'class'=>'form-control custom-filter', 'placeholder' => 'Filter status','id'=> 'status']) 
+                                            !!}
                                         </div>
-                                        <div class="col-md-6">
-                                            {!! Form::select('group', $group, null,[ 'class'=>'form-control custom-filter', 'placeholder' => 'Filter grup','id'=> 'group']) !!}
-                                        </div> --}}
+                                        <div class="col-sm-3">
+                                            {!! Form::select('warehouse_id', $warehouses, null,[ 'class'=>'form-control custom-filter', 'placeholder' => 'Filter gudang','id'=> 'warehouse_id']) !!}
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-inline">
+                                                {{ Form::date('from', date('Y-m-d'), ['class' => 'form-control custom-filter datetimepicker-input', 'id' => 'from']) }}
+                                                <strong>-</strong>
+                                                {{ Form::date('to', date('Y-m-d'), ['class' => 'form-control custom-filter datetimepicker-input', 'id' => 'to']) }}
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-md-2 p-0 float-right">
@@ -63,9 +73,10 @@
                             <thead class="text-center">
                                 <tr>
                                     <th width="20%">{{ __('No Pembelian')}}</th>
-                                    <th width="35%">{{ __('Supplier')}}</th>
+                                    <th width="25%">{{ __('Supplier')}}</th>
                                     <th width="15%">{{ __('Tanggal')}}</th>
                                     <th width="15%">{{ __('Total')}}</th>
+                                    <th width="10%">{{ __('Gudang')}}</th>
                                     <th width="20%">{{ __('Aksi')}}</th>
                                 </tr>
                             </thead>
@@ -80,10 +91,9 @@
     <!-- push external js -->
     @push('script')
     <script src="{{ asset('plugins/DataTables/datatables.min.js') }}"></script>
-    <script src="{{ asset('plugins/select2/dist/js/select2.min.js') }}"></script>
     <script src="{{ asset('plugins/sweetalert/dist/sweetalert.min.js') }}"></script>
-	<script src="{{ asset('plugins/mask-money/jquery.mask.min.js') }}"></script>
     <script src="{{ asset('plugins/jquery-toast-plugin/dist/jquery.toast.min.js')}}"></script>
+
     <!--server side users table script-->
     <script src="{{ asset('js/transactions/purchase.js') }}"></script>
     @endpush
