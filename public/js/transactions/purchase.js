@@ -117,21 +117,6 @@
 	    });
     });
 
-
-    $('body').on('click', '.modal-show', function(){
-        var me = $(this);
-        event.preventDefault();
-        $('.modal-save').removeClass('hide');
-        $('#modal').modal('show');
-        showModal(me);
-    });
-
-    $('body').on('click', '.btn-delete', function(){
-        event.preventDefault();
-        var me = $(this);
-        showDeleteAlert(me);
-    });
-
     $('body').on('click', '.btn-show', function(){
         event.preventDefault();
     	var me = $(this);
@@ -140,54 +125,8 @@
     	showModal(me);
     });
 
-    $('.modal-save').on('click', function(event) {
-        event.preventDefault();
-
-        var form = $('#form-product'),
-            url = form.attr('action'),
-            method = $('input[name=_method').val() == undefined ? 'POST' : 'PUT',
-            message = $('input[name=_method').val() == undefined ? 'Data produk berhasil ditambahkan' : 'Data produk berhasil diubah';
-
-        $('.form-group').removeClass('input-group-danger');
-        $('.text-danger').remove();
-        
-        $.ajax({
-            url: url,
-            method: method,
-            data: form.serialize(),
-            beforeSend: function() {
-                $('.preloader').fadeIn();
-            },
-            complete: function(){
-                $('.preloader').fadeOut();
-            },
-            success: function(response){
-                showSuccessToast(message);
-                $('#modal').modal('hide');
-                $('#product_table').DataTable().ajax.reload();
-            },
-            error: function(xhr){
-                showErrorToast();
-                var res = xhr.responseJSON;
-                if($.isEmptyObject(res) == false){
-                    $.each(res.errors, function(key, value){
-                        $('#' + key)
-                            .closest('.form-group')
-                            .addClass('input-group-danger')
-                            .append(`<small class="text-danger">${value}</small>`);
-                    });
-                }
-            }
-        });
-    });
-
     $('#modal').on('hidden.bs.modal', function(){
         $('.load-here').empty();
-    });
-
-    $('body').on('change', '#type_id', function(event){
-        var type_id = $(this).val();
-        searchGroup(type_id);
     });
 })(jQuery);
 
@@ -209,10 +148,6 @@ showModal = function(me){
         },
         success: function(response){
             $('.load-here').html(response);
-            searchWarehouse();
-            searchType();
-            searchUnit();
-            searchGroup(null);
         },
         error: function(xhr, status){
             alert('Terjadi kesalahan');

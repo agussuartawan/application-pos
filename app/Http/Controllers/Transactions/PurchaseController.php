@@ -37,10 +37,7 @@ class PurchaseController extends Controller
             ->addColumn('action', function ($data) {
                 $buttons = '';
                 if (Auth::user()->can('lihat pembelian')) {
-                    $buttons .= '<a class="modal-show btn-show" href="' . url('products/' . $data->id) . '/show" title="Detail ' . $data->name . '" data-name="' . $data->name . '"><i class="ik ik-eye f-16 mr-15 text-info"></i></a>';
-                }
-                if (Auth::user()->can('edit pembelian')) {
-                    $buttons .= '<a class="modal-show" href="' . url('products/' . $data->id) . '/edit" title="Edit ' . $data->name . '"><i class="ik ik-edit f-16 mr-15 text-green"></i></a>';
+                    $buttons .= '<a class="modal-show btn-show" href="' . url('purchases/' . $data->id) . '/show" title="Detail ' . $data->purchase_number . '" data-name="' . $data->name . '"><i class="ik ik-eye f-16 mr-15 text-info"></i></a>';
                 }
 
                 return '<div class="table-actions text-center">' . $buttons . '</div>';
@@ -155,6 +152,18 @@ class PurchaseController extends Controller
                 }
             }
         });
+    }
+
+    public function show(Purchase $purchase)
+    {
+        if ($purchase->status == 'Belum Lunas') {
+            $status_class = 'badge-secondary';
+        } elseif ($purchase->status == 'Lunas') {
+            $status_class = 'badge-success';
+        } else {
+            $status_class = 'badge-warning';
+        }
+        return view('include.transaction.purchase.show', compact('purchase', 'status_class'));
     }
 
     // public function countSubtotal(Request $request)

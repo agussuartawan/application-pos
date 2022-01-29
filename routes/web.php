@@ -313,9 +313,9 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::delete('suppliers/{supplier}', [SupplierController::class, 'destroy'])->middleware('can:hapus supplier')->name('suppliers.destroy');
 
 	#purchases route
-	// Route::get('purchase/count-subtotal', [PurchaseController::class, 'countSubtotal']);
 	Route::group(['middleware' => 'can:lihat pembelian'], function () {
 		Route::get('purchases', [PurchaseController::class, 'index'])->name('purchases.index');
+		Route::get('purchases/{purchase}/show', [PurchaseController::class, 'show'])->name('purchases.show');
 		Route::get('purchase/get-list', [PurchaseController::class, 'getPurchaseList']);
 	});
 	Route::group(['middleware' => 'can:tambah pembelian'], function () {
