@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddTermIdToPurchasesTable extends Migration
+class CreateSaleReturnsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,11 @@ class AddTermIdToPurchasesTable extends Migration
      */
     public function up()
     {
-        Schema::table('purchases', function (Blueprint $table) {
-            $table->foreignId('term_id')->onUpdate('cascade');
+        Schema::create('sale_returns', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('sale_id')->constrained()->onUpdate('cascade');
+            $table->date('date');
+            $table->timestamps();
         });
     }
 
@@ -25,8 +28,6 @@ class AddTermIdToPurchasesTable extends Migration
      */
     public function down()
     {
-        Schema::table('purchases', function (Blueprint $table) {
-            $table->dropColumn('term_id');
-        });
+        Schema::dropIfExists('sale_returns');
     }
 }

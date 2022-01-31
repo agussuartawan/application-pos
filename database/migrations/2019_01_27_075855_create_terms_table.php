@@ -15,9 +15,10 @@ class CreateTermsTable extends Migration
     {
         Schema::create('terms', function (Blueprint $table) {
             $table->id();
-            $table->string('description')->nullable();
+            $table->string('description');
+            $table->string('slug')->unique();
             $table->integer('term_day')->nullable();
-            $table->enum('is_cash', [0, 1])->default(0);
+            $table->boolean('is_cash')->default(false);
             $table->timestamps();
         });
     }

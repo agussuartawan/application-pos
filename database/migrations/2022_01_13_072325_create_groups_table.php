@@ -17,6 +17,7 @@ class CreateGroupsTable extends Migration
             $table->id();
             $table->foreignId('type_id')->constrained()->onUpdate('cascade');
             $table->string('name');
+            $table->string('slug')->unique();
             $table->timestamps();
         });
     }

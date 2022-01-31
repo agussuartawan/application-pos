@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePurchaseProductsTable extends Migration
+class CreateProductSalesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,9 @@ class CreatePurchaseProductsTable extends Migration
      */
     public function up()
     {
-        Schema::create('purchase_products', function (Blueprint $table) {
+        Schema::create('product_sales', function (Blueprint $table) {
             $table->foreignId('product_id')->constrained()->onUpdate('cascade');
-            $table->foreignId('purchase_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('sale_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->decimal('price', $precision = 19, $scale = 2);
             $table->integer('qty')->default(0);
             $table->double('discount')->default(0);
@@ -30,6 +30,6 @@ class CreatePurchaseProductsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('purchase_products');
+        Schema::dropIfExists('product_sales');
     }
 }

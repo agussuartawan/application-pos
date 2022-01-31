@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateProductWarehouseTable extends Migration
+class CreatePurchaseReturnsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,11 @@ class CreateProductWarehouseTable extends Migration
      */
     public function up()
     {
-        Schema::create('product_warehouse', function (Blueprint $table) {
+        Schema::create('purchase_returns', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('product_id')->constrained()->onUpdate('cascade');
-            $table->foreignId('warehouse_id')->constrained()->onUpdate('cascade');
-            $table->integer('in_stock')->default(0);
+            $table->foreignId('purchase_id')->constrained()->onUpdate('cascade');
+            $table->date('date');
+            $table->timestamps();
         });
     }
 
@@ -28,6 +28,6 @@ class CreateProductWarehouseTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('stocks');
+        Schema::dropIfExists('purchase_returns');
     }
 }

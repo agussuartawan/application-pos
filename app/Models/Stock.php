@@ -7,8 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Stock extends Model
 {
-	protected $table = 'product_warehouse';
-
 	public function product()
 	{
 		return $this->belongsTo(Product::class);

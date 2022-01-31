@@ -61,13 +61,26 @@
                         @can('lihat supplier')
                         <a href="{{route('suppliers.index')}}" class="menu-item {{ request()->is('suppliers*') ? 'active' : '' }}">{{ __('Supplier')}}</a>
                         @endcan
+                        @can('lihat pelanggan')
+                        <a href="index.html" class="menu-item">{{ __('Pelanggan')}}</a>
+                        @endcan
+                        @can('lihat sales')
+                        <a href="index.html" class="menu-item">{{ __('Sales')}}</a>
+                        @endcan
+                        @can('lihat batas kredit')
+                        <a href="index.html" class="menu-item">{{ __('Batas Kredit')}}</a>
+                        @endcan
                     </div>
                 </div>
                 @endcan  
 
                 @can('lihat persediaan')
-                <div class="nav-item {{ request()->is('stocks') ? 'active' : '' }}">
-                    <a href="{{route('stocks')}}"><i class="ik ik-folder"></i><span>{{ __('Persediaan')}}</span></a>
+                 <div class="nav-item {{ request()->is(['stocks*']) ? 'active open' : '' }} has-sub">
+                    <a href="javascript:void(0)"><i class="ik ik-box"></i><span>{{ __('Persediaan')}}</span></a>
+                    <div class="submenu-content">
+                        <a href="{{route('stocks')}}"><i class="ik ik-folder"></i><span>{{ __('Data Persediaan')}}</span></a>
+                        <a href="index.html"><i class="ik ik-folder"></i><span>{{ __('Pemindahan Persediaan')}}</span></a>
+                    </div>
                 </div>
                 @endcan
 
@@ -75,11 +88,31 @@
                 <div class="nav-item {{ request()->is(['purchases*', 'purchase_payments*']) ? 'active open' : '' }} has-sub">
                     <a href="javascript:void(0)"><i class="ik ik-shopping-cart"></i><span>{{ __('Pembelian')}}</span></a>
                     <div class="submenu-content">
+                        @can('lihat pemesanan pembelian')
+                        <a href="index.html" class="menu-item">{{ __('Pemesanan Pembelian')}}</a>
+                        @endcan
                         @can('lihat pembelian')
-                        <a href="{{route('purchases.index')}}" class="menu-item {{ request()->is('purchases*') ? 'active' : '' }}">{{ __('Data Pembelian')}}</a>
+                        <a href="{{route('purchases.index')}}" class="menu-item {{ request()->is('purchases*') ? 'active' : '' }}">{{ __('Faktur Pembelian')}}</a>
                         @endcan
                         @can('tambah pelunasan pembelian')
                         <a href="{{route('purchase_payments.index')}}" class="menu-item {{ request()->is('purchase_payments*') ? 'active' : '' }}">{{ __('Pelunasan')}}</a>
+                        @endcan
+                    </div>
+                </div>
+                @endcan 
+
+                @can('mengelola penjualan')
+                <div class="nav-item {{ request()->is(['purchases*', 'purchase_payments*']) ? 'active open' : '' }} has-sub">
+                    <a href="javascript:void(0)"><i class="ik ik-shopping-cart"></i><span>{{ __('Pembelian')}}</span></a>
+                    <div class="submenu-content">
+                        @can('lihat pemesanan penjualan')
+                        <a href="index.html" class="menu-item">{{ __('Pemesanan Penjualan')}}</a>
+                        @endcan
+                        @can('lihat penjualan')
+                        <a href="index.html" class="menu-item">{{ __('Faktur Penjualan')}}</a>
+                        @endcan
+                        @can('tambah pelunasan penjualan')
+                        <a href="index.html" class="menu-item">{{ __('Pelunasan')}}</a>
                         @endcan
                     </div>
                 </div>

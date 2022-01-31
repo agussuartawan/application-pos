@@ -20,8 +20,7 @@ class CreateProductsTable extends Migration
             $table->foreignId('unit_id')->constrained()->onUpdate('cascade');
             $table->string('code');
             $table->string('name');
-            $table->string('slug');
-            $table->integer('size');
+            $table->string('slug')->unique();
             $table->decimal('purchase_price', $precision = 19, $scale = 2);
             $table->decimal('selling_price', $precision = 19, $scale = 2);
             $table->string('photo')->nullable();

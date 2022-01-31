@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePurchasePaymentsTable extends Migration
+class CreateStockMovingsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,11 @@ class CreatePurchasePaymentsTable extends Migration
      */
     public function up()
     {
-        Schema::create('purchase_payments', function (Blueprint $table) {
+        Schema::create('stock_movings', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('purchase_on_credit_id')->constrained()->onUpdate('cascade');
             $table->foreignId('user_id')->constrained()->onUpdate('cascade');
-            $table->decimal('payment_amount', $precision = 19, $scale = 2);
-            $table->decimal('payment_cost', $precision = 19, $scale = 2);
-            $table->date('payment_date');
+            $table->foreignId('from_warehouse')->references('id')->on('warehouses')->onUpdate('cascade');
+            $table->foreignId('to_warehouse')->references('id')->on('warehouses')->onUpdate('cascade');
             $table->timestamps();
         });
     }
@@ -31,6 +29,6 @@ class CreatePurchasePaymentsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('purchase_payments');
+        Schema::dropIfExists('stock_movings');
     }
 }
