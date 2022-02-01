@@ -245,7 +245,7 @@ class ProductController extends Controller
     public function searchProduct(Request $request, $warehouse_id)
     {
         $search = $request->search;
-        $products = Stock::join('products', 'products.id', '=','product_warehouse.product_id')
+        $products = Stock::join('products', 'products.id', '=','stocks.product_id')
                     ->where('warehouse_id', $request->warehouse_id)
                     ->where('name', 'LIKE', "%$search%")
                     ->select('product_id', 'products.name', 'products.purchase_price')

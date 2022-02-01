@@ -4,10 +4,12 @@ namespace App\Models;
 
 use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Cviebrock\EloquentSluggable\Sluggable;
 
 class Term extends Model
 {
-    use LogsActivity;
+    use LogsActivity, Sluggable;
 
     protected $fillable = ['description', 'term_day', 'is_cash'];
 
@@ -29,5 +31,14 @@ class Term extends Model
         }
 
         return ":causer.name {$newEventName} :subject.name pada <span class='badge badge-info'>Batas Kredit</span>";
+    }
+
+    public function sluggable(): array
+    {
+        return [
+            'slug' => [
+                'source' => 'name'
+            ]
+        ];
     }
 }

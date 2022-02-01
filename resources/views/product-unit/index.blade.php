@@ -51,7 +51,7 @@
 	                        <thead class="text-center">
 	                            <tr>
 	                                <th>{{ __('Nama Unit')}}</th>
-	                                <th width="10%">{{ __('Aksi')}}</th>
+	                                <th width="30%">{{ __('Aksi')}}</th>
 	                            </tr>
 	                        </thead>
 	                        <tbody>

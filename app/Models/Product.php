@@ -36,7 +36,7 @@ class Product extends Model
 
     public function warehouse()
     {
-        return $this->belongsToMany(Warehouse::class)->withPivot('in_stock');
+        return $this->belongsToMany(Warehouse::class, 'stocks')->withPivot('in_stock');
     }
 
     public function getDescriptionForEvent(string $eventName): string

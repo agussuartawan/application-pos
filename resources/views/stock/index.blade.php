@@ -45,11 +45,6 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-2 p-0 float-right">
-                                    {{-- @can('tambah produk') --}}
-                                        <a href="" class="btn btn-primary float-right" title="Transfer Gudang">{{ __('Transfer Gudang') }}</a>
-                                    {{-- @endcan --}}
-                                </div>
                             </div>
                         </div>
                     </div>

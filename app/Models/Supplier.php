@@ -4,12 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
+use Cviebrock\EloquentSluggable\Sluggable;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Supplier extends Model
 {
-    use LogsActivity;
+    use LogsActivity, Sluggable, SoftDeletes;
 
-    protected $fillable = ['name', 'address', 'phone', 'email'];
+    protected $fillable = ['name', 'address', 'phone', 'email', 'identification_type', 'identification_number'];
 
     // acitivity log option
     protected static $logFillable = true;
@@ -29,5 +31,14 @@ class Supplier extends Model
         }
 
         return ":causer.name {$newEventName} :subject.name pada <span class='badge badge-info'>Supplier</span>";
+    }
+
+    public function sluggable(): array
+    {
+        return [
+            'slug' => [
+                'source' => 'name'
+            ]
+        ];
     }
 }

@@ -4,12 +4,16 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
+use Cviebrock\EloquentSluggable\Sluggable;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Warehouse extends Model
 {
-    use LogsActivity;
+    use LogsActivity, Sluggable, SoftDeletes;
 
     protected $fillable = ['name'];
+
+    protected $dates = ['deleted_at'];
 
     // acitivity log option
     protected static $logFillable = true;
@@ -33,6 +37,15 @@ class Warehouse extends Model
 
     public function product()
     {
-        return $this->belongsToMany(Product::class);
+        return $this->belongsToMany(Product::class, 'stocks')->withPivot('in_stock');
+    }
+
+    public function sluggable(): array
+    {
+        return [
+            'slug' => [
+                'source' => 'name'
+            ]
+        ];
     }
 }

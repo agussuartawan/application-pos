@@ -196,9 +196,11 @@ showModal = function(me){
         },
         success: function(response){
             $('.load-here').html(response);
+            $('.select2').select2();
         },
         error: function(xhr, status){
             alert('Terjadi kesalahan');
+            $('#modal').modal('hide');
         }
     });
 }

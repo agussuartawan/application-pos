@@ -318,6 +318,7 @@ select_2_product = (warehouse_id) => {
         var id = $(this).attr('id');
         var row_id = id.slice(-1);
         $(`#hidden_${row_id}`).val(this_value);
+        $('#warehouse_id').select2().enable(false);
     })
     .on('select2:clear', function (event) {
         var id = $(this).attr('id');

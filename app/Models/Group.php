@@ -4,12 +4,16 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
+use Cviebrock\EloquentSluggable\Sluggable;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Group extends Model
 {
-	use LogsActivity;
+	use LogsActivity, Sluggable;
 
     protected $fillable = ['name', 'type_id'];
+
+    protected $dates = ['deleted_at'];
 
     // acitivity log option
     protected static $logFillable = true;
@@ -34,5 +38,14 @@ class Group extends Model
     public function type()
     {
         return $this->belongsTo(Type::class);
+    }
+
+    public function sluggable(): array
+    {
+        return [
+            'slug' => [
+                'source' => 'name'
+            ]
+        ];
     }
 }

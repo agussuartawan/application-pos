@@ -78,8 +78,8 @@
                  <div class="nav-item {{ request()->is(['stocks*']) ? 'active open' : '' }} has-sub">
                     <a href="javascript:void(0)"><i class="ik ik-box"></i><span>{{ __('Persediaan')}}</span></a>
                     <div class="submenu-content">
-                        <a href="{{route('stocks')}}"><i class="ik ik-folder"></i><span>{{ __('Data Persediaan')}}</span></a>
-                        <a href="index.html"><i class="ik ik-folder"></i><span>{{ __('Pemindahan Persediaan')}}</span></a>
+                        <a href="{{route('stocks')}}" class="menu-item {{ request()->is('stocks*') ? 'active' : '' }}">{{ __('Data Persediaan')}}</a>
+                        <a href="index.html" class="menu-item">{{ __('Pemindahan Persediaan')}}</a>
                     </div>
                 </div>
                 @endcan
@@ -102,8 +102,8 @@
                 @endcan 
 
                 @can('mengelola penjualan')
-                <div class="nav-item {{ request()->is(['purchases*', 'purchase_payments*']) ? 'active open' : '' }} has-sub">
-                    <a href="javascript:void(0)"><i class="ik ik-shopping-cart"></i><span>{{ __('Pembelian')}}</span></a>
+                <div class="nav-item has-sub">
+                    <a href="javascript:void(0)"><i class="ik ik-shopping-cart"></i><span>{{ __('Penjualan')}}</span></a>
                     <div class="submenu-content">
                         @can('lihat pemesanan penjualan')
                         <a href="index.html" class="menu-item">{{ __('Pemesanan Penjualan')}}</a>
