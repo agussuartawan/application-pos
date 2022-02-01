@@ -19,6 +19,7 @@ class CreateTermsTable extends Migration
             $table->string('slug')->unique();
             $table->integer('term_day')->nullable();
             $table->boolean('is_cash')->default(false);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

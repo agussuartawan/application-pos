@@ -25,6 +25,7 @@ class CreateCustomersTable extends Migration
             $table->decimal('max_credit', $precision = 19, $scale = 2);
             $table->string('identification_type');
             $table->string('identification_number')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

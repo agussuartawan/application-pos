@@ -20,6 +20,7 @@ class CreateSellersTable extends Migration
             $table->string('slug')->unique();
             $table->text('address');
             $table->string('phone');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

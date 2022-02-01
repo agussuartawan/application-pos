@@ -22,6 +22,7 @@ class CreateSupplierTable extends Migration
             $table->string('phone')->nullable();
             $table->string('identification_type');
             $table->string('identification_number')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }
