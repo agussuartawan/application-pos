@@ -295,7 +295,7 @@ searchWarehouse = function(){
     		dataType: 'json',
     		data: function(params){
     			var query = {
-    				search: params.search
+    				search: params.term
     			}
 
     			return query;
@@ -323,7 +323,7 @@ searchType = function(){
     		dataType: 'json',
     		data: function(params){
     			var query = {
-    				search: params.search
+    				search: params.term
     			}
 
     			return query;
@@ -351,7 +351,7 @@ searchGroup = function(type_id){
     		dataType: 'json',
     		data: function(params){
     			var query = {
-    				search: params.search
+    				search: params.term
     			}
 
     			return query;
@@ -379,7 +379,7 @@ searchUnit = function(){
             dataType: 'json',
             data: function(params){
                 var query = {
-                    search: params.search
+                    search: params.term
                 }
 
                 return query;

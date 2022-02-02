@@ -103,7 +103,8 @@
                                 <div class="col-md-3">
                                     <div class="form-group">
                                         <label for="warehouse_id">{{ __('Gudang') }}<span class="text-red">*</span></label>
-                                        {!! Form::select('warehouse_id', [], null, ['class' => 'form-control', 'id' => 'warehouse_id']) !!}
+                                        {!! Form::select('', [], null, ['class' => 'form-control', 'id' => 'warehouse_id']) !!}
+                                        <input type="hidden" name="warehouse_id" id="hidden_warehouse_id">
                                     </div>
                                 </div>
                             </div>

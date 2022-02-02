@@ -144,7 +144,7 @@ searchWarehouse = () => {
             dataType: 'json',
             data: function (params) {
                 var query = {
-                    search: params.search
+                    search: params.term
                 };
 
                 return query;
@@ -161,8 +161,10 @@ searchWarehouse = () => {
             },
         },
         placeholder: 'Cari Gudang',
-        cache: true,
-        allowClear: true,
+    })
+    .on('select2:select', function(){
+        var this_value = $(this).val();
+        $('#hidden_warehouse_id').val(this_value);
     });
 }
 
@@ -173,7 +175,7 @@ searchSupplier = () => {
             dataType: 'json',
             data: function (params) {
                 var query = {
-                    search: params.search
+                    search: params.term
                 };
 
                 return query;
@@ -193,7 +195,6 @@ searchSupplier = () => {
         },
         placeholder: 'Cari Supplier',
         cache: true,
-        allowClear: true,
     })
     .on('select2:select', function (event) {
         var data = event.params.data;
@@ -209,7 +210,7 @@ searchTerm = () => {
             dataType: 'json',
             data: function (params) {
                 var query = {
-                    search: params.search
+                    search: params.term
                 };
 
                 return query;
@@ -228,7 +229,6 @@ searchTerm = () => {
         },
         placeholder: 'Pilih batas kredit',
         cache: true,
-        allowClear: true,
     })
     .on('select2:select', function(event){
         var data = event.params.data,
@@ -272,7 +272,7 @@ select_2_product = (warehouse_id) => {
             dataType: 'json',
             data: function (params) {
                 var query = {
-                    search: params.search
+                    search: params.term
                 };
 
                 return query;
@@ -318,7 +318,7 @@ select_2_product = (warehouse_id) => {
         var id = $(this).attr('id');
         var row_id = id.slice(-1);
         $(`#hidden_${row_id}`).val(this_value);
-        $('#warehouse_id').select2().enable(false);
+        $('#warehouse_id').prop('disabled',true);
     })
     .on('select2:clear', function (event) {
         var id = $(this).attr('id');
