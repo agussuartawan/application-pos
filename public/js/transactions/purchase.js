@@ -35,8 +35,7 @@
 	            data: function (d) {
 	                d.status = $('#status').val(),
                     d.warehouse_id = $('#warehouse_id').val(),
-                    d.from = $('#from').val(),
-	                d.to = $('#to').val(),
+                    d.dateFilter = $('#daterange-filter').val(),
 	                d.search = $('input[type="search"]').val()
 	            }
             },
@@ -118,6 +117,13 @@
 	    $('.custom-filter').change(function(){
 	        dTable.draw();
 	    });
+
+        $('#daterange-filter').daterangepicker({
+            locale: {
+                format: 'DD-MM-YYYY',
+                separator: " / "
+            }
+        });
     });
 
     $('body').on('click', '.btn-show', function(){

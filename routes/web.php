@@ -20,6 +20,8 @@ use App\Http\Controllers\Masters\SupplierController;
 use App\Http\Controllers\Masters\TermController;
 use App\Http\Controllers\Transactions\PurchaseController;
 
+use Illuminate\Http\Request;
+
 Route::get('/', function () {
 	return redirect()->route('login');
 });
@@ -331,4 +333,13 @@ Route::group(['middleware' => 'auth'], function () {
 
 	#Terms Route
 	Route::get('term-search', [TermController::class, 'searchTerm']);
+
+	Route::get('daterange', function(Request $request){
+		$from = explode(" s/d ", $request->dateFilter)[0];
+		$to = explode(" s/d ", $request->dateFilter)[1];
+
+		$from = \Carbon\Carbon::parse($from)->format('Y-m-d');
+		$to = \Carbon\Carbon::parse($to)->format('Y-m-d');
+		dd($from, $to);
+	});
 });

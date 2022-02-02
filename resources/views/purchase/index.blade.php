@@ -5,7 +5,9 @@
     @push('head')
         <link rel="stylesheet" href="{{ asset('plugins/DataTables/datatables.min.css') }}">
         <link rel="stylesheet" href="{{ asset('plugins/jquery-toast-plugin/dist/jquery.toast.min.css')}}">
+        <link rel="stylesheet" href="{{ asset('plugins/tempusdominus-bootstrap-4/daterangepicker.css') }}">
         <link rel="stylesheet" href="{{ asset('plugins/select2/dist/css/select2.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('plugins/tempusdominus-bootstrap-4/build/css/tempusdominus-bootstrap-4.min.css') }}">
     @endpush
     <div class="container-fluid">
     	<div class="page-header">
@@ -52,10 +54,8 @@
                                             {!! Form::select('warehouse_id', $warehouses, null,[ 'class'=>'form-control custom-filter', 'placeholder' => 'Filter gudang','id'=> 'warehouse_id']) !!}
                                         </div>
                                         <div class="col-sm-6">
-                                            <div class="form-inline">
-                                                {{ Form::date('from', date('Y-m-d'), ['class' => 'form-control custom-filter datetimepicker-input', 'id' => 'from']) }}
-                                                <strong>-</strong>
-                                                {{ Form::date('to', date('Y-m-d'), ['class' => 'form-control custom-filter datetimepicker-input', 'id' => 'to']) }}
+                                            <div class="form-group">
+                                                <input type="text" class="form-control custom-filter" id="daterange-filter" name="dateFilter">
                                             </div>
                                         </div>
                                     </div>
@@ -90,10 +90,12 @@
     </div>
     <!-- push external js -->
     @push('script')
+    <script src="{{ asset('plugins/moment/moment.js') }}"></script>
     <script src="{{ asset('plugins/DataTables/datatables.min.js') }}"></script>
+    <script src="{{ asset('plugins/tempusdominus-bootstrap-4/daterangepicker.js') }}"></script>
     <script src="{{ asset('plugins/sweetalert/dist/sweetalert.min.js') }}"></script>
     <script src="{{ asset('plugins/jquery-toast-plugin/dist/jquery.toast.min.js')}}"></script>
-
+    <script src="{{ asset('plugins/tempusdominus-bootstrap-4/build/js/tempusdominus-bootstrap-4.min.js') }}"></script>
     <!--server side users table script-->
     <script src="{{ asset('js/transactions/purchase.js') }}"></script>
     @endpush

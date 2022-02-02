@@ -60,8 +60,13 @@ class PurchaseController extends Controller
                 if ($request->warehouse_id) {
                     $instance->where('warehouse_id', $request->warehouse_id);
                 }
-                if ($request->from && $request->to) {
-                    $instance->whereBetween('date', [$request->from, $request->to]);
+                if ($request->dateFilter) {
+                    $from = explode(" / ", $request->dateFilter)[0];
+                    $to = explode(" / ", $request->dateFilter)[1];
+
+                    $date['from'] = \Carbon\Carbon::parse($from)->format('Y-m-d');
+                    $date['to'] = \Carbon\Carbon::parse($to)->format('Y-m-d');
+                    $instance->whereBetween('date', $date);
                 }
                 if (!empty($request->search)) {
                     $instance->join('suppliers', 'suppliers.id', '=', 'purchases.supplier_id')->where(function ($w) use ($request) {
@@ -92,6 +97,7 @@ class PurchaseController extends Controller
 
     public function store(Request $request)
     {
+        dd($request->all());
         DB::transaction(function () use ($request) {
             $total = 0;
 

@@ -1,90 +1,53 @@
-<!doctype html>
-<html class="no-js" lang="en">
-    <head> 
-        <meta charset="utf-8">
-        <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title>Login</title>
-        <meta name="description" content="">
-        <meta name="keywords" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        
-        <link rel="icon" href="{{ asset('favicon.png') }}" type="image/x-icon" />
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ __('Login') }}</title>
 
-        <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:300,400,600,700,800" rel="stylesheet">
-        
-        <link rel="stylesheet" href="{{ asset('plugins/bootstrap/dist/css/bootstrap.min.css') }}">
-        <link rel="stylesheet" href="{{ asset('plugins/fontawesome-free/css/all.min.css') }}">
-        <link rel="stylesheet" href="{{ asset('plugins/ionicons/dist/css/ionicons.min.css') }}">
-        <link rel="stylesheet" href="{{ asset('plugins/icon-kit/dist/css/iconkit.min.css') }}">
-        <link rel="stylesheet" href="{{ asset('plugins/perfect-scrollbar/css/perfect-scrollbar.css') }}">
-        <link rel="stylesheet" href="{{ asset('dist/css/theme.min.css') }}">
-        <link rel="stylesheet" href="{{ asset('css/style.css') }}">
-        <script src="{{ asset('src/js/vendor/modernizr-2.8.3.min.js') }}"></script>
-    </head>
-
-    <body>
-        <!--[if lt IE 8]>
-            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-        <![endif]-->
-
-        <div class="auth-wrapper">
-            <div class="container-fluid h-100">
-                <div class="row flex-row h-100">
-                    <div class="col-xl-4 col-lg-4 col-md-4 m-auto">
-                        <div class="authentication-form mx-auto">
-                            <p>Welcome back! </p>
-                            <form method="POST" action="{{ route('login') }}">
-                            @csrf
-                                <div class="form-group">
-                                    <input id="email" type="email" placeholder="Email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
-                                    <i class="ik ik-user"></i>
-                                    @error('email')
-                                        <span class="invalid-feedback" role="alert">
-                                            <strong>{{ $message }}</strong>
-                                        </span>
-                                    @enderror
-                                </div>
-                                <div class="form-group">
-                                    <input id="password" type="password" placeholder="Password" class="form-control @error('password') is-invalid @enderror" name="password" required>
-                                    <i class="ik ik-lock"></i>
-                                    @error('password')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                                </div>
-                                <div class="row">
-                                    <div class="col text-left">
-                                        <label class="custom-control custom-checkbox">
-                                            <input type="checkbox" class="custom-control-input" id="item_checkbox" name="item_checkbox" value="option1">
-                                            <span class="custom-control-label">&nbsp;Remember Me</span>
-                                        </label>
-                                    </div>
-                                    <div class="col text-right">
-                                        <a class="btn text-danger" href="{{url('password/forget')}}">
-                                            {{ __('Forgot Password?') }}
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="sign-btn text-center">
-                                    <button class="btn btn-custom">Sign In</button>
-                                </div>
-                                <div class="register">
-                                    <p>{{ __('No account?')}} <a href="{{url('register')}}">{{ __('Sign Up')}}</a></p>
-                                </div>
-                                
-                            </form>
-                        </div>
-                    </div>
-                </div>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <link rel="stylesheet" href="{{ asset('plugins/fontawesome-free/css/all.min.css') }}">
+  <link rel="stylesheet" href="{{ asset('css/adminlte.min.css') }}">
+</head>
+<body class="hold-transition login-page">
+<div class="login-box">
+  @if($errors->any())
+  <div class="alert alert-danger" role="alert">
+    Identitas tersebut tidak terdaftar!
+  </div>
+  @endif
+  <div class="card card-outline card-primary">
+    <div class="card-header text-center">
+      <div class="text-center">
+        <img src="{{ asset('img/null-avatar.png') }}" class="rounded" alt="...">
+      </div>
+      <h1><b>POS</b>App</h1>
+    </div>
+    <div class="card-body">
+      <p class="login-box-msg">Selamat datang, silahkan login</p>
+      <form action="{{ route('login') }}" method="post">
+        @csrf
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" placeholder="Email" name="email" value="{{ old('email') }}">
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-envelope"></span>
             </div>
+          </div>
         </div>
-        
-        <script src="{{ asset('src/js/vendor/jquery-3.3.1.min.js') }}"></script>
-        <script src="{{ asset('plugins/popper.js/dist/umd/popper.min.js') }}"></script>
-        <script src="{{ asset('plugins/bootstrap/dist/js/bootstrap.min.js') }}"></script>
-        <script src="{{ asset('plugins/perfect-scrollbar/dist/perfect-scrollbar.min.js') }}"></script>
-        <script src="{{ asset('plugins/screenfull/dist/screenfull.js') }}"></script>
-        
-    </body>
+        <div class="input-group mb-3">
+          <input type="password" class="form-control" placeholder="Password" name="password">
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-lock"></span>
+            </div>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Login</button>
+      </form>  
+    </div>
+  </div>
+</div>
+<script src="{{ asset('js/adminlte.min.js') }}"></script>
+</body>
 </html>
