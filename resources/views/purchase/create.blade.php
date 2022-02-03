@@ -39,9 +39,6 @@
             </div>
         </div>
         <div class="row">
-            <!-- start message area-->
-            @include('include.message')
-            <!-- end message area-->
             <div class="col-md-12">
                 <div class="card ">
                     <div class="card-body">
@@ -53,8 +50,11 @@
                             <div class="row">
                                 <div class="col-md-3">
                                     <div class="form-group">
-                                        <label for="supplier_id">{{ __('Supplier') }}<span class="text-red">*</span></label>
+                                        <label for="supplier_id" @error('supplier_id')class="text-red" @enderror>{{ __('Supplier') }}<span class="text-red">*</span></label>
                                         {!! Form::select('supplier_id', [], null, ['class' => 'form-control', 'id' => 'supplier_id']) !!}
+                                        @error('supplier_id')
+                                        <small class="text-danger">{{ $message }}</small>
+                                        @enderror
                                     </div>
                                 </div>
 
@@ -102,16 +102,27 @@
 
                                 <div class="col-md-3">
                                     <div class="form-group">
-                                        <label for="warehouse_id">{{ __('Gudang') }}<span class="text-red">*</span></label>
+                                        <label for="warehouse_id" @error('warehouse_id')class="text-red" @enderror>{{ __('Gudang') }}<span class="text-red">*</span></label>
                                         {!! Form::select('', [], null, ['class' => 'form-control', 'id' => 'warehouse_id']) !!}
                                         <input type="hidden" name="warehouse_id" id="hidden_warehouse_id">
+                                        @error('warehouse_id')
+                                        <small class="text-danger">{{ $message }}</small>
+                                        @enderror
                                     </div>
                                 </div>
                             </div>
 
                             <div class="row">
-                                <div class="col-md-12">
-                                    <div class="table-responsive py-4">
+                                <div class="col-md-12 py-4">
+                                    @if($errors->has('product_id') || $errors->has('qty'))
+                                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                            Mohon isi data produk dengan benar!
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                <i class="ik ik-x"></i>
+                                            </button>
+                                        </div>
+                                    @endif
+                                    <div class="table-responsive">
                                         <table class="table" id="purchase-create-table" style="min-width: 50rem">
                                             <thead>
                                                 <tr>

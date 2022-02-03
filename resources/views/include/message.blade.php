@@ -13,7 +13,6 @@
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <i class="ik ik-x"></i>
         </button>
-
     </div>
     @endif
 </div>

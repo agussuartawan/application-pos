@@ -41,7 +41,7 @@ class Purchase extends Model
 
 	public function purchaseOnCredit()
 	{
-		return $this->belongsTo(purchaseOnCredit::class);
+		return $this->belongsTo(PurchaseOnCredit::class);
 	}
 
 	// acitivity log option

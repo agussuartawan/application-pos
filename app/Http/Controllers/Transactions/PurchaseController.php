@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Transactions;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StorePurchaseRequest;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Models\Purchase;
@@ -17,7 +18,7 @@ class PurchaseController extends Controller
 {
     public function index()
     {
-    	$warehouses = Warehouse::pluck('name', 'id');
+        $warehouses = Warehouse::pluck('name', 'id');
         return view('purchase.index', compact('warehouses'));
     }
 
@@ -27,14 +28,14 @@ class PurchaseController extends Controller
 
         return Datatables::of($data)
             ->addColumn('supplier_name', function ($data) {
-            	if($data->status == 'Lunas'){
-            		$cls = 'badge-success';
-            	} elseif ($data->status == 'Partial') {
-            		$cls = 'badge-warning';
-            	} else {
-            		$cls = 'badge-secondary';
-            	}
-                return $data->supplier->name.' <span class="badge badge-pill '.$cls.'">'.$data->status.'<span>';
+                if ($data->status == 'Lunas') {
+                    $cls = 'badge-success';
+                } elseif ($data->status == 'Partial') {
+                    $cls = 'badge-warning';
+                } else {
+                    $cls = 'badge-secondary';
+                }
+                return $data->supplier->name . ' <span class="badge badge-pill ' . $cls . '">' . $data->status . '<span>';
             })
             ->addColumn('total', function ($data) {
                 return rupiah($data->total);
@@ -42,8 +43,8 @@ class PurchaseController extends Controller
             ->addColumn('date', function ($data) {
                 return Carbon::parse($data->date)->isoFormat('DD MMMM Y');
             })
-            ->addColumn('warehouse', function($data){
-            	return '<span class="badge badge-secondary">'.$data->warehouse->name.'</span>';
+            ->addColumn('warehouse', function ($data) {
+                return '<span class="badge badge-secondary">' . $data->warehouse->name . '</span>';
             })
             ->addColumn('action', function ($data) {
                 $buttons = '';
@@ -72,8 +73,8 @@ class PurchaseController extends Controller
                     $instance->join('suppliers', 'suppliers.id', '=', 'purchases.supplier_id')->where(function ($w) use ($request) {
                         $search = $request->search;
                         $w->orWhere('name', 'LIKE', "%$search%")
-                        	->orWhere('purchases.purchase_number', 'LIKE', "%$search%")
-                        	->orWhere('purchases.total', 'LIKE', "%$search%");
+                            ->orWhere('purchases.purchase_number', 'LIKE', "%$search%")
+                            ->orWhere('purchases.total', 'LIKE', "%$search%");
                     });
                 }
 
@@ -95,9 +96,8 @@ class PurchaseController extends Controller
         return view('include.transaction.purchase.form-create', compact('row'));
     }
 
-    public function store(Request $request)
+    public function store(StorePurchaseRequest $request)
     {
-        dd($request->all());
         DB::transaction(function () use ($request) {
             $total = 0;
 
@@ -126,7 +126,7 @@ class PurchaseController extends Controller
             }
 
             // insert ke table purchase
-            $terms = Term::where('id', $request->terms)->select('description','is_cash')->first();
+            $terms = Term::where('id', $request->terms)->select('description', 'is_cash')->first();
             $status = ($terms->is_cash == 1) ? 'Lunas' : 'Belum Lunas';
 
             $purchase = Purchase::create([
