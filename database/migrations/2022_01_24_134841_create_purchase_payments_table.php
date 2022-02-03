@@ -15,7 +15,7 @@ class CreatePurchasePaymentsTable extends Migration
     {
         Schema::create('purchase_payments', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('purchase_on_credit_id')->constrained()->onUpdate('cascade');
+            $table->foreignId('purchase_id')->constrained()->onUpdate('cascade');
             $table->foreignId('user_id')->constrained()->onUpdate('cascade');
             $table->decimal('payment_amount', $precision = 19, $scale = 2);
             $table->decimal('payment_cost', $precision = 19, $scale = 2);
