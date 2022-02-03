@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Rules\ArrayAtLeastOne;
+use App\Rules\SupplierCreditCheck;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StorePurchaseRequest extends FormRequest
@@ -25,15 +26,15 @@ class StorePurchaseRequest extends FormRequest
     public function rules()
     {
         return [
-            'supplier_id' => 'required',
-            'term_id' => 'required',
-            'warehouse_id' => 'required',
-            'date' => 'required',
-            'due_date' => 'required',
-            'product_id' => [new ArrayAtLeastOne],
-            'qty' => [new ArrayAtLeastOne],
-            'price' => [new ArrayAtLeastOne],
-            'discount' => [new ArrayAtLeastOne],
+            'supplier_id' => [new SupplierCreditCheck(), 'required'],
+            'terms' => ['required'],
+            'warehouse_id' => ['required'],
+            'date' => ['required'],
+            'due_date' => ['required'],
+            'product_id' => [new ArrayAtLeastOne()],
+            'qty' => [new ArrayAtLeastOne()],
+            'price' => [new ArrayAtLeastOne()],
+            'discount' => [new ArrayAtLeastOne()],
         ];
     }
 
@@ -41,10 +42,10 @@ class StorePurchaseRequest extends FormRequest
     {
         return [
             'supplier_id.required' => 'Supplier tidak boleh kosong',
-            'term_id.required' => 'Batas kredit tidak boleh kosong',
+            'terms.required' => 'Batas kredit tidak boleh kosong',
             'warehouse_id.required' => 'Gudang tidak boleh kosong',
             'date.required' => 'Tanggal tidak boleh kosong',
-            'due_date.required' => 'Tanggal jatuh tidak boleh kosong',
+            'due_date.required' => 'Tanggal jatuh tempo tidak boleh kosong',
         ];
     }
 }

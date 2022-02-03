@@ -96,6 +96,12 @@ class PurchaseController extends Controller
         return view('include.transaction.purchase.form-create', compact('row'));
     }
 
+    public function showCreate()
+    {
+        return view('include.transaction.purchase.create');
+    }
+
+
     public function store(StorePurchaseRequest $request)
     {
         DB::transaction(function () use ($request) {
@@ -128,6 +134,7 @@ class PurchaseController extends Controller
             // insert ke table purchase
             $terms = Term::where('id', $request->terms)->select('description', 'is_cash')->first();
             $status = ($terms->is_cash == 1) ? 'Lunas' : 'Belum Lunas';
+            $on_credit = ($terms->is_cash == 1) ? 0 : $total;
 
             $purchase = Purchase::create([
                 'user_id' => Auth::user()->id,
@@ -139,7 +146,8 @@ class PurchaseController extends Controller
                 'terms' => $terms->description,
                 'status' => $status,
                 'total' => $total,
-                'term_id' => $request->terms
+                'term_id' => $request->terms,
+                'on_credit' => $on_credit
             ]);
 
             // insert to product_purchase
@@ -152,13 +160,6 @@ class PurchaseController extends Controller
                 ]);
             }
 
-            // insert to purchase on credit table
-            $total_credit = ($terms->is_cash == 1) ? 0 : $purchase->total;
-            $purchase->purchaseOnCredit()->create([
-                'purchase_id' => $purchase->id,
-                'total_credit' => $total_credit
-            ]);
-
             // update in_stock di tabel product warehouse
             $stocks = Product::with('warehouse')->whereIn('id', $product['product_id'])->get();
             foreach ($stocks as $key => $stock) {
@@ -170,9 +171,9 @@ class PurchaseController extends Controller
                     }
                 }
             }
-        });
 
-        return redirect()->route('purchases.index');
+            return $purchase;
+        });
     }
 
     public function show(Purchase $purchase)

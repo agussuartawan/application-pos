@@ -3,7 +3,6 @@
 namespace App\Rules;
 
 use App\Models\Purchase;
-use App\Models\Supplier;
 use Illuminate\Contracts\Validation\Rule;
 
 class SupplierCreditCheck implements Rule
@@ -27,7 +26,18 @@ class SupplierCreditCheck implements Rule
      */
     public function passes($attribute, $value)
     {
-        $supplier = Supplier::find($value)->first();
+        $purchases = Purchase::where('supplier_id', $value)->get();
+        foreach ($purchases as $purchase) {
+            if($purchase->on_credit > 0){
+                $now = strtotime(\Carbon\Carbon::now()->format('Y-m-d'));
+                $due_date = strtotime($purchase->due_date);
+                $diff = ($now - $due_date) / 60 / 60 / 24;
+                if($diff > 0){
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     /**
@@ -37,6 +47,6 @@ class SupplierCreditCheck implements Rule
      */
     public function message()
     {
-        return 'The validation error message.';
+        return 'Anda masih memiliki hutang untuk Supplier ini, mohon lunasi terlebih dahulu!';
     }
 }

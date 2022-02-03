@@ -22,6 +22,7 @@ class Purchase extends Model
 		'terms',
 		'total',
 		'status',
+		'on_credit'
 	];
 
 	public function product()
@@ -37,11 +38,6 @@ class Purchase extends Model
 	public function warehouse()
 	{
 		return $this->belongsTo(Warehouse::class);
-	}
-
-	public function purchaseOnCredit()
-	{
-		return $this->belongsTo(PurchaseOnCredit::class);
 	}
 
 	// acitivity log option

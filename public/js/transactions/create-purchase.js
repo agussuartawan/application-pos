@@ -1,18 +1,9 @@
+var row = 1;
 (function($) {
     'use strict';
 
-    var row = 1;
-
-
     $(document).ready(function(){  
-        showCreateForm(row++);
-        searchSupplier();
-        searchWarehouse();
-        searchTerm();
-
-        //get current date
-        var today = new Date().toISOString().slice(0, 10);
-        $('.date').val(today);
+        showCreate();
     });
 
     $('body').on('change', '#warehouse_id', function(event){
@@ -71,16 +62,17 @@
         countGrandTotal();
     });
 
-    $('.modal-save').on('click', function(event) {
+    $('body').on('click', '#btn-save', function(event) {
         event.preventDefault();
 
-        var form = $('#form-product'),
+        var form = $('#create-purchase-form'),
             url = form.attr('action'),
-            method = $('input[name=_method').val() == undefined ? 'POST' : 'PUT',
-            message = $('input[name=_method').val() == undefined ? 'Data produk berhasil ditambahkan' : 'Data produk berhasil diubah';
+            method = 'POST',
+            message = 'Data pembelian berhasil disimpan';
 
-        $('.form-group').removeClass('input-group-danger');
-        $('.text-danger').remove();
+        $('.text-red').remove();
+        $('#alert-purchase').empty();
+        $('#alert-purchase-product').empty();
         
         $.ajax({
             url: url,
@@ -94,19 +86,40 @@
             },
             success: function(response){
                 showSuccessToast(message);
-                $('#modal').modal('hide');
-                $('#product_table').DataTable().ajax.reload();
+                showCreate();
             },
             error: function(xhr){
                 showErrorToast();
                 var res = xhr.responseJSON;
                 if($.isEmptyObject(res) == false){
+                    var is_product_invalid = false;
                     $.each(res.errors, function(key, value){
-                        $('#' + key)
-                            .closest('.form-group')
+                        if(key != 'supplier_id'){
+                            $('#' + key).closest('.form-group')
                             .addClass('input-group-danger')
-                            .append(`<small class="text-danger">${value}</small>`);
+                            .append(`<small class="text-red">${value}</small>`);
+                        } else {
+                            $('#alert-purchase').append(`<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                ${value}
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <i class="ik ik-x"></i>
+                                </button>
+                            </div>`);
+                        }
+
+                        if (key == 'product_id' || key == 'qty' || key == 'price' || key == 'discount') {
+                            is_product_invalid = true;
+                        }
                     });
+
+                    if (is_product_invalid) {
+                        $('#alert-purchase-product').append(`<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            Mohon isi data produk dengan benar!
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <i class="ik ik-x"></i>
+                            </button>
+                        </div>`);
+                    }
                 }
             }
         });
@@ -258,6 +271,34 @@ showCreateForm = (row) => {
             select_2_product(warehouse_id);
             maskMoney();
             countGrandTotal();
+        },
+        error: function (xhr, status) {
+            alert('Terjadi kesalahan');
+        }
+    });
+}
+
+showCreate = () => {
+    $.ajax({
+        url: '/purchase/showCreate',
+        type: 'GET',
+        dataType: 'html',
+        beforeSend: function() {
+            $('.loader').fadeIn();
+        },
+        complete: function(){
+            $('.loader').fadeOut();
+        },
+        success: function (response) {
+            $('.card-body').html(response);
+            showCreateForm(row++);
+            searchSupplier();
+            searchWarehouse();
+            searchTerm();
+
+            //get current date
+            var today = new Date().toISOString().slice(0, 10);
+            $('.date').val(today);
         },
         error: function (xhr, status) {
             alert('Terjadi kesalahan');

@@ -19,8 +19,6 @@ use App\Http\Controllers\ActivityLogController;
 use App\Http\Controllers\Masters\SupplierController;
 use App\Http\Controllers\Masters\TermController;
 use App\Http\Controllers\Transactions\PurchaseController;
-use App\Models\Purchase;
-use App\Models\Supplier;
 use Illuminate\Http\Request;
 
 Route::get('/', function () {
@@ -325,6 +323,7 @@ Route::group(['middleware' => 'auth'], function () {
 		Route::get('purchases/create', [PurchaseController::class, 'create'])->name('purchases.create');
 		Route::post('purchases', [PurchaseController::class, 'store'])->name('purchases.store');
 		Route::get('purchase/showFormCreate', [PurchaseController::class, 'showFromCreate']);
+		Route::get('purchase/showCreate', [PurchaseController::class, 'showCreate']);
 	});
 
 	#purchase payment route
@@ -334,22 +333,4 @@ Route::group(['middleware' => 'auth'], function () {
 
 	#Terms Route
 	Route::get('term-search', [TermController::class, 'searchTerm']);
-
-	Route::get('daterange', function (Request $request) {
-		$from = explode(" s/d ", $request->dateFilter)[0];
-		$to = explode(" s/d ", $request->dateFilter)[1];
-
-		$from = \Carbon\Carbon::parse($from)->format('Y-m-d');
-		$to = \Carbon\Carbon::parse($to)->format('Y-m-d');
-		dd($from, $to);
-	});
-
-	Route::get('credit-check/{id}', function (Request $request) {
-		$purchases = Purchase::where('supplier_id', $request->id)->get();
-		foreach ($purchases as $purchase) {
-			$now = \Carbon\Carbon::now();
-			$due_date = $purchase->due_date;
-			return $now->diffInDays($due_date);
-		}
-	});
 });

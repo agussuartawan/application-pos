@@ -26,7 +26,7 @@ class ArrayAtLeastOne implements Rule
     public function passes($attribute, $value)
     {
         foreach ($value as $arrayElement) {
-            if ($arrayElement) {
+            if ($arrayElement != NULL) {
                 return true;
             }
         }
