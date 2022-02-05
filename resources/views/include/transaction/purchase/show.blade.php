@@ -1,3 +1,4 @@
+<span hidden id="id">{{ $purchase->id }}</span>
 <div class="row">
     <div class="col-sm-6">
         <div class="row">

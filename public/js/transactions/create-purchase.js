@@ -85,6 +85,7 @@ var row = 1;
                 $('.preloader').fadeOut();
             },
             success: function(response){
+                window.row = 1;
                 showSuccessToast(message);
                 showCreate();
             },

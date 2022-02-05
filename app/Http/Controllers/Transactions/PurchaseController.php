@@ -90,15 +90,24 @@ class PurchaseController extends Controller
     }
 
 
-    public function showFromCreate(Request $request)
+    public function showFormCreate(Request $request)
     {
-        $row = $request->row;
-        return view('include.transaction.purchase.form-create', compact('row'));
+        if (Auth::user()->can('edit pembelian')) {
+            $row = $request->row;
+            return view('include.transaction.purchase.form-product', compact('row'));
+        }
+
+        return '';
     }
 
-    public function showCreate()
+    public function showForm()
     {
-        return view('include.transaction.purchase.create');
+        if (Auth::user()->can('edit pembelian') || Auth::user()->can('tambah pembelian')) {
+            $purchase = new Purchase();
+            return view('include.transaction.purchase.form', compact('purchase'));
+        }
+
+        return 'Anda tidak memiliki akses untuk edit pembelian!';
     }
 
 
@@ -150,19 +159,17 @@ class PurchaseController extends Controller
                 'on_credit' => $on_credit
             ]);
 
-            // insert to product_purchase
             foreach ($product['product_id'] as $key => $value) {
+                // insert to product_purchase
                 $purchase->product()->attach($product['product_id'][$key], [
                     'qty' => $product['qty'][$key],
                     'price' => str_replace(".", "", $product['price'][$key]),
                     'discount' => $product['discount'][$key],
                     'subtotal' => $product['subtotal'][$key]
                 ]);
-            }
 
-            // update in_stock di tabel product warehouse
-            $stocks = Product::with('warehouse')->whereIn('id', $product['product_id'])->get();
-            foreach ($stocks as $key => $stock) {
+                // update in_stock di tabel product warehouse
+                $stock = Product::with('warehouse')->where('id', $product['product_id'][$key])->first();
                 foreach ($stock->warehouse as $warehouse) {
                     if ($warehouse->id == $purchase->warehouse_id) {
                         $in_stock = $warehouse->pivot->in_stock + (int) $product['qty'][$key];
@@ -171,6 +178,7 @@ class PurchaseController extends Controller
                     }
                 }
             }
+
 
             return $purchase;
         });
@@ -188,19 +196,13 @@ class PurchaseController extends Controller
         return view('include.transaction.purchase.show', compact('purchase', 'status_class'));
     }
 
-    // public function countSubtotal(Request $request)
-    // {
-    // 	$new_price = str_replace(".", "", $request->price);
-    // 	$qty = $request->qty;
-    // 	$discount = $request->discount / 100;
+    public function edit(Purchase $purchase)
+    {
+        return view('purchase.edit', compact('purchase'));
+    }
 
-    // 	if($request->price){
-    // 		$discount_rp = $new_price * $discount;
-    //  	$subtotal = ($new_price - $discount_rp) * $qty;
-    // 	} else {
-    // 		$subtotal = 0;
-    // 	}
-
-    // 	return rupiah($subtotal);
-    // }
+    public function getActionBtn()
+    {
+    	return view('include.transaction.purchase.modal-action');
+    }
 }

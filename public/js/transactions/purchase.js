@@ -1,7 +1,16 @@
 (function($) {
     'use strict';
     //product data table
-    $(document).ready(function(){      
+    $(document).ready(function(){  
+        $.ajax({
+            url: '/purchase/get-action-button',
+            type: 'GET',
+            dataType: 'html',
+            success: function(response){
+                $('#btn-action').html(response);
+            }
+        });    
+
         var dTable = $('#purchase_table').DataTable({
             lengthMenu: [[5, 10, 50, 100], [5, 10, 50, 100]],
             serverSide: true,
@@ -112,6 +121,7 @@
 	                }
 	            }); 
 	        }
+
         });
 
 	    $('.custom-filter').change(function(){
@@ -136,6 +146,12 @@
 
     $('#modal').on('hidden.bs.modal', function(){
         $('.load-here').empty();
+    });
+
+    $('body').on('click', '#btn-edit', function(event) {
+        event.preventDefault();
+        var id = $('#id').text();
+        window.location.href = `purchases/${id}/edit`;
     });
 })(jQuery);
 

@@ -318,13 +318,17 @@ Route::group(['middleware' => 'auth'], function () {
 		Route::get('purchases', [PurchaseController::class, 'index'])->name('purchases.index');
 		Route::get('purchases/{purchase}/show', [PurchaseController::class, 'show'])->name('purchases.show');
 		Route::get('purchase/get-list', [PurchaseController::class, 'getPurchaseList']);
+		Route::get('purchase/get-action-button', [PurchaseController::class, 'getActionBtn']);
 	});
 	Route::group(['middleware' => 'can:tambah pembelian'], function () {
 		Route::get('purchases/create', [PurchaseController::class, 'create'])->name('purchases.create');
 		Route::post('purchases', [PurchaseController::class, 'store'])->name('purchases.store');
-		Route::get('purchase/showFormCreate', [PurchaseController::class, 'showFromCreate']);
-		Route::get('purchase/showCreate', [PurchaseController::class, 'showCreate']);
+		Route::get('purchase/showFormCreate', [PurchaseController::class, 'showFormCreate']);
 	});
+	Route::group(['middleware' => 'can:tambah pembelian'], function () {
+		Route::get('purchases/{purchase}/edit', [PurchaseController::class, 'edit']);
+	});
+	Route::get('purchase/showForm', [PurchaseController::class, 'showForm']);
 
 	#purchase payment route
 	Route::group(['middleware' => 'can:tambah pelunasan pembelian'], function () {

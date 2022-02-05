@@ -51,7 +51,6 @@ return array(
     'App\\Models\\Group' => $baseDir . '/app/Models/Group.php',
     'App\\Models\\Product' => $baseDir . '/app/Models/Product.php',
     'App\\Models\\Purchase' => $baseDir . '/app/Models/Purchase.php',
-    'App\\Models\\PurchaseOnCredit' => $baseDir . '/app/Models/PurchaseOnCredit.php',
     'App\\Models\\PurchaseOrder' => $baseDir . '/app/Models/PurchaseOrder.php',
     'App\\Models\\PurchaseReturn' => $baseDir . '/app/Models/PurchaseReturn.php',
     'App\\Models\\Sale' => $baseDir . '/app/Models/Sale.php',

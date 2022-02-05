@@ -12,7 +12,7 @@
     <div class="container-fluid">
     	<div class="page-header">
             <div class="row align-items-end">
-                <div class="col-lg-8">
+                <div class="col">
                     <div class="page-header-title">
                         <i class="ik ik-package bg-blue"></i>
                         <div class="d-inline">
@@ -21,7 +21,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-4">
+                <div class="col">
                     <nav class="breadcrumb-container" aria-label="breadcrumb">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item">
@@ -44,19 +44,19 @@
                                 </div>
                                 <div class="col-md-8">
                                     <div class="d-flex justify-content-center">
-                                        <div class="col-sm-3">
+                                        <div class="col-sm-4">
                                             {!! Form::select('status', ['Belum Lunas' => 'Belum Lunas', 'Lunas' => 'Lunas', 'Partial' => 'Partial'],
                                                 null,
                                                 [ 'class'=>'form-control custom-filter', 'placeholder' => 'Filter status','id'=> 'status']) 
                                             !!}
                                         </div>
-                                        <div class="col-sm-3">
-                                            {!! Form::select('warehouse_id', $warehouses, null,[ 'class'=>'form-control custom-filter', 'placeholder' => 'Filter gudang','id'=> 'warehouse_id']) !!}
-                                        </div>
-                                        <div class="col-sm-6">
+                                        <div class="col-sm-4">
                                             <div class="form-group">
                                                 <input type="text" class="form-control custom-filter" id="daterange-filter" name="dateFilter">
                                             </div>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            {!! Form::select('warehouse_id', $warehouses, null,[ 'class'=>'form-control custom-filter', 'placeholder' => 'Filter gudang','id'=> 'warehouse_id']) !!}
                                         </div>
                                     </div>
                                 </div>

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddOnCreditColumnToPurchasesTable extends Migration
+class AddOnCreditColumnToSalesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class AddOnCreditColumnToPurchasesTable extends Migration
      */
     public function up()
     {
-        Schema::table('purchases', function (Blueprint $table) {
+        Schema::table('sales', function (Blueprint $table) {
             $table->decimal('on_credit', $precision = 19, $scale = 2);
         });
     }
@@ -25,7 +25,7 @@ class AddOnCreditColumnToPurchasesTable extends Migration
      */
     public function down()
     {
-        Schema::table('purchases', function (Blueprint $table) {
+        Schema::table('sales', function (Blueprint $table) {
             $table->dropColumn('on_credit');
         });
     }

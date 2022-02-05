@@ -16,8 +16,8 @@
                     <div class="page-header-title">
                         <i class="ik ik-user-plus bg-blue"></i>
                         <div class="d-inline">
-                            <h5>{{ __('Pembelian Baru')}}</h5>
-                            <span>{{ __('Menambah data pembelian baru')}}</span>
+                            <h5>{{ __('Edit Pembelian')}}</h5>
+                            <span>{{ __('Mengubah data pembelian')}}</span>
                         </div>
                     </div>
                 </div>
@@ -31,7 +31,7 @@
                                 <a href="{{route('purchases.index')}}">{{ __('Data Pembelian') }}</i></a>
                             </li>
                             <li class="breadcrumb-item active">
-                                {{ __('Pembelian Baru')}}
+                                {{ __('Edit Pembelian')}}
                             </li>
                         </ol>
                     </nav>
@@ -58,6 +58,6 @@
         <script src="{{ asset('plugins/select2/dist/js/select2.min.js') }}"></script>
         <script src="{{ asset('plugins/mask-money/jquery.mask.min.js') }}"></script>
         <script src="{{ asset('plugins/jquery-toast-plugin/dist/jquery.toast.min.js')}}"></script>
-        <script src="{{ asset('js/transactions/create-purchase.js') }}"></script>
+        <script src="{{ asset('js/transactions/edit-purchase.js') }}"></script>
     @endpush
 @endsection
